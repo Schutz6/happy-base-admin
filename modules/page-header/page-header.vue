@@ -68,6 +68,7 @@
 <style scoped lang="scss">
 	.header{
 		background-color: #2b2f3a;
+		box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.08);
 		color: #fff;
 		height: 44px;
 		padding: 0 20px;

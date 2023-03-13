@@ -40,6 +40,9 @@
 	.scroll-view-box {
 		height: calc(100vh - 44px);
 	}
+	.scroll-iframe-box {
+		height: calc(100vh);
+	}
 	.uni-dialog-button{
 		cursor: pointer;
 	}

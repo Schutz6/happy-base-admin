@@ -13,6 +13,7 @@
 	export default {
 		data() {
 			return {
+				website: "",//网址
 				isPC: false, //是否电脑端
 				isMobile: false, //是否手机端
 				activeUrl: '/pages/index/index',
@@ -20,28 +21,17 @@
 					text: "首页",
 					icon: 'uni-icons-home',
 					value: "/pages/index/index"
-				},{
-					text: '静态功能演示',
-					children: [{
-						text: '百度一下',
-						value: 'http://www.bootstrapmb.com/popular'
-					}, {
-						menu_id: "table",
-						text: '表格',
-						icon: '',
-						value: '/pages/table'
-					}, {
-						menu_id: "table",
-						text: '表格',
-						icon: '',
-						value: '/pages/table'
-					}]
 				}, {
 					menu_id: "demo",
 					text: '静态功能演示',
 					icon: '',
 					value: "",
-					children: [{
+					children: [
+						{
+							text: '百度一下',
+							value: 'http://www.bootstrapmb.com/popular'
+						},
+					{
 						menu_id: "icons",
 						text: '图标',
 						icon: '',
@@ -56,6 +46,8 @@
 			}
 		},
 		mounted() {
+			//初始化网址
+			this.website = location.origin+location.pathname+"#/pages/common/home/home"
 			// #ifdef H5
 			if (navigator.userAgent.indexOf('Mobile') > -1) {
 				this.isMobile = true
@@ -82,6 +74,7 @@
 			//跳转页面
 			toPage(page){
 				//加载新页面
+				history.pushState(null, null, this.website+"?path="+page)
 				uni.$emit("loadPageUrl", {"url": page})
 				if(this.isMobile){
 					//关闭弹框
@@ -104,6 +97,6 @@
 	.menus{
 		width: 240px;
 		height: calc(100vh - 44px);
-		border-right: 1px solid #ddd;
+		box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.08);
 	}
 </style>

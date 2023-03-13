@@ -1,6 +1,6 @@
 <template>
 	<view class="container overflow-hidden width-max height-max">
-		<view class="d-flex-center height-max">
+		<view class="height-max">
 			<view class="login-box">
 				<view class="d-flex-center login-title">用户登录</view>
 				<uni-forms ref="form" :modelValue="loginForm" :rules="loginRules">
@@ -103,15 +103,18 @@
 
 <style scoped lang="scss">
 	.login-box {
-		width: 600upx;
-		padding: 30px;
-		border: 1px solid #dddddd;
+		position: relative;
+		top: 100px;
+		width: 300px;
 		border-radius: 10px;
-		background-color: #ffffff;
+		background-color: #fff;
+		box-shadow: 0 0 20px #efefef;
+		margin: 0 auto;
+		padding: 30px 40px 80px 40px;
 	}
 	.login-title{
 		font-weight: bold;
-		font-size: 44upx;
-		padding-bottom: 60upx;
+		font-size: 22px;
+		padding-bottom: 30px;
 	}
 </style>

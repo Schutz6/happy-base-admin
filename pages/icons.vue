@@ -1,7 +1,9 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-view-box" :scroll-y="true">
-			图标{{user}}
+		<scroll-view class="scroll-iframe-box" :scroll-y="true">
+			<uni-card>
+				图标{{user}}
+			</uni-card>
 		</scroll-view>
 	</view>
 </template>

@@ -3,7 +3,9 @@
 		<page-header></page-header>
 		<view class="d-flex">
 			<page-menu></page-menu>
-			<web-view v-if="toPageUrl" :src="toPageUrl" :webview-styles="{'progress': true}" :style="{'top': top+'px', 'left': left+'px'}"></web-view>
+			<view class="page">
+				<iframe v-if="toPageUrl" :src="toPageUrl" frameborder="0" style="width: 100%;height: 100%;"></iframe>
+			</view>
 		</view>
 	</view>
 </template>
@@ -14,24 +16,19 @@
 		data() {
 			return {
 				website: "",//网址
+				path: "/pages/index/index",//地址
 				toPageUrl: null,//跳转页面
-				top: 44,
-				left: 0,
 			}
 		},
 		computed: {
 			...mapGetters(['user', 'setting'])
 		},
-		onLoad() {
+		onLoad(options) {
 			//初始化网址
 			this.website = location.origin+location.pathname+"#"
-			// #ifdef H5
-			if (navigator.userAgent.indexOf('Mobile') > -1) {
-				this.left = 0
-			} else {
-				this.left = 240
+			if(options.path){
+				this.path = options.path
 			}
-			// #endif
 		},
 		onShow() {
 			//监听方法
@@ -43,14 +40,18 @@
 		},
 		onReady() {
 			//加载首页
-			this.loadPageUrl({"url": "/pages/index/index"})
+			this.loadPageUrl({"url": this.path})
+			
 		},
 		methods: {
 			//加载页面
 			loadPageUrl(data){
 				let url = data.url
-				if(url.startsWith("http")){
-					this.toPageUrl = url
+				if(url.indexOf('http') === 0){
+					//内部页面打开
+					// this.toPageUrl = url
+					//打开新窗口
+					window.open(url)
 				}else{
 					this.toPageUrl = this.website+url
 				}
