@@ -1,0 +1,44 @@
+{
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^page-(.*)": "@/modules/page-$1/page-$1.vue"
+		}
+	},
+	"pages": [
+		{
+		    "path" : "pages/common/start/start",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "启动页",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		},
+		{
+		    "path" : "pages/common/login/login",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "登录",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		}
+		
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "基础后台",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}
