@@ -25,14 +25,37 @@
 		    }
 		},
 		{
+			"path": "pages/common/home/home",
+			"style": {
+				"navigationBarTitleText": "主页",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/table",
+			"style": {
+				"navigationBarTitleText": "表格",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/icons",
+			"style": {
+				"navigationBarTitleText": "图标",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
 		}
-		
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

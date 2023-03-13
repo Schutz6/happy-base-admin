@@ -16,19 +16,13 @@
 			//获取用户信息
 			this.$store.dispatch('getUserInfo').then(res => {
 				if (res.code == 20000) {
-					if(res.data.is_agent == 1){
-						uni.reLaunch({
-							url: '/pages/index/index'
-						});
-					}else{
-						uni.reLaunch({
-							url: '/pages/common/login/login'
-						});
-					}
+					uni.reLaunch({
+						url: '/pages/common/home/home'
+					})
 				}else{
 					uni.reLaunch({
 						url: '/pages/common/login/login'
-					});
+					})
 				}
 			})
 		}

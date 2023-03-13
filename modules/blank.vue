@@ -1,6 +1,8 @@
 <template>
 	<view class="page">
-		
+		<scroll-view class="scroll-view-box" :scroll-y="true">
+			
+		</scroll-view>
 	</view>
 </template>
 
@@ -21,7 +23,5 @@
 </script>
 
 <style scoped lang="scss">
-	.page{
-		height: calc(100vh - 88upx);
-	}
+	
 </style>

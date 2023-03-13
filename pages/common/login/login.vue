@@ -8,7 +8,7 @@
 						<uni-easyinput type="text" v-model="loginForm.username" placeholder="账号" />
 					</uni-forms-item>
 					<uni-forms-item name="password">
-						<uni-easyinput type="password" v-model="loginForm.password" placeholder="密码" />
+						<uni-easyinput type="password" v-model="loginForm.password" @confirm="handleLogin" placeholder="密码" />
 					</uni-forms-item>
 				</uni-forms>
 				<button type="primary" :loading="loading" @click="handleLogin" style="font-size: 14px;">登录</button>
@@ -69,7 +69,7 @@
 									this.$store.commit('setUser', res.data)
 									//跳转首页
 									uni.reLaunch({
-										url: '/pages/index/index'
+										url: '/pages/common/home/home'
 									});
 								})
 							} else if (res.code == 10005) {
@@ -104,7 +104,10 @@
 <style scoped lang="scss">
 	.login-box {
 		width: 600upx;
-		padding: 15px;
+		padding: 30px;
+		border: 1px solid #dddddd;
+		border-radius: 10px;
+		background-color: #ffffff;
 	}
 	.login-title{
 		font-weight: bold;

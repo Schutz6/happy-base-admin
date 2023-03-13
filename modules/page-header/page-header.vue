@@ -1,7 +1,10 @@
 <template>
 	<view>
 		<view class="header d-flex between">
-			<view class="title">{{title}}</view>
+			<view class="d-flex">
+				<uni-icons v-if="isMobile" @click="showMenus" type="bars" size="24" color="#fff"></uni-icons>
+				<view class="title">{{title}}</view>
+			</view>
 			<view class="d-flex" v-if="user">
 				<view class="d-flex-center username">{{user.name}}</view>
 				<view class="d-flex-center logout" @click="showLogout">退出</view>
@@ -20,6 +23,8 @@
 	export default {
 		data() {
 			return {
+				isPC: false, //是否电脑端
+				isMobile: false, //是否手机端
 				title: "",
 			}
 		},
@@ -27,12 +32,23 @@
 		    ...mapGetters(['user'])
 		},
 		mounted() {
+			// #ifdef H5
+			if (navigator.userAgent.indexOf('Mobile') > -1) {
+				this.isMobile = true
+			} else {
+				this.isPC = true
+			}
+			// #endif
 			this.title = getTitle()
 			uni.setNavigationBarTitle({
 				title: this.title
 			})
 		},
 		methods: {
+			//显示菜单
+			showMenus(){
+				uni.$emit("showMenus", {})
+			},
 			//显示退出登录
 			showLogout(){
 				this.$refs.logoutDialog.open()
@@ -56,16 +72,19 @@
 		height: 44px;
 		padding: 0 20px;
 		
+		.title{
+			font-size: 16px;
+			font-weight: bold;
+		}
+		
 		.username{
 			padding: 0 10px;
-			font-size: 16px;
-			height: 44px;
+			font-size: 14px;
 		}
 		.logout{
-			color: #1890ff;
+			color: #2980b9;
 			font-size: 14px;
 			cursor: pointer;
-			height: 44px;
 		}
 	}
 </style>

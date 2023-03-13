@@ -85,7 +85,7 @@
             }
         },
         "router" : {
-            "base" : "/agent/"
+            "base" : "/admin/"
         }
     },
     "fallbackLocale" : "zh-Hans"

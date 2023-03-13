@@ -8,7 +8,7 @@ export default class Request {
 			method = param.method,
 			header = {
 				'content-type': 'application/json',
-				'channel': "h5",//渠道
+				'channel': config.channel,//渠道
 				'Authorization':"JWT " + getToken(),
 				
 				...param.header,
@@ -31,21 +31,31 @@ export default class Request {
 				method: method,
 				header: header,
 				success: (res) => {
-					// 将结果抛出
-					resolve(res.data)
+					//判断令牌是否失效
+					if(res.data.code == 10010){
+						uni.showToast({
+							title: "令牌已失效",
+							icon: 'error'
+						})
+						uni.reLaunch({
+							url: '/pages/common/login/login'
+						})
+					}else{
+						// 将结果抛出
+						resolve(res.data)
+					}
 				},
 				//请求失败
 				fail: (e) => {
 					uni.showToast({
-						title: "" + e.data.message,
-						icon: 'none'
-					});
-					resolve(e.data);
+						title: "请求错误",
+						icon: 'error'
+					})
+					resolve()
 				},
 				//请求完成
 				complete() {
-					resolve();
-					return;
+					resolve()
 				}
 			})
 		})

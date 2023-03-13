@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true">
-			首页{{user}}
+			表格{{user}}
 		</scroll-view>
 	</view>
 </template>
