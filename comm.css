@@ -1,11 +1,17 @@
 .filter-container{
-	padding-bottom: 10px;
+	padding: 10px 0 20px 0;
 }
 .filter-item{
-	margin-left: 10px;
+	margin-left: 15px;
 }
 .filter-item:first-child {
 	margin-left: 0px;
+}
+.uni-pagination-box {
+	padding: 20px 0 10px 0;
+}
+.tag-view{
+	margin-right: 10px;
 }
 .overflow-hidden{
 	overflow: hidden;

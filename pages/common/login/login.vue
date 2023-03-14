@@ -5,10 +5,10 @@
 				<view class="d-flex-center login-title">用户登录</view>
 				<uni-forms ref="form" :modelValue="loginForm" :rules="loginRules">
 					<uni-forms-item name="username">
-						<uni-easyinput type="text" v-model="loginForm.username" placeholder="账号" />
+						<uni-easyinput type="text" trim="both" v-model="loginForm.username" placeholder="账号" />
 					</uni-forms-item>
 					<uni-forms-item name="password">
-						<uni-easyinput type="password" v-model="loginForm.password" @confirm="handleLogin" placeholder="密码" />
+						<uni-easyinput type="password" trim="both" v-model="loginForm.password" @confirm="handleLogin" placeholder="密码" />
 					</uni-forms-item>
 				</uni-forms>
 				<button type="primary" :loading="loading" @click="handleLogin" style="font-size: 14px;">登录</button>
@@ -48,12 +48,19 @@
 			uni.setNavigationBarTitle({
 				title: getTitle()
 			})
+			let username = uni.getStorageSync("UserName")
+			if(username){
+				//初始化账号
+				this.loginForm.username = username
+			}
 		},
 		methods: {
 			//登录
 			handleLogin() {
 				this.$refs.form.validate().then(res => {
 					if (!this.loading) {
+						//保存账号
+						uni.setStorageSync("UserName", this.loginForm.username)
 						this.loading = true
 						uni.showLoading({
 							title: '正在登录'

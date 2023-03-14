@@ -33,6 +33,10 @@
 	/*每个页面公共css */
 	@import url('comm.css');
 
+	page {
+		background-color: #edf0f2;
+	}
+	
 	.page {
 		height: calc(100vh - 44px);
 		flex: 1;

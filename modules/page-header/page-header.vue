@@ -83,7 +83,7 @@
 			font-size: 14px;
 		}
 		.logout{
-			color: #2980b9;
+			color: #409eff;
 			font-size: 14px;
 			cursor: pointer;
 		}

@@ -1,53 +1,74 @@
 <template>
 	<view>
 		<view class="menus" v-if="isPC">
-			<uni-data-menu :localdata="menus" :unique-opened="true" :active="activeUrl" active-text-color="#409eff" @select="select"></uni-data-menu>
+			<scroll-view class="sidebar" scroll-y="true">
+				<uni-data-menu :value="activeUrl" :staticMenu="menus" :unique-opened="true" active-text-color="#409eff" @select="select"></uni-data-menu>
+			</scroll-view>
 		</view>
 		<uni-drawer v-if="isMobile" ref="menus" mode="left" :width="240">
-			<uni-data-menu :localdata="menus" :unique-opened="true" :active="activeUrl" active-text-color="#409eff" @select="select"></uni-data-menu>
+			<uni-data-menu :value="activeUrl" :staticMenu="menus" :unique-opened="true" active-text-color="#409eff" @select="select"></uni-data-menu>
 		</uni-drawer>
 	</view>
 </template>
 
 <script>
 	export default {
+		props: {
+			activeUrl: {
+				type: String,
+				default: ''
+			},
+		},
 		data() {
 			return {
 				website: "",//网址
 				isPC: false, //是否电脑端
 				isMobile: false, //是否手机端
-				activeUrl: '/pages/index/index',
-				menus: [{
-					text: "首页",
-					icon: 'uni-icons-home',
-					value: "/pages/index/index"
-				}, {
-					menu_id: "demo",
-					text: '静态功能演示',
-					icon: '',
-					value: "",
-					children: [
-						{
-							text: '百度一下',
-							value: 'http://www.bootstrapmb.com/popular'
-						},
+				menus: [
 					{
-						menu_id: "icons",
-						text: '图标',
-						icon: '',
-						value: '/pages/icons'
-					}, {
-						menu_id: "table",
-						text: '表格',
-						icon: '',
-						value: '/pages/table'
-					}]
-				}]
+						text: "首页概况",
+						value: "/pages/index/index"
+					},
+					{
+						text: '系统管理',
+						children: [
+							{
+								text: '用户管理',
+								value: '/pages/system/user/user'
+							}, 
+							{
+								text: '角色管理',
+								value: '/pages/system/role/role'
+							},
+							{
+								text: '菜单管理',
+								value: '/pages/table'
+							},
+							{
+								text: '字典管理',
+								value: '/pages/table'
+							},
+							{
+								text: '参数管理',
+								value: '/pages/table'
+							},
+							{
+								text: '任务管理',
+								value: '/pages/table'
+							},
+							{
+								text: '系统日志',
+								value: '/pages/system/logs/logs'
+							},
+						]
+					},
+				]
 			}
 		},
-		mounted() {
+		mounted(options) {
 			//初始化网址
 			this.website = location.origin+location.pathname+"#/pages/common/home/home"
+			
 			// #ifdef H5
 			if (navigator.userAgent.indexOf('Mobile') > -1) {
 				this.isMobile = true
@@ -88,15 +109,27 @@
 			//显示菜单
 			showMenus(){
 				this.$refs.menus.open()
-			}
+			},
 		}
 	}
 </script>
 
 <style scoped lang="scss">
+	.sidebar {
+		position: fixed;
+		width: 240px;
+		height: calc(100vh - 44px);
+		box-sizing: border-box;
+	}
+	/* #ifdef H5 */
+	.sidebar ::-webkit-scrollbar {
+		display: none;
+	}
+	/* #endif */
 	.menus{
 		width: 240px;
 		height: calc(100vh - 44px);
-		box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.08);
+		// box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.08);
+		background-color: #fff;
 	}
 </style>

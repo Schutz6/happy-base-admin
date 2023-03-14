@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-iframe-box" :scroll-y="true">
+		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				表格{{user}}
 			</uni-card>

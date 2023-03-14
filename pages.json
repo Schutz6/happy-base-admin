@@ -56,6 +56,56 @@
 				"navigationStyle": "custom"
 			}
 		}
+        ,{
+            "path" : "pages/system/logs/logs",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "系统日志",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/system/user/user",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "用户管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/system/role/role",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "角色管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/system/role/add",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "角色新增",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/system/role/edit",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "角色编辑",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

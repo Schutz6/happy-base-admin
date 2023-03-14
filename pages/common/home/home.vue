@@ -2,7 +2,7 @@
 	<view class="container overflow-hidden width-max height-max">
 		<page-header></page-header>
 		<view class="d-flex">
-			<page-menu></page-menu>
+			<page-menu :active-url="path"></page-menu>
 			<view class="page">
 				<iframe v-if="toPageUrl" :src="toPageUrl" frameborder="0" style="width: 100%;height: 100%;"></iframe>
 			</view>
