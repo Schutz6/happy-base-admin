@@ -18,6 +18,7 @@
 						<uni-th align="center">唯一ID</uni-th>
 						<uni-th align="center">角色名称</uni-th>
 						<uni-th align="center">备注</uni-th>
+						<uni-th align="center">排序(降序)</uni-th>
 						<uni-th align="center">时间</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
@@ -25,6 +26,7 @@
 						<uni-td align="center">{{ item.name }}</uni-td>
 						<uni-td align="center">{{ item.describe }}</uni-td>
 						<uni-td align="center">{{item.remarks}}</uni-td>
+						<uni-td align="center">{{item.sort}}</uni-td>
 						<uni-td align="center"><uni-dateformat :date="item.add_time"></uni-dateformat></uni-td>
 						<uni-td align="center">
 							<view class="d-flex-center">
@@ -63,7 +65,7 @@
 					pageSize: 15,
 					searchKey: ""
 				},
-				dialogData:{}
+				selectId: null,//选中ID
 			}
 		},
 		onReady() {
@@ -95,12 +97,12 @@
 			},
 			//显示删除提示
 			showDeleteTips(id){
-				this.dialogData.id = id
+				this.selectId = id
 				this.$refs.deleteDialog.open()
 			},
 			//删除数据
 			deleteItem(){
-				this.$api.post("/role/delete/", {"id": this.dialogData.id}).then(res => {
+				this.$api.post("/role/delete/", {"id": this.selectId}).then(res => {
 					uni.showToast({
 						title: "删除成功",
 						icon: 'success'

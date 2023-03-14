@@ -13,9 +13,6 @@
 						<uni-forms-item label="备注" name="remarks" required>
 							<uni-easyinput type="textarea" trim="both" v-model="dataForm.remarks" />
 						</uni-forms-item>
-						<uni-forms-item label="排序(降序)" name="sort" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.sort" />
-						</uni-forms-item>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;">
 						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">提交</button>
@@ -33,12 +30,7 @@
 			return {
 				eventChannel: null,
 				loading: false,
-				dataForm: {
-					name: '',
-					describe: '',
-					remarks: '',
-					sort: 0
-				},
+				dataForm: {},
 				rules: {
 					name: {
 						rules: [{
@@ -57,18 +49,16 @@
 							required: true,
 							errorMessage: "请输入"
 						}]
-					},
-					sort: {
-						rules: [{
-							required: true,
-							errorMessage: "请输入"
-						}]
 					}
 				},
 			}
 		},
 		onLoad() {
 			this.eventChannel = this.getOpenerEventChannel()
+			//初始化数据
+			this.eventChannel.on('initData', (res)=> {
+			    this.dataForm = res.data
+			})
 		},
 		methods: {
 			//返回
@@ -83,7 +73,7 @@
 						uni.showLoading({
 							title: '正在提交'
 						})
-						this.$api.post("/role/add/", this.dataForm).then(res => {
+						this.$api.post("/role/update/", this.dataForm).then(res => {
 							this.loading = false
 							uni.hideLoading()
 							if(res.code == 20000){

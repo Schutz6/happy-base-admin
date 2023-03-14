@@ -4,17 +4,27 @@
 			<uni-card>
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
-						<uni-forms-item label="唯一ID" name="name" required>
+						<uni-forms-item label="账号" name="username" required>
+							<uni-easyinput type="text" trim="both" v-model="dataForm.username" />
+						</uni-forms-item>
+						<uni-forms-item label="昵称" name="name" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 						</uni-forms-item>
-						<uni-forms-item label="角色名称" name="describe" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.describe" />
+						<uni-forms-item label="密码" name="password">
+							<uni-easyinput type="password" trim="both" v-model="dataForm.password" />
 						</uni-forms-item>
-						<uni-forms-item label="备注" name="remarks" required>
-							<uni-easyinput type="textarea" trim="both" v-model="dataForm.remarks" />
+						<uni-forms-item label="邮箱" name="email" required>
+							<uni-easyinput type="text" trim="both" v-model="dataForm.email" />
 						</uni-forms-item>
-						<uni-forms-item label="排序(降序)" name="sort" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.sort" />
+						<uni-forms-item label="角色" name="roles" required>
+							<view class="d-flex" style="height: 100%;">
+								<uni-data-checkbox multiple v-model="dataForm.roles" :localdata="roles"></uni-data-checkbox>
+							</view>
+						</uni-forms-item>
+						<uni-forms-item label="状态" name="status" required>
+							<view class="d-flex" style="height: 100%;">
+								<uni-data-checkbox v-model="dataForm.status" :localdata="[{'value': 1, 'text': '正常'	}, {'value': 0, 'text': '禁用'	}]"></uni-data-checkbox>
+							</view>
 						</uni-forms-item>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;">
@@ -32,36 +42,51 @@
 		data() {
 			return {
 				eventChannel: null,
+				roles:[], //角色列表
 				loading: false,
 				dataForm: {
+					username: '',
 					name: '',
-					describe: '',
-					remarks: '',
-					sort: 0
+					password: '',
+					email: '',
+					roles: [],
+					status: 1
 				},
 				rules: {
+					username: {
+						rules: [{
+							required: true,
+							errorMessage: "请输入"
+						}]
+					},
 					name: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
 						}]
 					},
-					describe: {
+					password: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
 						}]
 					},
-					remarks: {
+					email: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
 						}]
 					},
-					sort: {
+					roles: {
 						rules: [{
 							required: true,
-							errorMessage: "请输入"
+							errorMessage: "请选择"
+						}]
+					},
+					status: {
+						rules: [{
+							required: true,
+							errorMessage: "请选择"
 						}]
 					}
 				},
@@ -69,6 +94,10 @@
 		},
 		onLoad() {
 			this.eventChannel = this.getOpenerEventChannel()
+			//初始化数据
+			this.eventChannel.on('initData', (res)=> {
+			    this.roles = res.roles
+			})
 		},
 		methods: {
 			//返回
@@ -104,6 +133,9 @@
 						})
 					}
 				})
+			},
+			change(e){
+				console.log('e:',e);
 			}
 		}
 	}

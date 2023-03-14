@@ -76,6 +76,26 @@
             }
             
         }
+		,{
+		    "path" : "pages/system/user/add",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "用户新增",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/user/edit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "用户编辑",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
         ,{
             "path" : "pages/system/role/role",
             "style" :                                                                                    

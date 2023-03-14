@@ -13,6 +13,9 @@
 						<uni-forms-item label="备注" name="remarks" required>
 							<uni-easyinput type="textarea" trim="both" v-model="dataForm.remarks" />
 						</uni-forms-item>
+						<uni-forms-item label="排序(降序)" name="sort" required>
+							<uni-easyinput type="text" trim="both" v-model="dataForm.sort" />
+						</uni-forms-item>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;">
 						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">提交</button>
@@ -45,6 +48,12 @@
 						}]
 					},
 					remarks: {
+						rules: [{
+							required: true,
+							errorMessage: "请输入"
+						}]
+					},
+					sort: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
