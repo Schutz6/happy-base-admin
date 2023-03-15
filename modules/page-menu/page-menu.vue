@@ -46,14 +46,18 @@
 							},
 							{
 								text: '字典管理',
-								value: '/pages/table'
+								value: '/pages/system/dict/dict'
 							},
 							{
 								text: '参数管理',
-								value: '/pages/table'
+								value: '/pages/system/param/param'
 							},
 							{
 								text: '任务管理',
+								value: '/pages/table'
+							},
+							{
+								text: '文件管理',
 								value: '/pages/table'
 							},
 							{

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Api from '@/api/index'
 
-import { setUser, setSetting } from '@/utils/auth'
+import { setUser, setParams } from '@/utils/auth'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -10,14 +10,14 @@ export default new Vuex.Store({
         // 存放状态
         isLogin: false,//是否登录
         user: null,//用户信息
-		setting: null,//系统设置
+		params: null,//参数信息
 		datas: {},//静态数据
     },
     getters: {
         // state的计算属性
         isLogin:state => state.isLogin,
         user:state => state.user,
-		setting:state => state.setting,
+		params:state => state.params,
 		datas:state => state.datas
     },
     mutations: {
@@ -35,22 +35,22 @@ export default new Vuex.Store({
 				setUser(user)
 			}
         },
-		//设置app设置
-		setSetting(state, setting){
-			if(setting){
-				state.setting = setting
-				//保存网站设置信息
-				setSetting(setting)
+		//设置参数信息
+		setParams(state, params){
+			if(params){
+				state.params = params
+				//保存参数信息
+				setParams(params)
 			}
 		}
     },
     actions: {
         // 提交mutation，异步操作
-		//获取网站设置信息
-		getAppSetting({ commit }){
-			Api.get("/setting/getInfo/").then(res => {
+		//获取参数信息
+		getParams({ commit }){
+			Api.get("/param/getList/").then(res => {
 				if(res.code == 20000){
-					commit('setSetting', res.data)
+					commit('setParams', res.data)
 				}
 			})
 		},

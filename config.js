@@ -1,5 +1,5 @@
 export default {
-	appName: '基础后台',
+	appName: '管理系统',
 	channel: 'web_admin',//应用渠道
 	// #ifdef H5
 	baseUrl: '/api', //基础接口地址

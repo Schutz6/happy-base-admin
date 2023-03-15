@@ -1,5 +1,5 @@
 <script>
-	import { getUser, getSetting } from '@/utils/auth'
+	import { getUser, getParams } from '@/utils/auth'
 	import datas from '@/utils/datas'
 	export default {
 		onLaunch: function() {
@@ -9,10 +9,10 @@
 			//初始化用户信息
 			this.$store.commit('setUser', getUser())
 			//初始化网站设置信息
-			this.$store.commit('setSetting', getSetting())
+			this.$store.commit('setParams', getParams())
 			// #ifdef H5
-			//获取应用设置
-			this.$store.dispatch('getAppSetting')
+			//获取参数设置
+			this.$store.dispatch('getParams')
 			//获取用户信息，防止用户强制刷新
 			this.$store.dispatch('getUserInfo').then(res => {
 				if (res.code != 20000) {

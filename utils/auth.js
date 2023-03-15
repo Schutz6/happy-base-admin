@@ -2,7 +2,7 @@ import config from '@/config.js'
 
 const TokenKey = 'token'
 const UserKey = 'user'
-const SettingKey = 'setting'
+const ParamsKey = 'params'
 const TitleKey = 'title'
 
 //登录令牌
@@ -31,23 +31,23 @@ export function removeUser() {
 	return uni.removeStorageSync(UserKey)
 }
 
-//网站设置
-export function getSetting() {
-	return uni.getStorageSync(SettingKey)
+//参数信息
+export function getParams() {
+	return uni.getStorageSync(ParamsKey)
 }
 
-export function setSetting(setting) {
-	return uni.setStorageSync(SettingKey, setting)
+export function setParams(params) {
+	return uni.setStorageSync(ParamsKey, params)
 }
 
-export function removeSetting() {
-	return uni.removeStorageSync(SettingKey)
+export function removeParams() {
+	return uni.removeStorageSync(ParamsKey)
 }
 //获取网站名称
 export function getTitle() {
-	let setting = getSetting()
-	if(setting){
-		return setting.websiteName + config.appName
+	let params = getParams()
+	if(params){
+		return params.siteName + config.appName
 	}else{
 		return config.appName
 	}

@@ -126,6 +126,46 @@
             }
             
         }
+        ,{
+            "path" : "pages/system/dict/dict",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "字典管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/system/param/param",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "参数管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+		,{
+		    "path" : "pages/system/param/add",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "参数新增",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/param/edit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "参数编辑",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
