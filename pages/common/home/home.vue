@@ -4,9 +4,19 @@
 		<view class="d-flex">
 			<page-menu :active-url="path"></page-menu>
 			<view class="page">
-				<iframe v-if="toPageUrl" :src="toPageUrl" frameborder="0" style="width: 100%;height: 100%;"></iframe>
+				<!-- #ifdef H5 -->
+				<iframe ref="pageFrame" v-show="!loading" :src="toPageUrl" frameborder="0" style="width: 100%;height: 100%;"></iframe>
+				<!-- #endif -->
+				<view v-if="loading" class="d-flex-center" style="padding: 20px;">
+					<uni-load-more status="loading" :showText="false" />
+				</view>
 			</view>
 		</view>
+		
+		<!-- 全局提示框 -->
+		<uni-popup ref="tipsDialog" type="dialog">
+			<uni-popup-dialog type="info" cancelText="取消" confirmText="确定" title="提示" :content="tips" @confirm="onTipsConfirm"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -15,9 +25,13 @@
 	export default {
 		data() {
 			return {
+				loading: true,
 				website: "",//网址
 				path: "/pages/index/index",//地址
 				toPageUrl: null,//跳转页面
+				pageFrame: null,//容器页面
+				pageFrameMessage: {},//容器页面消息
+				tips: ""
 			}
 		},
 		computed: {
@@ -29,21 +43,46 @@
 			if(options.path){
 				this.path = options.path
 			}
-		},
-		onShow() {
-			//监听方法
+			//监听菜单点击页面
 			uni.$on('loadPageUrl', this.loadPageUrl)
 		},
-		onHide() {
-			//移除监听
-			uni.$off('loadPageUrl', this.loadPageUrl)
-		},
 		onReady() {
+			// #ifdef H5
+			//初始化容器页面
+			this.pageFrame = this.$refs.pageFrame
+			//监听页面是否加载完成
+			this.pageFrame.addEventListener('load', this.onPageLoadEnd, true)
+			this.$nextTick(() => {
+				//监听消息
+				window.addEventListener('message', this.handleMessage)
+			})
+			// #endif
+			
 			//加载首页
 			this.loadPageUrl({"url": this.path})
+		},
+		destroyed () {
+			//移除消息监听
+			// #ifdef H5
+			window.removeEventListener('message', this.handleMessage);
+			// #endif
 			
 		},
 		methods: {
+			//处理消息
+			handleMessage(event){
+				if(event.data){
+					this.pageFrameMessage = event.data
+					let obj = event.data
+					switch (obj.cmd) {
+						case 'tips':
+							//弹出提示框
+							this.tips = obj.data.tips
+							this.$refs.tipsDialog.open()
+						break;
+					}
+				}
+			},
 			//加载页面
 			loadPageUrl(data){
 				let url = data.url
@@ -53,8 +92,19 @@
 					//打开新窗口
 					window.open(url)
 				}else{
-					this.toPageUrl = this.website+url
+					if(this.toPageUrl != this.website+url){
+						this.loading = true
+						this.toPageUrl = this.website+url
+					}
 				}
+			},
+			//页面加载完成
+			onPageLoadEnd(){
+				this.loading = false
+			},
+			//提示框点击确认
+			onTipsConfirm(){
+				this.pageFrame.contentWindow.postMessage(this.pageFrameMessage , '*')
 			}
 		}
 	}

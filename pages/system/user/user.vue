@@ -6,6 +6,9 @@
 					<view class="filter-item d-flex" style="width: 210px;">
 						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/昵称"></uni-easyinput>
 					</view>
+					<view class="filter-item d-flex" style="width: 120px;">
+						<uni-data-select v-model="listQuery.status" :localdata="datas.user_status_json" placeholder="请选择状态"></uni-data-select>
+					</view>
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
 					</view>
@@ -20,7 +23,8 @@
 						<uni-th align="center">邮箱</uni-th>
 						<uni-th align="center">角色</uni-th>
 						<uni-th align="center">状态</uni-th>
-						<uni-th align="center">最后登录时间（IP）</uni-th>
+						<uni-th align="center">最后登录时间</uni-th>
+						<uni-th align="center">最后登录IP</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -30,9 +34,13 @@
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">
 							<view v-if="item.status==1">正常</view>
-							<view v-if="item.status==2">禁用</view>
+							<view v-else-if="item.status==2" style="color: red;">禁用</view>
 						</uni-td>
-						<uni-td align="center"><uni-dateformat :date="item.last_time"></uni-dateformat>（{{item.last_ip}})</uni-td>
+						<uni-td align="center">
+							<view v-if="item.last_time"><uni-dateformat :date="item.last_time"></uni-dateformat></view>
+							<view v-else>--</view>
+						</uni-td>
+						<uni-td align="center">{{item.last_ip || "--"}}</uni-td>
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view">
@@ -51,14 +59,11 @@
 				</view>
 			</uni-card>
 		</scroll-view>
-		
-		<uni-popup ref="deleteDialog" type="dialog">
-			<uni-popup-dialog type="info" cancelText="取消" confirmText="确定" title="提示" content="是否删除该数据？" @confirm="deleteItem"></uni-popup-dialog>
-		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -68,28 +73,54 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 15,
+					status: null,//状态
 					searchKey: ""
 				},
 				selectId: null,//选中ID
 				roles:[], //角色列表
 			}
 		},
+		computed: {
+			...mapGetters(['datas'])
+		},
 		onReady() {
+			// 监听消息
+			// #ifdef H5
+			window.addEventListener("message", this.handleMessage)
+			// #endif
+			//初始化
 			this.init()
 		},
 		methods: {
+			//处理消息
+			handleMessage(event){
+				if(event.data){
+					let obj = event.data
+					switch (obj.cmd) {
+						case 'tips':
+							//弹出提示框，点击确认回调
+							if(obj.func === "deleteItem"){
+								//执行删除方法
+								this.deleteItem()
+							}
+						break;
+					}
+				}
+			},
 			//初始化
 			init() {
 				//获取角色列表
-				this.getRoleList()
-				//获取用户列表
-				this.getList()
+				this.getRoleList(()=>{
+					//获取用户列表
+					this.getList()
+				})
 			},
 			//角色列表
-			getRoleList(){
+			getRoleList(callback){
 				this.$api.get("/role/getList/").then(res => {
 					if(res.code == 20000){
 						this.roles = res.data
+						callback()
 					}
 				})
 			},
@@ -99,8 +130,8 @@
 				  let roleNames = []
 				  for(let j=0;j<roles.length;j++){
 					for(let i=0;i<this.roles.length;i++){
-					  if(roles[j] == this.roles[i].name){
-						roleNames.push(this.roles[i].describe)
+					  if(roles[j] == this.roles[i].value){
+						roleNames.push(this.roles[i].text)
 						break
 					  }
 					}
@@ -136,7 +167,7 @@
 			//显示删除提示
 			showDeleteTips(id){
 				this.selectId = id
-				this.$refs.deleteDialog.open()
+				window.parent.postMessage({"cmd": "tips", "func": "deleteItem", "data": {"tips": "是否删除该数据？"}}, '*')
 			},
 			//删除数据
 			deleteItem(){

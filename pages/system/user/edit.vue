@@ -1,17 +1,30 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
-			<uni-card>
+			<uni-card title="编辑用户">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
-						<uni-forms-item label="唯一ID" name="name" required>
+						<uni-forms-item label="账号" name="username" required>
+							<uni-easyinput type="text" trim="both" v-model="dataForm.username" disabled />
+						</uni-forms-item>
+						<uni-forms-item label="昵称" name="name" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 						</uni-forms-item>
-						<uni-forms-item label="角色名称" name="describe" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.describe" />
+						<uni-forms-item label="修改密码" name="password">
+							<uni-easyinput type="password" trim="both" v-model="dataForm.password" placeholder="不填不修改" />
 						</uni-forms-item>
-						<uni-forms-item label="备注" name="remarks" required>
-							<uni-easyinput type="textarea" trim="both" v-model="dataForm.remarks" />
+						<uni-forms-item label="邮箱" name="email" required>
+							<uni-easyinput type="text" trim="both" v-model="dataForm.email" disabled />
+						</uni-forms-item>
+						<uni-forms-item label="角色" name="roles" required>
+							<view class="d-flex" style="height: 100%;">
+								<uni-data-checkbox multiple v-model="dataForm.roles" :localdata="roles"></uni-data-checkbox>
+							</view>
+						</uni-forms-item>
+						<uni-forms-item label="状态" name="status" required>
+							<view class="d-flex" style="height: 100%;">
+								<uni-data-checkbox v-model="dataForm.status" :localdata="datas.user_status_json"></uni-data-checkbox>
+							</view>
 						</uni-forms-item>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;">
@@ -25,39 +38,57 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
 				eventChannel: null,
+				roles:[], //角色列表
 				loading: false,
 				dataForm: {},
 				rules: {
+					username: {
+						rules: [{
+							required: true,
+							errorMessage: "请输入"
+						}]
+					},
 					name: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
 						}]
 					},
-					describe: {
+					email: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
 						}]
 					},
-					remarks: {
+					roles: {
 						rules: [{
 							required: true,
-							errorMessage: "请输入"
+							errorMessage: "请选择"
+						}]
+					},
+					status: {
+						rules: [{
+							required: true,
+							errorMessage: "请选择"
 						}]
 					}
 				},
 			}
 		},
+		computed: {
+			...mapGetters(['datas'])
+		},
 		onLoad() {
 			this.eventChannel = this.getOpenerEventChannel()
 			//初始化数据
 			this.eventChannel.on('initData', (res)=> {
-			    this.dataForm = res.data
+			    this.roles = res.roles
+				this.dataForm = res.data
 			})
 		},
 		methods: {
@@ -73,7 +104,7 @@
 						uni.showLoading({
 							title: '正在提交'
 						})
-						this.$api.post("/role/update/", this.dataForm).then(res => {
+						this.$api.post("/user/update/", this.dataForm).then(res => {
 							this.loading = false
 							uni.hideLoading()
 							if(res.code == 20000){
@@ -94,6 +125,9 @@
 						})
 					}
 				})
+			},
+			change(e){
+				console.log('e:',e);
 			}
 		}
 	}

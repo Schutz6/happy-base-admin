@@ -46,10 +46,7 @@
 				</view>
 			</uni-card>
 		</scroll-view>
-		
-		<uni-popup ref="deleteDialog" type="dialog">
-			<uni-popup-dialog type="info" cancelText="取消" confirmText="确定" title="提示" content="是否删除该数据？" @confirm="deleteItem"></uni-popup-dialog>
-		</uni-popup>
+
 	</view>
 </template>
 
@@ -69,9 +66,29 @@
 			}
 		},
 		onReady() {
+			// 监听消息
+			// #ifdef H5
+			window.addEventListener("message", this.handleMessage)
+			// #endif
+			//初始化
 			this.init()
 		},
 		methods: {
+			//处理消息
+			handleMessage(event){
+				if(event.data){
+					let obj = event.data
+					switch (obj.cmd) {
+						case 'tips':
+							//弹出提示框，点击确认回调
+							if(obj.func === "deleteItem"){
+								//执行删除方法
+								this.deleteItem()
+							}
+						break;
+					}
+				}
+			},
 			//初始化
 			init() {
 				this.getList()
@@ -98,7 +115,7 @@
 			//显示删除提示
 			showDeleteTips(id){
 				this.selectId = id
-				this.$refs.deleteDialog.open()
+				window.parent.postMessage({"cmd": "tips", "func": "deleteItem", "data": {"tips": "是否删除该数据？"}}, '*')
 			},
 			//删除数据
 			deleteItem(){

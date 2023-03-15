@@ -27,7 +27,7 @@
 						<uni-td align="center">{{ item.username || "--" }}</uni-td>
 						<uni-td align="center">{{ item.method }}</uni-td>
 						<uni-td align="center">{{item.uri}}</uni-td>
-						<uni-td align="center">{{item.params}}</uni-td>
+						<uni-td align="center">{{item.params || "--"}}</uni-td>
 						<uni-td align="center">{{item.ip}}</uni-td>
 						<uni-td align="center">{{item.times}}ms</uni-td>
 						<uni-td align="center"><uni-dateformat :date="item.add_time"></uni-dateformat></uni-td>
@@ -41,9 +41,6 @@
 			</uni-card>
 		</scroll-view>
 		
-		<uni-popup ref="clearDialog" type="dialog">
-			<uni-popup-dialog type="info" cancelText="取消" confirmText="确定" title="提示" content="是否清空系统日志？" @confirm="clear"></uni-popup-dialog>
-		</uni-popup>
 	</view>
 </template>
 
@@ -62,9 +59,29 @@
 			}
 		},
 		onReady() {
+			// 监听消息
+			// #ifdef H5
+			window.addEventListener("message", this.handleMessage)
+			// #endif
+			//初始化
 			this.init()
 		},
 		methods: {
+			//处理消息
+			handleMessage(event){
+				if(event.data){
+					let obj = event.data
+					switch (obj.cmd) {
+						case 'tips':
+							//弹出提示框，点击确认回调
+							if(obj.func === "clear"){
+								//执行清除方法
+								this.clear()
+							}
+						break;
+					}
+				}
+			},
 			//初始化
 			init() {
 				this.getList()
@@ -90,11 +107,15 @@
 			},
 			//弹出清空提示框
 			showClear(){
-				this.$refs.clearDialog.open()
+				window.parent.postMessage({"cmd": "tips", "func": "clear", "data": {"tips": "是否清空系统日志？"}}, '*')
 			},
 			//清空日志
 			clear(){
+				uni.showLoading({
+					title: '正在删除'
+				})
 				this.$api.get("/log/clear/").then(res => {
+					uni.hideLoading()
 					if(res.code == 20000){
 						uni.showToast({
 							title: "删除成功",

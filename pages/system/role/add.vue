@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
-			<uni-card>
+			<uni-card title="新增角色">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
 						<uni-forms-item label="唯一ID" name="name" required>

@@ -1,8 +1,11 @@
 <script>
 	import { getUser, getSetting } from '@/utils/auth'
+	import datas from '@/utils/datas'
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			//初始化静态数据
+			this.$store.commit('setDatas', datas)
 			//初始化用户信息
 			this.$store.commit('setUser', getUser())
 			//初始化网站设置信息
@@ -49,9 +52,6 @@
 	}
 	.uni-dialog-button{
 		cursor: pointer;
-	}
-	.uni-select__input-text{
-		width: 220px !important;
 	}
 
 	/*解决页面不能复制问题 */

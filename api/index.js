@@ -1,4 +1,4 @@
-import Request from '../utils/requset.js';
+import Request from '@/utils/requset.js'
 let request = new Request().http
 
 class Api{

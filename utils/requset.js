@@ -8,7 +8,7 @@ export default class Request {
 			method = param.method,
 			header = {
 				'content-type': 'application/json',
-				'channel': config.channel,//渠道
+				'Channel': config.channel,//渠道
 				'Authorization':"JWT " + getToken(),
 				
 				...param.header,

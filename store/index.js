@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Api from '@/api/index'
+
 import { setUser, setSetting } from '@/utils/auth'
 Vue.use(Vuex);
 
@@ -10,15 +11,21 @@ export default new Vuex.Store({
         isLogin: false,//是否登录
         user: null,//用户信息
 		setting: null,//系统设置
+		datas: {},//静态数据
     },
     getters: {
         // state的计算属性
         isLogin:state => state.isLogin,
         user:state => state.user,
-		setting:state => state.setting
+		setting:state => state.setting,
+		datas:state => state.datas
     },
     mutations: {
         // 更改state中状态的逻辑，同步操作
+		//设置静态数据
+		setDatas(state, datas){
+			state.datas = datas
+		},
 		//设置用户信息
         setUser(state, user){
 			if(user){

@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
-			<uni-card>
+			<uni-card title="新增用户">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
 						<uni-forms-item label="账号" name="username" required>
@@ -10,11 +10,11 @@
 						<uni-forms-item label="昵称" name="name" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 						</uni-forms-item>
-						<uni-forms-item label="密码" name="password">
+						<uni-forms-item label="密码" name="password" required>
 							<uni-easyinput type="password" trim="both" v-model="dataForm.password" />
 						</uni-forms-item>
 						<uni-forms-item label="邮箱" name="email" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.email" />
+							<uni-easyinput type="email" trim="both" v-model="dataForm.email" />
 						</uni-forms-item>
 						<uni-forms-item label="角色" name="roles" required>
 							<view class="d-flex" style="height: 100%;">
@@ -23,7 +23,7 @@
 						</uni-forms-item>
 						<uni-forms-item label="状态" name="status" required>
 							<view class="d-flex" style="height: 100%;">
-								<uni-data-checkbox v-model="dataForm.status" :localdata="[{'value': 1, 'text': '正常'	}, {'value': 0, 'text': '禁用'	}]"></uni-data-checkbox>
+								<uni-data-checkbox v-model="dataForm.status" :localdata="datas.user_status_json"></uni-data-checkbox>
 							</view>
 						</uni-forms-item>
 					</uni-forms>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -92,6 +93,9 @@
 				},
 			}
 		},
+		computed: {
+			...mapGetters(['datas'])
+		},
 		onLoad() {
 			this.eventChannel = this.getOpenerEventChannel()
 			//初始化数据
@@ -112,7 +116,7 @@
 						uni.showLoading({
 							title: '正在提交'
 						})
-						this.$api.post("/role/add/", this.dataForm).then(res => {
+						this.$api.post("/user/add/", this.dataForm).then(res => {
 							this.loading = false
 							uni.hideLoading()
 							if(res.code == 20000){
