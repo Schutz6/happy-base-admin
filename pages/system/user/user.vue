@@ -37,7 +37,7 @@
 							<view v-else-if="item.status==2" style="color: red;">禁用</view>
 						</uni-td>
 						<uni-td align="center">
-							<view v-if="item.last_time"><uni-dateformat :date="item.last_time"></uni-dateformat></view>
+							<view v-if="item.last_time"><uni-dateformat :date="item.last_time | formatDate"></uni-dateformat></view>
 							<view v-else>--</view>
 						</uni-td>
 						<uni-td align="center">{{item.last_ip || "--"}}</uni-td>
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+	import { formatDateUtc } from '@/utils/util'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -82,6 +83,12 @@
 		},
 		computed: {
 			...mapGetters(['datas'])
+		},
+		filters: {
+		    //格式化日期
+		    formatDate(time){
+		    	return formatDateUtc(time)
+		    }
 		},
 		onReady() {
 			// 监听消息

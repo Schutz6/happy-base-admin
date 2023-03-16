@@ -7,6 +7,7 @@
 </template>
 
 <script>
+	import { formatDateUtc } from '@/utils/util'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -16,6 +17,12 @@
 		},
 		computed: {
 			...mapGetters(['user'])
+		},
+		filters: {
+		    //格式化日期
+		    formatDate(time){
+				return formatDateUtc(time)
+		    }
 		},
 		onLoad() {
 			

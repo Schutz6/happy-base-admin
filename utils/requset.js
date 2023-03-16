@@ -33,13 +33,24 @@ export default class Request {
 				success: (res) => {
 					//判断令牌是否失效
 					if(res.data.code == 10010){
+						// #ifdef H5
 						uni.showToast({
-							title: "令牌已失效",
+							title: "登录令牌已失效",
 							icon: 'error'
 						})
-						uni.reLaunch({
-							url: '/pages/common/login/login'
-						})
+						setTimeout(()=>{
+							//刷新网站
+							if (window.parent == window) {
+								//在主界面
+								uni.reLaunch({
+									url: '/pages/common/login/login'
+								})
+							}else{
+								//在iframe页面
+								parent.location.reload()
+							}
+						}, 600)
+						// #endif
 					}else{
 						// 将结果抛出
 						resolve(res.data)

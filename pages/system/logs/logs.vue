@@ -30,7 +30,7 @@
 						<uni-td align="center">{{item.params || "--"}}</uni-td>
 						<uni-td align="center">{{item.ip}}</uni-td>
 						<uni-td align="center">{{item.times}}ms</uni-td>
-						<uni-td align="center"><uni-dateformat :date="item.add_time"></uni-dateformat></uni-td>
+						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
 				
 					</uni-tr>
 				</uni-table>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+	import { formatDateUtc } from '@/utils/util'
 	export default {
 		data() {
 			return {
@@ -57,6 +58,12 @@
 					searchKey: ""
 				},
 			}
+		},
+		filters: {
+		    //格式化日期
+		    formatDate(time){
+		    	return formatDateUtc(time)
+		    }
 		},
 		onReady() {
 			// 监听消息

@@ -127,16 +127,6 @@
             
         }
         ,{
-            "path" : "pages/system/dict/dict",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "字典管理",
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-            
-        }
-        ,{
             "path" : "pages/system/param/param",
             "style" :                                                                                    
             {
@@ -161,6 +151,56 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "参数编辑",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/dict/dict",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "字典管理",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/system/dict/addType",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "字典新增",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+		,{
+		    "path" : "pages/system/dict/editType",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "字典编辑",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/dict/addValue",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "字典子集新增",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/dict/editValue",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "字典子集编辑",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }

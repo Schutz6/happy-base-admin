@@ -19,7 +19,6 @@
 						<uni-th align="center">角色名称</uni-th>
 						<uni-th align="center">备注</uni-th>
 						<uni-th align="center">排序(降序)</uni-th>
-						<uni-th align="center">时间</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -27,7 +26,6 @@
 						<uni-td align="center">{{ item.describe }}</uni-td>
 						<uni-td align="center">{{item.remarks}}</uni-td>
 						<uni-td align="center">{{item.sort}}</uni-td>
-						<uni-td align="center"><uni-dateformat :date="item.add_time"></uni-dateformat></uni-td>
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view">
