@@ -206,6 +206,36 @@
 		    }
 		    
 		}
+        ,{
+            "path" : "pages/system/task/task",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "任务管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+		,{
+		    "path" : "pages/system/task/add",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "任务新增",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/task/edit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "任务编辑",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

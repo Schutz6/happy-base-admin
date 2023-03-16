@@ -30,6 +30,7 @@ export default class Request {
 				data: data,
 				method: method,
 				header: header,
+				sslVerify: false,
 				success: (res) => {
 					//判断令牌是否失效
 					if(res.data.code == 10010){

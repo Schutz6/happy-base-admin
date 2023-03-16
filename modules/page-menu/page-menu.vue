@@ -54,7 +54,7 @@
 							},
 							{
 								text: '任务管理',
-								value: '/pages/table'
+								value: '/pages/system/task/task'
 							},
 							{
 								text: '文件管理',
