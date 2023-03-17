@@ -27,7 +27,7 @@
 			return {
 				loading: true,
 				website: "",//网址
-				path: "/pages/index/index",//地址
+				path: "",//地址
 				toPageUrl: null,//跳转页面
 				pageFrame: null,//容器页面
 				pageFrameMessage: {},//容器页面消息
@@ -35,7 +35,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['user', 'setting'])
+			...mapGetters(['user', 'menus', 'setting'])
 		},
 		onLoad(options) {
 			//初始化网址
@@ -57,9 +57,35 @@
 				window.addEventListener('message', this.handleMessage)
 			})
 			// #endif
-			
-			//加载首页
-			this.loadPageUrl({"url": this.path})
+			if(this.path){
+				this.loadPageUrl({"url": this.path})
+			}else{
+				//默认加载第一个页面
+				for(let i=0;i<this.menus.length;i++){
+					let menu = this.menus[i]
+					if(menu.value == "#"){
+						let flag = false
+						//查看是否有子菜单
+						for(let j=0;j<menu.children.length;j++){
+							let menu = menu.children[j]
+							if(menu.value != "#"){
+								flag = true
+								//加载页面
+								this.loadPageUrl({"url": menu.value})
+								break
+							}
+						}
+						//判断是否加载了页面
+						if(flag){
+							break
+						}
+					}else{
+						//加载页面
+						this.loadPageUrl({"url": menu.value})
+						break
+					}
+				}
+			}
 		},
 		destroyed () {
 			//移除消息监听
