@@ -61,7 +61,7 @@ export function removeParams() {
 export function getTitle() {
 	let params = getParams()
 	if(params && params.siteName){
-		return params.siteName + config.appName
+		return params.siteName
 	}else{
 		return config.appName
 	}
