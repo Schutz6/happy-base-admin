@@ -12,7 +12,6 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
 	export default {
 		props: {
 			activeUrl: {
@@ -25,10 +24,50 @@
 				website: "",//网址
 				isPC: false, //是否电脑端
 				isMobile: false, //是否手机端
+				menus: [
+					{
+						text: "首页概况",
+						value: "/pages/index/index"
+					},
+					{
+						text: '系统管理',
+						children: [
+							{
+								text: '用户管理',
+								value: '/pages/system/user/user'
+							}, 
+							{
+								text: '角色管理',
+								value: '/pages/system/role/role'
+							},
+							{
+								text: '菜单管理',
+								value: '/pages/system/menus/menus'
+							},
+							{
+								text: '字典管理',
+								value: '/pages/system/dict/dict'
+							},
+							{
+								text: '参数管理',
+								value: '/pages/system/param/param'
+							},
+							{
+								text: '任务管理',
+								value: '/pages/system/task/task'
+							},
+							{
+								text: '文件管理',
+								value: '/pages/system/files/files'
+							},
+							{
+								text: '系统日志',
+								value: '/pages/system/logs/logs'
+							},
+						]
+					},
+				]
 			}
-		},
-		computed: {
-			...mapGetters(['menus'])
 		},
 		mounted(options) {
 			//初始化网址
@@ -41,10 +80,18 @@
 				this.isPC = true
 			}
 			// #endif
+			// //获取路由地址
+			// let pages = getCurrentPages()
+			// if(pages.length>0){
+			// 	let page = pages[pages.length - 1];
+			// 	this.activeRoute = page.route
+			// }
+			console.log("mounted----")
 			//监听方法
 			uni.$on('showMenus', this.showMenus)
 		},
 		destroyed() {
+			console.log("destroyed----")
 			//移除监听
 			uni.$off('showMenus', this.showMenus)
 		},

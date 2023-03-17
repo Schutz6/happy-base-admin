@@ -9,4 +9,6 @@ export default {
 	file_type_json: [{'value': 2, 'text': '图片'}, {'value': 3, 'text': '文件'}, {'value': 4, 'text': '语音'}, {'value': 5, 'text': '视频'}],
 	//文件状态
 	file_status_json: [{'value': 1, 'text': '临时'}, {'value': 2, 'text': '永存'}],
+	//菜单状态
+	menu_status_json: [{'value': 1, 'text': '启动'}, {'value': 0, 'text': '禁用'}],
 }

@@ -1,9 +1,11 @@
 <script>
-	import { getUser, getParams } from '@/utils/auth'
+	import { getUser, getParams, getMenus } from '@/utils/auth'
 	import datas from '@/utils/datas'
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			//初始菜单数据
+			this.$store.commit('setMenus', getMenus())
 			//初始化静态数据
 			this.$store.commit('setDatas', datas)
 			//初始化用户信息
@@ -21,6 +23,9 @@
 						uni.reLaunch({
 							url: '/pages/common/login/login'
 						})
+					}else{
+						//更新菜单数据
+						this.$store.dispatch('getMenus')
 					}
 				})
 			}

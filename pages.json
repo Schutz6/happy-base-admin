@@ -39,22 +39,6 @@
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
-		},
-		{
-			"path": "pages/table",
-			"style": {
-				"navigationBarTitleText": "表格",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/icons",
-			"style": {
-				"navigationBarTitleText": "图标",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-			}
 		}
         ,{
             "path" : "pages/system/logs/logs",
@@ -245,7 +229,37 @@
 				"navigationStyle": "custom"
             }
             
-        }
+        },
+		,{
+		    "path" : "pages/system/menus/menus",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "菜单管理",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/menus/add",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "菜单新增",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/system/menus/edit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "菜单编辑",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		    
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

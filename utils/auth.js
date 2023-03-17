@@ -2,6 +2,7 @@ import config from '@/config.js'
 
 const TokenKey = 'token'
 const UserKey = 'user'
+const MenusKey = 'menus'
 const ParamsKey = 'params'
 const TitleKey = 'title'
 
@@ -31,6 +32,19 @@ export function removeUser() {
 	return uni.removeStorageSync(UserKey)
 }
 
+//菜单信息
+export function getMenus() {
+	return uni.getStorageSync(MenusKey)
+}
+
+export function setMenus(menus) {
+	return uni.setStorageSync(MenusKey, menus)
+}
+
+export function removeMenus() {
+	return uni.removeStorageSync(MenusKey)
+}
+
 //参数信息
 export function getParams() {
 	return uni.getStorageSync(ParamsKey)
@@ -46,7 +60,7 @@ export function removeParams() {
 //获取网站名称
 export function getTitle() {
 	let params = getParams()
-	if(params){
+	if(params && params.siteName){
 		return params.siteName + config.appName
 	}else{
 		return config.appName

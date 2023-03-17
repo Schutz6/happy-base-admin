@@ -72,12 +72,14 @@
 								//令牌token
 								setToken(res.data.token)
 								//获取用户信息
-								this.$api.get("/user/").then(res => {
-									this.$store.commit('setUser', res.data)
-									//跳转首页
-									uni.reLaunch({
-										url: '/pages/common/home/home'
-									});
+								this.$store.dispatch('getUserInfo').then(res => {
+									//获取菜单数据
+									this.$store.dispatch('getMenus').then(res => {
+										//跳转首页
+										uni.reLaunch({
+											url: '/pages/common/home/home'
+										});
+									})
 								})
 							} else if (res.code == 10005) {
 								uni.showToast({

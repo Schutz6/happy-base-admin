@@ -156,7 +156,7 @@
 			},
 			//格式化角色
 			formatRoles(roles){
-				if(roles != undefined){
+				if(roles){
 				  let roleNames = []
 				  for(let j=0;j<roles.length;j++){
 					for(let i=0;i<this.roles.length;i++){
