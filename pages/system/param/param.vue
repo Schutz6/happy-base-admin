@@ -90,6 +90,24 @@
 					}
 				}
 			},
+			//跳转页面
+			toPage(path, item){
+				uni.navigateTo({
+					url: path,
+					events: {
+						//更新数据
+						updateData: (res)=>{
+							this.getList()
+						}
+					},
+					success: (res)=>{
+						if(item){
+							//初始化数据
+							res.eventChannel.emit('initData', { data: item })
+						}
+					}
+				})
+			},
 			//初始化
 			init() {
 				this.getList()
@@ -128,24 +146,7 @@
 					this.getList()
 				})
 			},
-			//跳转页面
-			toPage(path, item){
-				uni.navigateTo({
-					url: path,
-					events: {
-						//更新数据
-						updateData: (res)=>{
-							this.getList()
-						}
-					},
-					success: (res)=>{
-						if(item){
-							//初始化数据
-							res.eventChannel.emit('initData', { data: item })
-						}
-					}
-				})
-			}
+			
 		}
 	}
 </script>

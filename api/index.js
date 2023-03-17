@@ -25,6 +25,17 @@ class Api{
 			data: data
 		})
 	}
+	
+	/**
+	 * 上传文件
+	 * @param filePath 文件地址
+	 */
+	uploadFile(url, filePath){
+		return request({
+			url: url,
+			filePath: filePath
+		})
+	}
 
 } 
 

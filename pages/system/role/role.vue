@@ -87,6 +87,24 @@
 					}
 				}
 			},
+			//跳转页面
+			toPage(path, item){
+				uni.navigateTo({
+					url: path,
+					events: {
+						//更新数据
+						updateData: (res)=>{
+							this.getList()
+						}
+					},
+					success: (res)=>{
+						if(item){
+							//初始化数据
+							res.eventChannel.emit('initData', { data: item })
+						}
+					}
+				})
+			},
 			//初始化
 			init() {
 				this.getList()
@@ -117,32 +135,26 @@
 			},
 			//删除数据
 			deleteItem(){
-				this.$api.post("/role/delete/", {"id": this.selectId}).then(res => {
-					uni.showToast({
-						title: "删除成功",
-						icon: 'success'
-					})
-					this.getList()
+				uni.showLoading({
+					title: '正在删除'
 				})
-			},
-			//跳转页面
-			toPage(path, item){
-				uni.navigateTo({
-					url: path,
-					events: {
-						//更新数据
-						updateData: (res)=>{
-							this.getList()
-						}
-					},
-					success: (res)=>{
-						if(item){
-							//初始化数据
-							res.eventChannel.emit('initData', { data: item })
-						}
+				this.$api.post("/role/delete/", {"id": this.selectId}).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "删除成功",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
 					}
 				})
-			}
+			},
+			
 		}
 	}
 </script>

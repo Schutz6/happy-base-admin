@@ -236,10 +236,20 @@
 		    }
 		    
 		}
+        ,{
+            "path" : "pages/system/files/files",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "文件管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "基础后台",
+		"navigationBarTitleText": "管理系统",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

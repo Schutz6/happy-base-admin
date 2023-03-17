@@ -58,7 +58,7 @@
 							},
 							{
 								text: '文件管理',
-								value: '/pages/table'
+								value: '/pages/system/files/files'
 							},
 							{
 								text: '系统日志',

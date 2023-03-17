@@ -219,12 +219,23 @@
 			},
 			//删除数据
 			deleteItem(){
+				uni.showLoading({
+					title: '正在删除'
+				})
 				this.$api.post("/user/delete/", {"id": this.selectId}).then(res => {
-					uni.showToast({
-						title: "删除成功",
-						icon: 'success'
-					})
-					this.getList()
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "删除成功",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
 				})
 			},
 			//弹出批量删除提示框
@@ -252,6 +263,11 @@
 								icon: 'success'
 							})
 							this.getList()
+						}else{
+							uni.showToast({
+								title: res.message,
+								icon: 'error'
+							})
 						}
 					})
 				}

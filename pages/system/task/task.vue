@@ -28,16 +28,16 @@
 						<uni-td align="center">{{ item.func }}</uni-td>
 						<uni-td align="center">
 							<view v-if="item.type == 2">cron任务</view>
-							<view v-if="item.type == 3">间隔任务</view>
+							<view v-else-if="item.type == 3">间隔任务</view>
 						</uni-td>
 						<uni-td align="center">
 							<view v-if="item.type == 2">{{item.exec_cron}}</view>
-							<view v-if="item.type == 3">{{item.exec_interval}}</view>
+							<view v-else-if="item.type == 3">{{item.exec_interval}}</view>
 						</uni-td>
 						<uni-td align="center">
 							<view v-if="item.status == 0">待启动</view>
-							<view v-if="item.status == 1" style="color: green;">已启动</view>
-							<view v-if="item.status == 2" style="color: red;">已停止</view>
+							<view v-else-if="item.status == 1" style="color: green;">已启动</view>
+							<view v-else-if="item.status == 2" style="color: red;">已停止</view>
 						</uni-td>
 						<uni-td align="center">{{item.options || "--"}}</uni-td>
 						<uni-td align="center">
@@ -107,6 +107,24 @@
 					}
 				}
 			},
+			//跳转页面
+			toPage(path, item){
+				uni.navigateTo({
+					url: path,
+					events: {
+						//更新数据
+						updateData: (res)=>{
+							this.getList()
+						}
+					},
+					success: (res)=>{
+						if(item){
+							//初始化数据
+							res.eventChannel.emit('initData', { data: item })
+						}
+					}
+				})
+			},
 			//初始化
 			init() {
 				this.getList()
@@ -137,50 +155,65 @@
 			},
 			//删除数据
 			deleteItem(){
-				this.$api.post("/task/delete/", {"id": this.selectId}).then(res => {
-					uni.showToast({
-						title: "删除成功",
-						icon: 'success'
-					})
-					this.getList()
+				uni.showLoading({
+					title: '正在删除'
 				})
-			},
-			//跳转页面
-			toPage(path, item){
-				uni.navigateTo({
-					url: path,
-					events: {
-						//更新数据
-						updateData: (res)=>{
-							this.getList()
-						}
-					},
-					success: (res)=>{
-						if(item){
-							//初始化数据
-							res.eventChannel.emit('initData', { data: item })
-						}
+				this.$api.post("/task/delete/", {"id": this.selectId}).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "删除成功",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
 					}
 				})
 			},
 			//开启任务
 			taskStart(id){
+				uni.showLoading({
+					title: '正在启动'
+				})
 				this.$api.post("/task/start/", {"id": id}).then(res => {
-					uni.showToast({
-						title: "已启动",
-						icon: 'success'
-					})
-					this.getList()
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "已启动",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
 				})
 			},
 			//停止任务
 			taskStop(id){
+				uni.showLoading({
+					title: '正在停止'
+				})
 				this.$api.post("/task/end/", {"id": id}).then(res => {
-					uni.showToast({
-						title: "已停止",
-						icon: 'success'
-					})
-					this.getList()
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "已停止",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
 				})
 			}
 		}

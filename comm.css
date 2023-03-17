@@ -7,6 +7,9 @@
 .filter-item:first-child {
 	margin-left: 0px;
 }
+.filter-item .uni-file-picker__lists{
+	display: none;
+}
 .uni-pagination-box {
 	padding: 20px 0 10px 0;
 	display: flex;
@@ -14,7 +17,7 @@
 	justify-content: center;
 }
 .tag-view{
-	margin-right: 10px;
+	min-width: 50px;
 }
 .overflow-hidden{
 	overflow: hidden;

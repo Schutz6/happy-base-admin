@@ -13,6 +13,13 @@ export default class Request {
 				
 				...param.header,
 			},
+			filePath = param.filePath,
+			uplaodHeader = {
+				'Channel': config.channel,//渠道
+				'Authorization':"JWT " + getToken(),
+				
+				...param.header,
+			},
 			data = param.data || {}
 
 		//拼接完整请求地址
@@ -24,52 +31,92 @@ export default class Request {
 		
 		// 返回promise
 		return new Promise((resolve, reject) => {
-			// 请求
-			uni.request({
-				url: requestUrl,
-				data: data,
-				method: method,
-				header: header,
-				sslVerify: false,
-				success: (res) => {
-					//判断令牌是否失效
-					if(res.data.code == 10010){
-						// #ifdef H5
+			if(filePath){
+				//上传文件
+				uni.uploadFile({
+					url: requestUrl,
+					filePath: filePath,
+					name: 'file',
+					header: uplaodHeader,
+					success: (uploadFileRes) => {
+						let res = JSON.parse(uploadFileRes.data)
+						//判断令牌是否失效
+						if(res.code == 10010){
+							// #ifdef H5
+							uni.showToast({
+								title: "登录令牌已失效",
+								icon: 'error'
+							})
+							setTimeout(()=>{
+								//刷新网站
+								if (window.parent == window) {
+									//在主界面
+									uni.reLaunch({
+										url: '/pages/common/login/login'
+									})
+								}else{
+									//在iframe页面
+									parent.location.reload()
+								}
+							}, 600)
+							// #endif
+						}else{
+							// 将结果抛出
+							resolve(res)
+						}
+					},
+					fail: () => {
 						uni.showToast({
-							title: "登录令牌已失效",
+							title: "请求错误",
 							icon: 'error'
 						})
-						setTimeout(()=>{
-							//刷新网站
-							if (window.parent == window) {
-								//在主界面
-								uni.reLaunch({
-									url: '/pages/common/login/login'
-								})
-							}else{
-								//在iframe页面
-								parent.location.reload()
-							}
-						}, 600)
-						// #endif
-					}else{
-						// 将结果抛出
-						resolve(res.data)
+						resolve()
 					}
-				},
-				//请求失败
-				fail: (e) => {
-					uni.showToast({
-						title: "请求错误",
-						icon: 'error'
-					})
-					resolve()
-				},
-				//请求完成
-				complete() {
-					resolve()
-				}
-			})
+				})
+			}else{
+				// 请求接口
+				uni.request({
+					url: requestUrl,
+					data: data,
+					method: method,
+					header: header,
+					sslVerify: false,
+					success: (res) => {
+						//判断令牌是否失效
+						if(res.data.code == 10010){
+							// #ifdef H5
+							uni.showToast({
+								title: "登录令牌已失效",
+								icon: 'error'
+							})
+							setTimeout(()=>{
+								//刷新网站
+								if (window.parent == window) {
+									//在主界面
+									uni.reLaunch({
+										url: '/pages/common/login/login'
+									})
+								}else{
+									//在iframe页面
+									parent.location.reload()
+								}
+							}, 600)
+							// #endif
+						}else{
+							// 将结果抛出
+							resolve(res.data)
+						}
+					},
+					//请求失败
+					fail: (e) => {
+						uni.showToast({
+							title: "请求错误",
+							icon: 'error'
+						})
+						resolve()
+					}
+				})
+			}
 		})
 	}
 }

@@ -90,6 +90,24 @@
 					}
 				}
 			},
+			//跳转页面
+			toPage(path, item){
+				uni.navigateTo({
+					url: path,
+					events: {
+						//更新数据
+						updateData: (res)=>{
+							this.getList()
+						}
+					},
+					success: (res)=>{
+						if(item){
+							//初始化数据
+							res.eventChannel.emit('initData', { data: item })
+						}
+					}
+				})
+			},
 			//初始化
 			init() {
 				this.getList()
@@ -109,42 +127,47 @@
 			},
 			//删除数据
 			deleteItem(){
+				uni.showLoading({
+					title: '正在删除'
+				})
 				this.$api.post("/dict/typeDelete/", {"id": this.selectId}).then(res => {
-					uni.showToast({
-						title: "删除成功",
-						icon: 'success'
-					})
-					this.getList()
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "删除成功",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
 				})
 			},
 			//删除子集数据
 			deleteChildItem(id, tid){
-				this.$api.post("/dict/valueDelete/", {"id": id, "dict_tid": tid}).then(res => {
-					uni.showToast({
-						title: "删除成功",
-						icon: 'success'
-					})
-					this.getList()
+				uni.showLoading({
+					title: '正在删除'
 				})
-			},
-			//跳转页面
-			toPage(path, item){
-				uni.navigateTo({
-					url: path,
-					events: {
-						//更新数据
-						updateData: (res)=>{
-							this.getList()
-						}
-					},
-					success: (res)=>{
-						if(item){
-							//初始化数据
-							res.eventChannel.emit('initData', { data: item })
-						}
+				this.$api.post("/dict/valueDelete/", {"id": id, "dict_tid": tid}).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "删除成功",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
 					}
 				})
-			}
+			},
+			
 		}
 	}
 </script>
