@@ -56,6 +56,17 @@
 	.uni-dialog-button{
 		cursor: pointer;
 	}
+	.select-picker {
+	    margin-right: 20px;
+		margin-top: 5px;
+	}
+	.select-picker uni-button uni-text {
+	    color: #999;
+	}
+	uni-button[type="default"][plain] {
+	    border-color: #dcdfe6;
+	    color: #606266;
+	}
 
 	/*解决页面不能复制问题 */
 	view {

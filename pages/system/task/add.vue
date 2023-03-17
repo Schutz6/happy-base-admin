@@ -16,22 +16,22 @@
 							</view>
 						</uni-forms-item>
 						<uni-forms-item v-if="dataForm.type==2" label="cron指令" name="exec_cron" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.exec_cron" />
 							<view style="font-size: 12px;color: red;">
 								<view>指令说明：</view>
 								<view>每天一点执行：1:00D</view>
 							</view>
+							<uni-easyinput type="text" trim="both" v-model="dataForm.exec_cron" />
 						</uni-forms-item>
 						<uni-forms-item v-if="dataForm.type==3" label="间隔指令" name="exec_interval" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.exec_interval" />
 							<view style="font-size: 12px;color: red;">
 								<view>指令说明：</view>
-								<view>间隔秒触发  1S（S表示秒）</view>
-								<view>间隔分钟触发  1M（M表示分钟）</view>
-								<view>间隔小时触发  1H（H表示小时）</view>
-								<view>间隔天触发  1D（D表示天）</view>
-								<view>间隔周触发  1W（W表示周）</view>
+								<view>间隔秒触发 1S（S表示秒）</view>
+								<view>间隔分钟触发 1M（M表示分钟）</view>
+								<view>间隔小时触发 1H（H表示小时）</view>
+								<view>间隔天触发 1D（D表示天）</view>
+								<view>间隔周触发 1W（W表示周）</view>
 							</view>
+							<uni-easyinput type="text" trim="both" v-model="dataForm.exec_interval" />
 						</uni-forms-item>
 						<uni-forms-item label="配置参数" name="options">
 							<uni-easyinput type="text" trim="both" v-model="dataForm.options" />

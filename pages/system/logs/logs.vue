@@ -10,10 +10,13 @@
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
 					</view>
 					<view class="filter-item d-flex">
+						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
+					</view>
+					<view class="filter-item d-flex">
 						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="showClear">清空</button>
 					</view>
 				</view>
-				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
+				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
 						<uni-th align="center">账号</uni-th>
 						<uni-th align="center">接口类型</uni-th>
@@ -35,8 +38,8 @@
 					</uni-tr>
 				</uni-table>
 				<view class="uni-pagination-box">
-					<uni-pagination show-icon :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" />
+					<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+						:total="total" @change="changeTable" @pageSizeChange="changeSize" />
 				</view>
 			</uni-card>
 		</scroll-view>
@@ -54,9 +57,10 @@
 				listLoading: true,
 				listQuery: {
 					currentPage: 1,
-					pageSize: 15,
+					pageSize: 20,
 					searchKey: ""
 				},
+				selectedIndexs: [],
 			}
 		},
 		filters: {
@@ -82,8 +86,11 @@
 						case 'tips':
 							//弹出提示框，点击确认回调
 							if(obj.func === "clear"){
-								//执行清除方法
+								//清空日志
 								this.clear()
+							}else if(obj.func === "batchDelete"){
+								//批量删除
+								this.batchDelete()
 							}
 						break;
 					}
@@ -100,6 +107,9 @@
 			},
 			//获取列表
 			getList() {
+				//清空选择
+				this.clearSelection()
+				//加载数据
 				this.listLoading = true
 				this.$api.post("/log/list/", this.listQuery).then(res => {
 					this.listLoading = false
@@ -107,10 +117,25 @@
 					this.total = res.data.total
 				})
 			},
-			// 分页触发
+			//分页触发
 			changeTable(e) {
 				this.listQuery.currentPage = e.current
 				this.getList()
+			},
+			//改变大小
+			changeSize(pageSize) {
+				this.listQuery.pageSize = pageSize
+				this.listQuery.currentPage = 1
+				this.$nextTick(() => {
+					this.getList()
+				})
+			},
+			//清空选择
+			clearSelection(){
+				if(this.selectedIndexs.length > 0){
+					this.selectedIndexs.length = 0
+					this.$refs.table.clearSelection()
+				}
 			},
 			//弹出清空提示框
 			showClear(){
@@ -131,6 +156,36 @@
 						this.search()
 					}
 				})
+			},
+			//弹出批量删除提示框
+			showBatchDelete(){
+				if(this.selectedIndexs.length > 0){
+					window.parent.postMessage({"cmd": "tips", "func": "batchDelete", "data": {"tips": "是否批量删除系统日志？"}}, '*')
+				}
+			},
+			// 多选
+			selectionChange(e) {
+				this.selectedIndexs = e.detail.index
+			},
+			//批量删除
+			batchDelete(){
+				if(this.selectedIndexs.length > 0){
+					let ids = this.selectedIndexs.map(i => this.tableData[i].id)
+					console.log(ids)
+					uni.showLoading({
+						title: '正在删除'
+					})
+					this.$api.post("/log/batchDelete/", {"ids": ids}).then(res => {
+						uni.hideLoading()
+						if(res.code == 20000){
+							uni.showToast({
+								title: "删除成功",
+								icon: 'success'
+							})
+							this.getList()
+						}
+					})
+				}
 			}
 		}
 	}
