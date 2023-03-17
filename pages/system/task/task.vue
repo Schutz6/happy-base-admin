@@ -77,7 +77,7 @@
 				listLoading: true,
 				listQuery: {
 					currentPage: 1,
-					pageSize: 15,
+					pageSize: 20,
 					searchKey: ""
 				},
 				selectId: null,//选中ID

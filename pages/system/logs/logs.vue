@@ -171,7 +171,6 @@
 			batchDelete(){
 				if(this.selectedIndexs.length > 0){
 					let ids = this.selectedIndexs.map(i => this.tableData[i].id)
-					console.log(ids)
 					uni.showLoading({
 						title: '正在删除'
 					})

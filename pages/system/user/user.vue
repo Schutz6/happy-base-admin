@@ -15,8 +15,11 @@
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/user/add')">新增</button>
 					</view>
+					<view class="filter-item d-flex">
+						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
+					</view>
 				</view>
-				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
+				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
 						<uni-th align="center">账号</uni-th>
 						<uni-th align="center">昵称</uni-th>
@@ -54,8 +57,8 @@
 					</uni-tr>
 				</uni-table>
 				<view class="uni-pagination-box">
-					<uni-pagination show-icon :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" />
+					<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+						:total="total" @change="changeTable" @pageSizeChange="changeSize" />
 				</view>
 			</uni-card>
 		</scroll-view>
@@ -73,10 +76,11 @@
 				listLoading: true,
 				listQuery: {
 					currentPage: 1,
-					pageSize: 15,
+					pageSize: 20,
 					status: null,//状态
 					searchKey: ""
 				},
+				selectedIndexs: [],
 				selectId: null,//选中ID
 				roles:[], //角色列表
 			}
@@ -109,10 +113,29 @@
 							if(obj.func === "deleteItem"){
 								//执行删除方法
 								this.deleteItem()
+							}else if(obj.func === "batchDelete"){
+								//批量删除
+								this.batchDelete()
 							}
 						break;
 					}
 				}
+			},
+			//跳转页面
+			toPage(path, item){
+				uni.navigateTo({
+					url: path,
+					events: {
+						//更新数据
+						updateData: (res)=>{
+							this.getList()
+						}
+					},
+					success: (res)=>{
+						//初始化数据
+						res.eventChannel.emit('initData', { roles: this.roles, data: item })
+					}
+				})
 			},
 			//初始化
 			init() {
@@ -159,6 +182,9 @@
 			},
 			//获取列表
 			getList() {
+				//清空选择
+				this.clearSelection()
+				//加载数据
 				this.listLoading = true
 				this.$api.post("/user/list/", this.listQuery).then(res => {
 					this.listLoading = false
@@ -170,6 +196,21 @@
 			changeTable(e) {
 				this.listQuery.currentPage = e.current
 				this.getList()
+			},
+			//改变大小
+			changeSize(pageSize) {
+				this.listQuery.pageSize = pageSize
+				this.listQuery.currentPage = 1
+				this.$nextTick(() => {
+					this.getList()
+				})
+			},
+			//清空选择
+			clearSelection(){
+				if(this.selectedIndexs.length > 0){
+					this.selectedIndexs.length = 0
+					this.$refs.table.clearSelection()
+				}
 			},
 			//显示删除提示
 			showDeleteTips(id){
@@ -186,21 +227,34 @@
 					this.getList()
 				})
 			},
-			//跳转页面
-			toPage(path, item){
-				uni.navigateTo({
-					url: path,
-					events: {
-						//更新数据
-						updateData: (res)=>{
+			//弹出批量删除提示框
+			showBatchDelete(){
+				if(this.selectedIndexs.length > 0){
+					window.parent.postMessage({"cmd": "tips", "func": "batchDelete", "data": {"tips": "是否批量删除数据？"}}, '*')
+				}
+			},
+			// 多选
+			selectionChange(e) {
+				this.selectedIndexs = e.detail.index
+			},
+			//批量删除
+			batchDelete(){
+				if(this.selectedIndexs.length > 0){
+					let ids = this.selectedIndexs.map(i => this.tableData[i].id)
+					uni.showLoading({
+						title: '正在删除'
+					})
+					this.$api.post("/user/batchDelete/", {"ids": ids}).then(res => {
+						uni.hideLoading()
+						if(res.code == 20000){
+							uni.showToast({
+								title: "删除成功",
+								icon: 'success'
+							})
 							this.getList()
 						}
-					},
-					success: (res)=>{
-						//初始化数据
-						res.eventChannel.emit('initData', { roles: this.roles, data: item })
-					}
-				})
+					})
+				}
 			}
 		}
 	}
