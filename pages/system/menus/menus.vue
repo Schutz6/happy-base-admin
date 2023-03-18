@@ -13,7 +13,7 @@
 						<uni-th align="left">地址</uni-th>
 						<uni-th align="center">所属角色</uni-th>
 						<uni-th align="center">排序(降序)</uni-th>
-						<uni-th align="center">操作</uni-th>
+						<uni-th align="center" width="190">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
 						<uni-td align="left">
@@ -23,13 +23,13 @@
 						<uni-td align="left">{{ item.url }}</uni-td>
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">{{item.sort}}</uni-td>
-						<uni-td align="center">
-							<view class="d-flex-center">
+						<uni-td align="left">
+							<view class="d-flex">
 								<view class="tag-view">
 									<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/menus/edit', item)"></uni-tag>
 								</view>
 								<view class="tag-view" v-if="item.pid==0">
-									<uni-tag text="新增子菜单" type="primary" @click="toPage('/pages/system/menus/add', item)"></uni-tag>
+									<uni-tag text="+子菜单" type="primary" @click="toPage('/pages/system/menus/add', item)"></uni-tag>
 								</view>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
@@ -75,7 +75,7 @@
 								//执行删除方法
 								this.deleteItem()
 							}
-						break;
+							break;
 					}
 				}
 			},

@@ -71,7 +71,7 @@
 							if(menu.value != "#"){
 								flag = true
 								//加载页面
-								this.loadPageUrl({"url": menu.value})
+								this.path = menu.value
 								break
 							}
 						}
@@ -81,9 +81,12 @@
 						}
 					}else{
 						//加载页面
-						this.loadPageUrl({"url": menu.value})
+						this.path = menu.value
 						break
 					}
+				}
+				if(this.path){
+					this.loadPageUrl({"url": this.path})
 				}
 			}
 		},

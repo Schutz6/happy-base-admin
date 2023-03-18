@@ -21,7 +21,7 @@
 						<uni-th align="center">账号</uni-th>
 						<uni-th align="center">接口类型</uni-th>
 						<uni-th align="center">接口地址</uni-th>
-						<uni-th align="center">请求参数</uni-th>
+						<uni-th align="center" width="300">请求参数</uni-th>
 						<uni-th align="center">IP地址</uni-th>
 						<uni-th align="center">耗时</uni-th>
 						<uni-th align="center">时间</uni-th>
@@ -30,7 +30,9 @@
 						<uni-td align="center">{{ item.username || "--" }}</uni-td>
 						<uni-td align="center">{{ item.method }}</uni-td>
 						<uni-td align="center">{{item.uri}}</uni-td>
-						<uni-td align="center">{{item.params || "--"}}</uni-td>
+						<uni-td align="center">
+							<text class="wrap">{{item.params || "--"}}</text>
+						</uni-td>
 						<uni-td align="center">{{item.ip}}</uni-td>
 						<uni-td align="center">{{item.times}}ms</uni-td>
 						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
@@ -92,7 +94,7 @@
 								//批量删除
 								this.batchDelete()
 							}
-						break;
+							break;
 					}
 				}
 			},

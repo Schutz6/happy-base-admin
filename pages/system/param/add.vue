@@ -8,10 +8,10 @@
 							<uni-easyinput type="text" trim="both" v-model="dataForm.key" />
 						</uni-forms-item>
 						<uni-forms-item label="参数值" name="value" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.value" />
+							<uni-easyinput type="textarea" :auto-height="true" trim="both" v-model="dataForm.value" />
 						</uni-forms-item>
 						<uni-forms-item label="备注" name="remarks" required>
-							<uni-easyinput type="textarea" trim="both" v-model="dataForm.remarks" />
+							<uni-easyinput type="textarea" :auto-height="true" trim="both" v-model="dataForm.remarks" />
 						</uni-forms-item>
 						<uni-forms-item label="状态" name="status" required>
 							<view class="d-flex" style="height: 100%;">

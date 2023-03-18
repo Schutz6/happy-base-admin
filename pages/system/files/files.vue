@@ -28,8 +28,8 @@
 					<uni-tr>
 						<uni-th align="center">文件名称</uni-th>
 						<uni-th align="center">文件类型</uni-th>
-						<uni-th align="center">下载地址</uni-th>
-						<uni-th align="center">存储地址</uni-th>
+						<uni-th align="center" width="220">下载地址</uni-th>
+						<uni-th align="center" width="220">存储地址</uni-th>
 						<uni-th align="center">文件大小</uni-th>
 						<uni-th align="center">MD5值</uni-th>
 						<uni-th align="center">文件状态</uni-th>
@@ -43,8 +43,14 @@
 							<view v-else-if="item.type==4">语音</view>
 							<view v-else-if="item.type==5">视频</view>
 						</uni-td>
-						<uni-td align="center"><uni-link :href="item.download_path" :text="item.download_path"></uni-link></uni-td>
-						<uni-td align="center">{{item.store_path}}</uni-td>
+						<uni-td align="center">
+							<text class="wrap">
+								<uni-link :href="item.download_path" :text="item.download_path"></uni-link>
+							</text>
+						</uni-td>
+						<uni-td align="center">
+							<text class="wrap">{{item.store_path}}</text>
+						</uni-td>
 						<uni-td align="center">{{item.size}}</uni-td>
 						<uni-td align="center">{{item.md5 || "--"}}</uni-td>
 						<uni-td align="center">
@@ -122,7 +128,7 @@
 								//批量删除
 								this.batchDelete()
 							}
-						break;
+							break;
 					}
 				}
 			},

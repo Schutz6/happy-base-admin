@@ -6,6 +6,9 @@
 					<view class="filter-item d-flex" style="width: 210px;">
 						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="唯一ID/参数值/备注"></uni-easyinput>
 					</view>
+					<view class="filter-item d-flex" style="width: 120px;">
+						<uni-data-select v-model="listQuery.status" :localdata="datas.param_status_json" placeholder="请选择状态"></uni-data-select>
+					</view>
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
 					</view>
@@ -16,14 +19,16 @@
 				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
 					<uni-tr>
 						<uni-th align="center">唯一ID</uni-th>
-						<uni-th align="center">参数值</uni-th>
+						<uni-th align="center" width="400">参数值</uni-th>
 						<uni-th align="center">状态</uni-th>
 						<uni-th align="center">备注</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
 						<uni-td align="center">{{ item.key }}</uni-td>
-						<uni-td align="center">{{ item.value }}</uni-td>
+						<uni-td align="center">
+							<text class="wrap">{{ item.value }}</text>
+						</uni-td>
 						<uni-td align="center">
 							<view v-if="item.status==0">公共</view>
 							<view v-else style="color: red;">私有</view>
@@ -52,6 +57,7 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -61,10 +67,14 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
-					searchKey: ""
+					searchKey: "",
+					status: null
 				},
 				selectId: null,//选中ID
 			}
+		},
+		computed: {
+			...mapGetters(['datas'])
 		},
 		onReady() {
 			// 监听消息
@@ -86,7 +96,7 @@
 								//执行删除方法
 								this.deleteItem()
 							}
-						break;
+							break;
 					}
 				}
 			},

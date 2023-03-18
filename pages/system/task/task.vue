@@ -103,7 +103,7 @@
 								//执行删除方法
 								this.deleteItem()
 							}
-						break;
+							break;
 					}
 				}
 			},
