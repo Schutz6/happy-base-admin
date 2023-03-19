@@ -5,7 +5,7 @@
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
 						<uni-forms-item label="唯一ID" name="key" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.key" />
+							<uni-easyinput type="text" trim="both" v-model="dataForm.key" disabled />
 						</uni-forms-item>
 						<uni-forms-item label="参数值" name="value" required>
 							<uni-easyinput type="textarea" :auto-height="true" trim="both" v-model="dataForm.value" />

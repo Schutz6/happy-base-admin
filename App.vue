@@ -61,6 +61,27 @@
 	.uni-dialog-button{
 		cursor: pointer;
 	}
+	.filter-container{
+		flex-wrap: wrap;
+	}
+	.filter-item{
+		margin: 5px 15px 10px 0;
+	}
+	.filter-item:first-child {
+		margin-left: 0px;
+	}
+	.filter-item .uni-file-picker__lists{
+		display: none;
+	}
+	.uni-pagination-box {
+		padding: 20px 0 10px 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.tag-view{
+		min-width: 50px;
+	}
 	.select-picker {
 	    margin-right: 20px;
 		margin-top: 5px;

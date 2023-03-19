@@ -23,16 +23,16 @@
 						<uni-td align="left">{{ item.url }}</uni-td>
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">{{item.sort}}</uni-td>
-						<uni-td align="left">
+						<uni-td>
 							<view class="d-flex">
 								<view class="tag-view">
 									<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/menus/edit', item)"></uni-tag>
 								</view>
-								<view class="tag-view" v-if="item.pid==0">
-									<uni-tag text="+子菜单" type="primary" @click="toPage('/pages/system/menus/add', item)"></uni-tag>
-								</view>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+								</view>
+								<view class="tag-view" v-if="item.pid==0 && item.url=='#'">
+									<uni-tag text="+子菜单" type="primary" @click="toPage('/pages/system/menus/add', item)"></uni-tag>
 								</view>
 							</view>
 						</uni-td>
