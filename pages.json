@@ -2,7 +2,7 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			"^page-(.*)": "@/modules/page-$1/page-$1.vue"
+			"^module-(.*)": "@/modules/module-$1/module-$1.vue"
 		}
 	},
 	"pages": [

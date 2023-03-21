@@ -1,8 +1,8 @@
 <template>
 	<view class="container overflow-hidden width-max height-max">
-		<page-header></page-header>
+		<module-header></module-header>
 		<view class="d-flex">
-			<page-menu :active-url="path"></page-menu>
+			<module-menu :active-url="path"></module-menu>
 			<view class="page">
 				<!-- #ifdef H5 -->
 				<iframe ref="pageFrame" v-show="!loading" :src="toPageUrl" frameborder="0" style="width: 100%;height: 100%;"></iframe>
