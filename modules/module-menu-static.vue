@@ -16,7 +16,7 @@
 		props: {
 			activeUrl: {
 				type: String,
-				default: ''
+				default: '',
 			},
 		},
 		data() {

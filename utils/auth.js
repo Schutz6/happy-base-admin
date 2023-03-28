@@ -6,6 +6,7 @@ const MenusKey = 'menus'
 const ParamsKey = 'params'
 const TitleKey = 'title'
 
+
 //登录令牌
 export function getToken() {
 	return uni.getStorageSync(TokenKey)
