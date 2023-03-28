@@ -63,6 +63,13 @@
 .pointer{
 	cursor: pointer;
 }
+.tag-view{
+	margin-left: 5px;
+	min-width: 40px;
+}
+.tag-view:first-child{
+	margin-left: 0px;
+}
 .border-red{
 	border: 1px solid #FF00CC;
 }

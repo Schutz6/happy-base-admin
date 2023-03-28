@@ -20,7 +20,7 @@
 					<uni-tr>
 						<uni-th align="center">唯一ID</uni-th>
 						<uni-th align="center" width="400">参数值</uni-th>
-						<uni-th align="center">状态</uni-th>
+						<uni-th align="center" width="50">状态</uni-th>
 						<uni-th align="center">备注</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
@@ -29,7 +29,7 @@
 						<uni-td align="center">
 							<text class="wrap">{{ item.value }}</text>
 						</uni-td>
-						<uni-td align="center">
+						<uni-td align="center" width="50">
 							<view v-if="item.status==0">公共</view>
 							<view v-else style="color: red;">私有</view>
 						</uni-td>

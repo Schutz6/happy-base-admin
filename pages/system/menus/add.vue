@@ -10,8 +10,8 @@
 						<uni-forms-item label="名称" name="name" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 						</uni-forms-item>
-						<!-- <uni-forms-item label="图标" name="icon" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.icon" />
+						<!-- <uni-forms-item label="图标" name="icon">
+							<uni-easyinput type="text" trim="both" v-model="dataForm.icon" placeholder="示例: /icons/svg/content.svg" />
 						</uni-forms-item> -->
 						<uni-forms-item label="地址" name="url" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.url" />
@@ -62,12 +62,6 @@
 				},
 				rules: {
 					name: {
-						rules: [{
-							required: true,
-							errorMessage: "请输入"
-						}]
-					},
-					icon: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"

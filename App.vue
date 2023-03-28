@@ -79,9 +79,6 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.tag-view{
-		min-width: 50px;
-	}
 	.select-picker {
 	    margin-right: 20px;
 		margin-top: 5px;

@@ -21,7 +21,7 @@
 									<view class="tag-view">
 										<uni-tag text="编辑字典" type="primary" @click="toPage('/pages/system/dict/editType', item)"></uni-tag>
 									</view>
-									<view class="">
+									<view class="tag-view">
 										<uni-tag text="删除字典" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 									</view>
 								</view>

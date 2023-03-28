@@ -2,7 +2,7 @@
 	<view class="container overflow-hidden width-max height-max">
 		<view class="height-max">
 			<view class="login-box">
-				<view class="d-flex-center login-title">用户登录</view>
+				<view class="d-flex-center login-title">{{title}} - 登录</view>
 				<uni-forms ref="form" :modelValue="loginForm" :rules="loginRules">
 					<uni-forms-item name="username">
 						<uni-easyinput type="text" trim="both" v-model="loginForm.username" placeholder="账号" />
@@ -22,6 +22,7 @@
 	export default {
 		data() {
 			return {
+				title: getTitle(),
 				loading: false,
 				loginForm: {
 					username: '',
@@ -46,7 +47,7 @@
 		},
 		onLoad() {
 			uni.setNavigationBarTitle({
-				title: getTitle()
+				title: this.title
 			})
 			let username = uni.getStorageSync("UserName")
 			if(username){
