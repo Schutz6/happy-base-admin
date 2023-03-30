@@ -12,24 +12,6 @@
 			this.$store.commit('setUser', getUser())
 			//初始化网站设置信息
 			this.$store.commit('setParams', getParams())
-			// #ifdef H5
-			//获取当前页面参数
-			if(location.hash.indexOf('/pages/common/home/home') >- 1){
-				//在主界面中 获取参数设置
-				this.$store.dispatch('getParams')
-				//获取用户信息，防止用户强制刷新
-				this.$store.dispatch('getUserInfo').then(res => {
-					if (res.code != 20000) {
-						uni.reLaunch({
-							url: '/pages/common/login/login'
-						})
-					}else{
-						//更新菜单数据
-						this.$store.dispatch('getMenus')
-					}
-				})
-			}
-			// #endif
 		},
 		onShow: function() {
 			console.log('App Show')
