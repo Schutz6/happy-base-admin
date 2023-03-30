@@ -37,7 +37,20 @@
 		computed: {
 			...mapGetters(['user', 'menus', 'setting'])
 		},
-		onLoad(options) {
+		async onLoad(options) {
+			//获系统参数设置
+			let res = await this.$api.getAsync("/param/getList/")
+			if(res.code == 20000){
+				this.$store.commit('setParams', res.data)
+			}
+			//获取用户信息
+			let userRes = await this.$api.getAsync("/user/")
+			if(userRes.code == 20000){
+				//更新用户数据
+				this.$store.commit('setUser', userRes.data)
+				//更新菜单数据
+				this.$store.dispatch('getMenus')
+			}
 			//初始化网址
 			this.website = location.origin+location.pathname+"#"
 			if(options.path){
@@ -45,8 +58,6 @@
 			}
 			//监听菜单点击页面
 			uni.$on('loadPageUrl', this.loadPageUrl)
-		},
-		onReady() {
 			// #ifdef H5
 			//初始化容器页面
 			this.pageFrame = this.$refs.pageFrame

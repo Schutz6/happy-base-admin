@@ -2,6 +2,52 @@ import config from '@/config.js'
 import { getToken } from '@/utils/auth'
 
 export default class Request {
+	async asyncHttp(param) {
+		// 请求参数
+		var url = param.url,
+			method = param.method,
+			header = {
+				'content-type': 'application/json',
+				'Channel': config.channel,//渠道
+				'Authorization':"JWT " + getToken(),
+				
+				...param.header,
+			},
+			uplaodHeader = {
+				'Channel': config.channel,//渠道
+				'Authorization':"JWT " + getToken(),
+				
+				...param.header,
+			},
+			data = param.data || {}
+		
+		//拼接完整请求地址
+		var requestUrl = config.baseUrl + url
+		
+		if (method) {
+			method = method.toUpperCase(); //小写改为大写
+		}
+		var [err, res] = await uni.request({
+			url: requestUrl,
+			data: data,
+			method: method,
+			header: header,
+			sslVerify: false
+		})
+		//判断令牌是否失效
+		if(res.data.code == 10010){
+			uni.showToast({
+				title: "登录令牌已失效",
+				icon: 'error'
+			})
+			uni.reLaunch({
+				url: '/pages/common/login/login'
+			})
+		}else{
+			return res.data
+		}
+	}
+	
 	http(param) {
 		// 请求参数
 		var url = param.url,

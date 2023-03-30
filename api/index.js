@@ -1,7 +1,20 @@
 import Request from '@/utils/requset.js'
 let request = new Request().http
+let asyncRequest = new Request().asyncHttp
 
 class Api{
+	/**
+	 * Get同步请求
+	 * @param data 带参数
+	 */
+	async getAsync(url, data) {  
+		return await asyncRequest({
+			url: url,
+			method: "GET",
+			data: data
+		})
+	}
+	
 	/**
 	 * Get请求
 	 * @param data 带参数

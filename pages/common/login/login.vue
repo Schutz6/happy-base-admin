@@ -2,7 +2,7 @@
 	<view class="container overflow-hidden width-max height-max">
 		<view class="height-max">
 			<view class="login-box">
-				<view class="d-flex-center login-title">{{title}} - 登录</view>
+				<view class="d-flex-center login-title" v-if="params">{{params.siteName}} - 登录</view>
 				<uni-forms ref="form" :modelValue="loginForm" :rules="loginRules">
 					<uni-forms-item name="username">
 						<uni-easyinput type="text" trim="both" v-model="loginForm.username" placeholder="账号" />
@@ -18,11 +18,11 @@
 </template>
 
 <script>
-	import { setToken, removeToken, getTitle } from '@/utils/auth'
+	import { setToken, removeToken } from '@/utils/auth'
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
-				title: getTitle(),
 				loading: false,
 				loginForm: {
 					username: '',
@@ -45,14 +45,24 @@
 				
 			}
 		},
-		onLoad() {
-			uni.setNavigationBarTitle({
-				title: this.title
-			})
+		computed: {
+			...mapGetters(['params'])
+		},
+		async onLoad() {
 			let username = uni.getStorageSync("UserName")
 			if(username){
 				//初始化账号
 				this.loginForm.username = username
+			}
+			//获取参数
+			let res = await this.$api.getAsync("/param/getList/")
+			if(res.code == 20000){
+				this.$store.commit('setParams', res.data)
+			}
+			if(this.params){
+				uni.setNavigationBarTitle({
+					title: this.params.siteName + " - 登录"
+				})
 			}
 		},
 		methods: {

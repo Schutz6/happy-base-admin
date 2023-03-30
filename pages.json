@@ -10,7 +10,7 @@
 		    "path" : "pages/common/start/start",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "启动页",
+		        "navigationBarTitleText": "正在启动",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
