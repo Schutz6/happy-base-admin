@@ -21,9 +21,9 @@
 				</view>
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
+						<uni-th align="center">头像</uni-th>
 						<uni-th align="center">账号</uni-th>
 						<uni-th align="center">昵称</uni-th>
-						<uni-th align="center">邮箱</uni-th>
 						<uni-th align="center">角色</uni-th>
 						<uni-th align="center">状态</uni-th>
 						<uni-th align="center">最后登录时间</uni-th>
@@ -31,9 +31,11 @@
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
+						<uni-td align="center">
+							<img :src="item.avatar" style="width: 50px;height: 50px;" />
+						</uni-td>
 						<uni-td align="center">{{ item.username }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
-						<uni-td align="center">{{item.email || "--"}}</uni-td>
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">
 							<view v-if="item.status==1">正常</view>
@@ -184,6 +186,7 @@
 			getList() {
 				//清空选择
 				this.clearSelection()
+				this.tableData = []
 				//加载数据
 				this.listLoading = true
 				this.$api.post("/user/list/", this.listQuery).then(res => {

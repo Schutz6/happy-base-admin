@@ -7,14 +7,14 @@
 						<uni-forms-item label="账号" name="username" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.username" disabled />
 						</uni-forms-item>
+						<uni-forms-item label="头像" name="avatar">
+							<uni-file-picker :value="fileLists" ref="avatar" limit="1" @select="selectAvatar" :auto-upload="false"></uni-file-picker>
+						</uni-forms-item>
 						<uni-forms-item label="昵称" name="name" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 						</uni-forms-item>
 						<uni-forms-item label="修改密码" name="password">
 							<uni-easyinput type="password" trim="both" v-model="dataForm.password" placeholder="不填不修改" />
-						</uni-forms-item>
-						<uni-forms-item label="邮箱" name="email" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.email" disabled />
 						</uni-forms-item>
 						<uni-forms-item label="角色" name="roles" required>
 							<view class="d-flex" style="height: 100%;">
@@ -45,6 +45,7 @@
 				eventChannel: null,
 				roles:[], //角色列表
 				loading: false,
+				fileLists: [],
 				dataForm: {},
 				rules: {
 					username: {
@@ -54,12 +55,6 @@
 						}]
 					},
 					name: {
-						rules: [{
-							required: true,
-							errorMessage: "请输入"
-						}]
-					},
-					email: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
@@ -89,6 +84,8 @@
 			this.eventChannel.on('initData', (res)=> {
 			    this.roles = res.roles
 				this.dataForm = res.data
+				//显示头像
+				this.fileLists.push({"url": this.dataForm.avatar})
 			})
 		},
 		methods: {
@@ -126,8 +123,26 @@
 					}
 				})
 			},
-			change(e){
-				console.log('e:',e);
+			//选择头像后触发
+			selectAvatar(e){
+				uni.showLoading({
+					title: '正在上传'
+				})
+				this.$api.uploadFile('/file/upload/head/', e.tempFilePaths[0]).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "上传成功",
+							icon: 'success'
+						})
+						this.dataForm.avatar = res.data.download_path
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
+				})
 			}
 		}
 	}

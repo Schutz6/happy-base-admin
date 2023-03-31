@@ -13,9 +13,6 @@
 						<uni-forms-item label="密码" name="password" required>
 							<uni-easyinput type="password" trim="both" v-model="dataForm.password" />
 						</uni-forms-item>
-						<uni-forms-item label="邮箱" name="email" required>
-							<uni-easyinput type="email" trim="both" v-model="dataForm.email" />
-						</uni-forms-item>
 						<uni-forms-item label="角色" name="roles" required>
 							<view class="d-flex" style="height: 100%;">
 								<uni-data-checkbox multiple v-model="dataForm.roles" :localdata="roles"></uni-data-checkbox>
@@ -67,12 +64,6 @@
 						}]
 					},
 					password: {
-						rules: [{
-							required: true,
-							errorMessage: "请输入"
-						}]
-					},
-					email: {
 						rules: [{
 							required: true,
 							errorMessage: "请输入"
@@ -138,9 +129,6 @@
 					}
 				})
 			},
-			change(e){
-				console.log('e:',e);
-			}
 		}
 	}
 </script>
