@@ -74,7 +74,7 @@
 <style scoped lang="scss">
 	.sidebar {
 		position: fixed;
-		width: 240px;
+		width: 180px;
 		height: calc(100vh - 44px);
 		box-sizing: border-box;
 	}
@@ -84,7 +84,7 @@
 	}
 	/* #endif */
 	.menus{
-		width: 240px;
+		width: 180px;
 		height: calc(100vh - 44px);
 		// box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.08);
 		background-color: #fff;
