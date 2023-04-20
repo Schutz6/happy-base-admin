@@ -14,6 +14,7 @@
 						<uni-th align="left">地址</uni-th>
 						<uni-th align="center">所属角色</uni-th>
 						<uni-th align="center">排序(降序)</uni-th>
+						<uni-th align="center">状态</uni-th>
 						<uni-th align="center" width="190">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -30,6 +31,10 @@
 						<uni-td align="left">{{ item.url }}</uni-td>
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">{{item.sort}}</uni-td>
+						<uni-td align="center">
+							<view v-if="item.status==1" style="color: green;">启用</view>
+							<view v-else-if="item.status==0" style="color: red;">禁用</view>
+						</uni-td>
 						<uni-td>
 							<view class="d-flex">
 								<view class="tag-view">
