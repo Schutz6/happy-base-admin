@@ -1,3 +1,4 @@
 unpackage/*
 .DS_Store
 static/avatars/*
+static/files/*
