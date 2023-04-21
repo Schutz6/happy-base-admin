@@ -3,7 +3,7 @@
 		<view class="header d-flex between">
 			<view class="d-flex">
 				<uni-icons v-if="isMobile" @click="showMenus" type="bars" size="24" color="#fff"></uni-icons>
-				<view class="title">{{title}}</view>
+				<view class="title">{{params.siteName}}</view>
 			</view>
 			<view class="d-flex" v-if="user">
 				<view class="d-flex-center pointer" @click="openMenus=!openMenus">
@@ -51,14 +51,12 @@
 
 <script>
 	import { mapGetters } from 'vuex'
-	import { getTitle } from '@/utils/auth'
 	export default {
 		data() {
 			return {
 				isPC: false, //是否电脑端
 				isMobile: false, //是否手机端
 				openMenus: false,
-				title: "",
 				loading: false,
 				passwordForm: {
 					oldPassword: '',
@@ -81,7 +79,7 @@
 			}
 		},
 		computed: {
-		    ...mapGetters(['user'])
+		    ...mapGetters(['user', 'params'])
 		},
 		mounted() {
 			// #ifdef H5
@@ -91,10 +89,6 @@
 				this.isPC = true
 			}
 			// #endif
-			this.title = getTitle()
-			uni.setNavigationBarTitle({
-				title: this.title
-			})
 		},
 		methods: {
 			//显示菜单

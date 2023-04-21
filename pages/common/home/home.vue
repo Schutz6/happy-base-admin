@@ -35,7 +35,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['user', 'menus', 'setting'])
+			...mapGetters(['user', 'menus'])
 		},
 		async onLoad(options) {
 			//获系统参数设置

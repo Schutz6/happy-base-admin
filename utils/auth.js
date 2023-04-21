@@ -1,10 +1,7 @@
-import config from '@/config.js'
-
 const TokenKey = 'token'
 const UserKey = 'user'
 const MenusKey = 'menus'
 const ParamsKey = 'params'
-const TitleKey = 'title'
 
 
 //登录令牌
@@ -57,13 +54,4 @@ export function setParams(params) {
 
 export function removeParams() {
 	return uni.removeStorageSync(ParamsKey)
-}
-//获取网站名称
-export function getTitle() {
-	let params = getParams()
-	if(params && params.siteName){
-		return params.siteName
-	}else{
-		return config.appName
-	}
 }
