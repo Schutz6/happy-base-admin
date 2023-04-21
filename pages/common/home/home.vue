@@ -35,13 +35,18 @@
 			}
 		},
 		computed: {
-			...mapGetters(['user', 'menus'])
+			...mapGetters(['user', 'menus', 'params'])
 		},
 		async onLoad(options) {
 			//获系统参数设置
 			let res = await this.$api.getAsync("/param/getList/")
 			if(res.code == 20000){
 				this.$store.commit('setParams', res.data)
+			}
+			if(this.params){
+				uni.setNavigationBarTitle({
+					title: this.params.siteName
+				})
 			}
 			//获取用户信息
 			let userRes = await this.$api.getAsync("/user/")
