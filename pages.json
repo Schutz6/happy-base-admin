@@ -48,7 +48,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
         ,{
             "path" : "pages/system/user/user",
@@ -58,7 +57,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
 		,{
 		    "path" : "pages/system/user/add",
@@ -68,7 +66,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/user/edit",
@@ -78,7 +75,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
         ,{
             "path" : "pages/system/role/role",
@@ -88,7 +84,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
         ,{
             "path" : "pages/system/role/add",
@@ -98,7 +93,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
         ,{
             "path" : "pages/system/role/edit",
@@ -108,7 +102,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
         ,{
             "path" : "pages/system/param/param",
@@ -118,7 +111,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
 		,{
 		    "path" : "pages/system/param/add",
@@ -128,7 +120,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/param/edit",
@@ -138,7 +129,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/dict/dict",
@@ -148,7 +138,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
         ,{
             "path" : "pages/system/dict/addType",
@@ -158,7 +147,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
 		,{
 		    "path" : "pages/system/dict/editType",
@@ -168,7 +156,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/dict/addValue",
@@ -178,7 +165,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/dict/editValue",
@@ -188,7 +174,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
         ,{
             "path" : "pages/system/task/task",
@@ -198,7 +183,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
 		,{
 		    "path" : "pages/system/task/add",
@@ -208,7 +192,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/task/edit",
@@ -218,7 +201,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
         ,{
             "path" : "pages/system/files/files",
@@ -228,7 +210,6 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
-            
         }
 		,{
 		    "path" : "pages/system/menus/menus",
@@ -238,7 +219,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/menus/add",
@@ -248,7 +228,6 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/system/menus/edit",
@@ -258,12 +237,11 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		    
 		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "管理系统",
+		"navigationBarTitleText": "管理后台",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
