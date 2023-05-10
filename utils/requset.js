@@ -36,10 +36,6 @@ export default class Request {
 		})
 		//判断令牌是否失效
 		if(res.data.code == 10010){
-			uni.showToast({
-				title: "登录令牌已失效",
-				icon: 'error'
-			})
 			uni.reLaunch({
 				url: '/pages/common/login/login'
 			})
