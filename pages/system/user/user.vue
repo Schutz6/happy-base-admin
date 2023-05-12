@@ -80,7 +80,7 @@
 					currentPage: 1,
 					pageSize: 20,
 					status: null,//状态
-					searchKey: ""
+					searchKey: null
 				},
 				selectedIndexs: [],
 				selectId: null,//选中ID

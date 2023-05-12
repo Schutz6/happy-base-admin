@@ -88,9 +88,9 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
-					type: "",
-					status: "",
-					searchKey: ""
+					type: null,
+					status: null,
+					searchKey: null
 				},
 				selectedIndexs: [],
 				selectId: null,//选中ID

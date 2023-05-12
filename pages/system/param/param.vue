@@ -67,7 +67,7 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
-					searchKey: "",
+					searchKey: null,
 					status: null
 				},
 				selectId: null,//选中ID

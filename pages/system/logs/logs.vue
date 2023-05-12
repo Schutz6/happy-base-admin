@@ -60,7 +60,7 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
-					searchKey: ""
+					searchKey: null
 				},
 				selectedIndexs: [],
 			}

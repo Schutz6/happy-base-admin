@@ -85,10 +85,6 @@ export default class Request {
 						//判断令牌是否失效
 						if(res.code == 10010){
 							// #ifdef H5
-							uni.showToast({
-								title: "登录令牌已失效",
-								icon: 'error'
-							})
 							setTimeout(()=>{
 								//刷新网站
 								if (window.parent == window) {
@@ -127,10 +123,6 @@ export default class Request {
 						//判断令牌是否失效
 						if(res.data.code == 10010){
 							// #ifdef H5
-							uni.showToast({
-								title: "登录令牌已失效",
-								icon: 'error'
-							})
 							setTimeout(()=>{
 								//刷新网站
 								if (window.parent == window) {
