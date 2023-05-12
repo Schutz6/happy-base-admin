@@ -21,6 +21,13 @@ export default class Request {
 			},
 			data = param.data || {}
 		
+		//过滤请求参数
+		for(let key in data){
+			if(!data[key]){
+				delete data[key]
+			}
+		}
+		
 		//拼接完整请求地址
 		var requestUrl = config.baseUrl + url
 		
@@ -63,6 +70,13 @@ export default class Request {
 				...param.header,
 			},
 			data = param.data || {}
+			
+		//过滤请求参数
+		for(let key in data){
+			if(!data[key]){
+				delete data[key]
+			}
+		}
 
 		//拼接完整请求地址
 		var requestUrl = config.baseUrl + url

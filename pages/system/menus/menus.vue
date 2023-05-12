@@ -103,7 +103,11 @@
 					},
 					success: (res)=>{
 						//初始化数据
-						res.eventChannel.emit('initData', { roles: this.roles, data: item })
+						if(item){
+							res.eventChannel.emit('initData', { roles: this.roles, data: JSON.parse(JSON.stringify(item)) })
+						}else{
+							res.eventChannel.emit('initData', { roles: this.roles })
+						}
 					}
 				})
 			},

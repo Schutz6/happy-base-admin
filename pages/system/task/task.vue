@@ -120,7 +120,7 @@
 					success: (res)=>{
 						if(item){
 							//初始化数据
-							res.eventChannel.emit('initData', { data: item })
+							res.eventChannel.emit('initData', { data: JSON.parse(JSON.stringify(item)) })
 						}
 					}
 				})

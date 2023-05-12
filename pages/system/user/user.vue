@@ -32,7 +32,7 @@
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
 						<uni-td align="center">
-							<img :src="item.avatar" style="width: 50px;height: 50px;" />
+							<img :src="item.avatar" style="width: 50px;height: 50px;border-radius: 10px;" />
 						</uni-td>
 						<uni-td align="center">{{ item.username }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
@@ -135,7 +135,11 @@
 					},
 					success: (res)=>{
 						//初始化数据
-						res.eventChannel.emit('initData', { roles: this.roles, data: item })
+						if(item){
+							res.eventChannel.emit('initData', { roles: this.roles, data: JSON.parse(JSON.stringify(item)) })
+						}else{
+							res.eventChannel.emit('initData', { roles: this.roles })
+						}
 					}
 				})
 			},
