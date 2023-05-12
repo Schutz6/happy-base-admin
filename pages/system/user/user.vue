@@ -21,6 +21,7 @@
 				</view>
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
+						<uni-th align="center">用户编号</uni-th>
 						<uni-th align="center">头像</uni-th>
 						<uni-th align="center">账号</uni-th>
 						<uni-th align="center">昵称</uni-th>
@@ -31,6 +32,7 @@
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
+						<uni-td align="center">{{ item.id }}</uni-td>
 						<uni-td align="center">
 							<img :src="item.avatar" style="width: 50px;height: 50px;border-radius: 10px;" />
 						</uni-td>

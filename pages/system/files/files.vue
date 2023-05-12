@@ -44,9 +44,7 @@
 							<view v-else-if="item.type==5">视频</view>
 						</uni-td>
 						<uni-td align="center">
-							<text class="wrap">
-								<uni-link :href="item.download_path" :text="item.download_path"></uni-link>
-							</text>
+							<uni-link class="wrap" :href="item.download_path" :text="item.download_path"></uni-link>
 						</uni-td>
 						<uni-td align="center">
 							<text class="wrap">{{item.store_path}}</text>
