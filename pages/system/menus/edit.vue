@@ -10,9 +10,9 @@
 						<uni-forms-item label="名称" name="name" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 						</uni-forms-item>
-						<!-- <uni-forms-item label="图标" name="icon">
-							<uni-easyinput type="text" trim="both" v-model="dataForm.icon" placeholder="示例: /icons/svg/content.svg" />
-						</uni-forms-item> -->
+						<uni-forms-item label="图标" name="icon">
+							<uni-easyinput type="text" trim="both" v-model="dataForm.icon" placeholder="示例: /icons/icon-.png" />
+						</uni-forms-item>
 						<uni-forms-item label="地址" name="url" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.url" />
 						</uni-forms-item>

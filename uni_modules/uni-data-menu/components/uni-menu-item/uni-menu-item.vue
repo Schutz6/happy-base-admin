@@ -5,8 +5,7 @@
 			'is-disabled':disabled
 		}"
 		:style="{
-			paddingLeft:paddingLeft,
-			'background-color':active?activeBackgroundColor:''
+			paddingLeft:paddingLeft
 		}"
 	 @click="onClickItem">
 		<slot></slot>
@@ -37,7 +36,7 @@
 				active: false,
 				activeTextColor: '#42B983',
 				textColor: '#303133',
-				activeBackgroundColor: ''
+				activeBackgroundColor: '#EBEBEB'
 			};
 		},
 		computed: {
@@ -116,8 +115,8 @@
 	}
 
 	.is-active {
-		color: $uni-color-primary;
-		// background-color: #ecf8f3;
+		// color: $uni-color-primary;
+		background-color: #EBEBEB;
 	}
 
 	.is-disabled {

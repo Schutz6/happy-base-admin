@@ -10,7 +10,7 @@
 				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
 					<uni-tr>
 						<uni-th align="left">名称</uni-th>
-						<!-- <uni-th align="center">图标</uni-th> -->
+						<uni-th align="center">图标</uni-th>
 						<uni-th align="left">地址</uni-th>
 						<uni-th align="center">所属角色</uni-th>
 						<uni-th align="center">排序(降序)</uni-th>
@@ -22,12 +22,12 @@
 							<view v-if="item.level == 1">{{ item.name }}</view>
 							<view v-else-if="item.level == 2" style="margin-left: 10px;">|-{{ item.name }}</view>
 						</uni-td>
-						<!-- <uni-td align="center">
+						<uni-td align="center">
 							<template v-if="item.icon">
 								<image :src="'../../../static'+item.icon" style="width: 20px;height: 20px;" />
 							</template>
 							<template v-else>--</template>
-						</uni-td> -->
+						</uni-td>
 						<uni-td align="left">{{ item.url }}</uni-td>
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">{{item.sort}}</uni-td>
