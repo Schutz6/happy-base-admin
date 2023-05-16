@@ -34,13 +34,13 @@
 					<uni-tr v-for="(item, index) in tableData" :key="index">
 						<uni-td align="center">{{ item.id }}</uni-td>
 						<uni-td align="center">
-							<img :src="item.avatar" style="width: 50px;height: 50px;border-radius: 10px;" />
+							<img :src="item.avatar" style="width: 40px;height: 40px;border-radius: 20px;" />
 						</uni-td>
 						<uni-td align="center">{{ item.username }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">
-							<view v-if="item.status==1">正常</view>
+							<view v-if="item.status==1" style="color: green;">正常</view>
 							<view v-else-if="item.status==2" style="color: red;">禁用</view>
 						</uni-td>
 						<uni-td align="center">
@@ -81,6 +81,7 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
+					roles: ['super', 'admin', 'user'],
 					status: null,//状态
 					searchKey: null
 				},

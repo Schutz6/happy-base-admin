@@ -146,15 +146,16 @@
 			//清空日志
 			clear(){
 				uni.showLoading({
-					title: '正在执行'
+					title: '正在删除'
 				})
 				this.$api.get("/log/clear/").then(res => {
 					uni.hideLoading()
 					if(res.code == 20000){
 						uni.showToast({
-							title: "执行成功",
+							title: "删除成功",
 							icon: 'success'
 						})
+						this.getList()
 					}
 				})
 			},
