@@ -238,6 +238,15 @@
 				"navigationStyle": "custom"
 		    }
 		}
+		,{
+		    "path" : "pages/system/blacklist/blacklist",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "IP黑名单",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

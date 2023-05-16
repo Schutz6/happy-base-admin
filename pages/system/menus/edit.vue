@@ -27,7 +27,7 @@
 							</view>
 						</uni-forms-item>
 						<uni-forms-item label="排序(降序)" name="sort" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.sort" />
+							<uni-easyinput type="number" trim="both" v-model="dataForm.sort" />
 						</uni-forms-item>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;">

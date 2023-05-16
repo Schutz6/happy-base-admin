@@ -76,6 +76,9 @@ export default class Request {
 			if(!data[key]){
 				delete data[key]
 			}
+			if(key === "sort"){
+				data["sort"] = parseInt(data["sort"])
+			}
 		}
 
 		//拼接完整请求地址
