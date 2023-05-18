@@ -23,8 +23,11 @@ export default class Request {
 		
 		//过滤请求参数
 		for(let key in data){
-			if(!data[key]){
+			if(data[key] === ''){
 				delete data[key]
+			}
+			if(key === "sort"){
+				data["sort"] = parseInt(data["sort"])
 			}
 		}
 		
@@ -73,7 +76,7 @@ export default class Request {
 			
 		//过滤请求参数
 		for(let key in data){
-			if(!data[key]){
+			if(data[key] === ''){
 				delete data[key]
 			}
 			if(key === "sort"){
