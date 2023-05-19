@@ -4,7 +4,7 @@
 			<uni-card>
 				<view class="filter-container d-flex">
 					<view class="filter-item d-flex" style="width: 210px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="文件名称"></uni-easyinput>
+						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="IP"></uni-easyinput>
 					</view>
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
