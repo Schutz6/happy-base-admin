@@ -81,7 +81,6 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
-					roles: ['super', 'admin', 'user'],
 					status: null,//状态
 					searchKey: null
 				},

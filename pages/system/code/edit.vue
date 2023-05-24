@@ -2,7 +2,7 @@
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
 			<uni-card title="编辑模块" style="padding-bottom: 100px;">
-				<view style="width: 750px;padding: 10px;">
+				<view style="width: 1000px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
 						<uni-forms-item label="模块ID" name="mid" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.mid" disabled />
@@ -14,11 +14,11 @@
 							<checkbox-group @change="checkboxChange">
 								<view class="box">
 									<view class="d-flex">
-										<view style="width: 180px;">接口名称</view>
+										<view style="width: 220px;">接口名称</view>
 										<view class="flex1">限制角色</view>
 									</view>
 									<view class="item d-flex" v-for="(item, index) in dataForm.api_json" :key="index">
-										<view class="d-flex" style="width: 180px;">
+										<view class="d-flex" style="width: 220px;">
 											<checkbox :value="item.id" :checked="item.status" style="transform:scale(0.8)" /> {{item.name}}
 										</view>
 										<view class="flex1">
