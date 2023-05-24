@@ -4,10 +4,20 @@
 			<uni-card>
 				<view class="filter-container d-flex">
 					<view class="filter-item d-flex" style="width: 210px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="客户IP"></uni-easyinput>
+						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="关键字"></uni-easyinput>
 					</view>
+					<template v-if="module.table_json != null">
+						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.type==5 && table.query">
+							<view class="filter-item d-flex" style="width: 120px;">
+								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.dict)" :placeholder="'请选择'+table.remarks"></uni-data-select>
+							</view>
+						</view>
+					</template>
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
+					</view>
+					<view class="filter-item d-flex">
+						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
 					</view>
 					<view class="filter-item d-flex">
 						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
@@ -15,17 +25,33 @@
 				</view>
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
-						<uni-th align="center">客户IP</uni-th>
-						<uni-th align="center">加入时间</uni-th>
+						<template v-if="module.table_json != null">
+							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">{{table.remarks}}</uni-th>
+						</template>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<uni-td align="center">{{ item.ip }}</uni-td>
-						<uni-td align="center">
-							<uni-dateformat :date="item.add_time | formatDate"></uni-dateformat>
-						</uni-td>
+						<template v-if="module.table_json != null">
+							<uni-td align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">
+							<template v-if="table.type==4" i="列表">
+								{{ showDicts(table.dict, item[table.name]) }}
+							</template>
+							<template v-else-if="table.type==5" i="字典">
+								{{ showDict(table.dict, item[table.name]) }}
+							</template>
+							<template v-else-if="table.type==6" i="图片">
+								<img @click="showImage(item[table.name])" :src="item[table.name]" class="pointer" style="width: 40px;height: 40px;" />
+							</template>
+							<template v-else i="其他">
+								{{ item[table.name] }}
+							</template>
+							</uni-td>
+						</template>
 						<uni-td align="center">
 							<view class="d-flex-center">
+								<view class="tag-view">
+									<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
+								</view>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 								</view>
@@ -39,15 +65,18 @@
 				</view>
 			</uni-card>
 		</scroll-view>
-
 	</view>
 </template>
 
 <script>
 	import { formatDateUtc } from '@/utils/util'
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
+				mid: null,//模块ID
+				module: {},//模块
+				dict: {},//字典
 				tableData: [],
 				total: 0,
 				listLoading: true,
@@ -60,6 +89,9 @@
 				selectId: null,//选中ID
 			}
 		},
+		computed: {
+			...mapGetters(['datas'])
+		},
 		filters: {
 		    //格式化日期
 		    formatDate(time){
@@ -71,8 +103,13 @@
 			// #ifdef H5
 			window.addEventListener("message", this.handleMessage)
 			// #endif
-			//初始化
-			this.init()
+		},
+		onLoad(options) {
+			this.mid = options.mid
+			if(this.mid){
+				//初始化
+				this.init()
+			}
 		},
 		methods: {
 			//处理消息
@@ -93,9 +130,89 @@
 					}
 				}
 			},
+			//跳转页面
+			toPage(path, item){
+				uni.navigateTo({
+					url: path,
+					events: {
+						//更新数据
+						updateData: (res)=>{
+							this.getList()
+						}
+					},
+					success: (res)=>{
+						//初始化数据
+						if(item){
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, data: JSON.parse(JSON.stringify(item)) })
+						}else{
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict })
+						}
+					}
+				})
+			},
+			//预览图片
+			showImage(img){
+				uni.previewImage({"urls": [img]})
+			},
 			//初始化
 			init() {
-				this.getList()
+				//获取模块信息
+				this.getModule(()=>{
+					//获取用户列表
+					this.getList()
+				})
+			},
+			//获取模块信息
+			getModule(callback){
+				this.$api.post("/code/getModule/", {"mid": this.mid}).then(async (res) => {
+					if(res.code == 20000){
+						this.module = res.data
+						//获取字典
+						for(let i=0;i<this.module.table_json.length;i++){
+							let item = this.module.table_json[i]
+							if(item.type==4 || item.type==5){
+								if(item.dict){
+									await this.initDict(item.dict)
+								}
+							}
+						}
+						callback()
+					}
+				})
+			},
+			//初始化字典
+			async initDict(name){
+				let res = await this.$api.postAsync("/dict/getList/", {"name": name})
+				if(res.code == 20000){
+					this.dict[name] = res.data
+				}
+			},
+			//获取字典
+			getDict(name){
+				return this.dict[name]
+			},
+			//显示字典
+			showDict(name, value){
+				let list = this.dict[name]
+				let names = "--"
+				for(let i=0;i<list.length;i++){
+					if(value == list[i].value){
+						names = list[i].text
+						break
+					}
+				}
+				return names
+			},
+			//显示字典
+			showDicts(name, values){
+				let list = this.dict[name]
+				let names = []
+				for(let i=0;i<list.length;i++){
+					if(values.includes(list[i].value)){
+						names.push(list[i].text)
+					}
+				}
+				return names.join(",")
 			},
 			//查询
 			search(){
@@ -106,9 +223,10 @@
 			getList() {
 				//清空选择
 				this.clearSelection()
+				this.tableData = []
 				//加载数据
 				this.listLoading = true
-				this.$api.post("/blacklist/list/", this.listQuery).then(res => {
+				this.$api.post("/core/list/", this.listQuery, {"Mid": this.mid}).then(res => {
 					this.listLoading = false
 					this.tableData = res.data.results
 					this.total = res.data.total
@@ -144,7 +262,7 @@
 				uni.showLoading({
 					title: '正在删除'
 				})
-				this.$api.post("/blacklist/delete/", {"id": this.selectId}).then(res => {
+				this.$api.post("/core/delete/", {"id": this.selectId}, {"Mid": this.mid}).then(res => {
 					uni.hideLoading()
 					if(res.code == 20000){
 						uni.showToast({
@@ -177,7 +295,7 @@
 					uni.showLoading({
 						title: '正在删除'
 					})
-					this.$api.post("/blacklist/batchDelete/", {"ids": ids}).then(res => {
+					this.$api.post("/core/batchDelete/", {"ids": ids}, {"Mid": this.mid}).then(res => {
 						uni.hideLoading()
 						if(res.code == 20000){
 							uni.showToast({
@@ -193,7 +311,7 @@
 						}
 					})
 				}
-			},
+			}
 		}
 	}
 </script>

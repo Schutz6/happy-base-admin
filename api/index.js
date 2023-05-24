@@ -7,11 +7,12 @@ class Api{
 	 * Get同步请求
 	 * @param data 带参数
 	 */
-	async getAsync(url, data) {  
+	async getAsync(url, data, header={}) {  
 		return await asyncRequest({
 			url: url,
 			method: "GET",
-			data: data
+			data: data,
+			header: header
 		})
 	}
 	
@@ -19,11 +20,25 @@ class Api{
 	 * Get请求
 	 * @param data 带参数
 	 */
-	get(url, data) {  
+	get(url, data, header={}) {  
 		return request({
 			url: url,
 			method: "GET",
-			data: data
+			data: data,
+			header: header
+		})
+	}
+	
+	/**
+	 * Post同步请求
+	 * @param data 带参数
+	 */
+	async postAsync(url, data, header={}) {  
+		return await asyncRequest({
+			url: url,
+			method: "POST",
+			data: data,
+			header: header
 		})
 	}
 
@@ -31,11 +46,12 @@ class Api{
 	 * Post请求
 	 * @param data 带参数
 	 */
-	post(url, data) {  
+	post(url, data, header={}) {  
 		return request({
 			url: url,
 			method: "POST",
-			data: data
+			data: data,
+			header: header
 		})
 	}
 	

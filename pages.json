@@ -247,6 +247,56 @@
 				"navigationStyle": "custom"
 		    }
 		}
+        ,{
+            "path" : "pages/system/code/code",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "代码管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        },{
+            "path" : "pages/system/code/add",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "代码新增",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        },{
+            "path" : "pages/system/code/edit",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "代码编辑",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        }
+        ,{
+            "path" : "pages/core/list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "列表页面",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        },{
+            "path" : "pages/core/add",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "新增页面",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        },{
+            "path" : "pages/core/edit",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "编辑页面",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
