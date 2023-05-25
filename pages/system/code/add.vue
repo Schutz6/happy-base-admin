@@ -2,8 +2,8 @@
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
 			<uni-card title="新增模块" style="padding-bottom: 100px;">
-				<view style="width: 1000px;padding: 10px;">
-					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
+				<view style="width: 1100px;padding: 10px;">
+					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top">
 						<uni-forms-item label="模块ID" name="mid" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.mid" />
 						</uni-forms-item>

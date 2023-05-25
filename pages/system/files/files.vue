@@ -3,7 +3,7 @@
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 210px;">
+					<view class="filter-item d-flex" style="width: 180px;">
 						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="文件名称"></uni-easyinput>
 					</view>
 					<view class="filter-item d-flex" style="width: 120px;">

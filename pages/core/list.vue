@@ -3,12 +3,15 @@
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 210px;">
+					<view class="filter-item d-flex" style="width: 180px;">
 						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="关键字"></uni-easyinput>
 					</view>
 					<template v-if="module.table_json != null">
-						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.type==5 && table.query">
-							<view class="filter-item d-flex" style="width: 120px;">
+						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.query">
+							<view v-if="table.type==9" class="filter-item d-flex" style="width: 120px;">
+								<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
+							</view>
+							<view v-if="table.type==5" class="filter-item d-flex" style="width: 120px;">
 								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="'请选择'+table.remarks"></uni-data-select>
 							</view>
 						</view>
@@ -16,9 +19,11 @@
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
 					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
-					</view>
+					<template v-if="module.api_json != null">
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles)">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
+						</view>
+					</template>
 					<view class="filter-item d-flex">
 						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
 					</view>
@@ -49,9 +54,11 @@
 						</template>
 						<uni-td align="center">
 							<view class="d-flex-center">
-								<view class="tag-view">
-									<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
-								</view>
+								<template v-if="module.api_json != null">
+									<view class="tag-view" v-if="checkRole(module.api_json[1].roles)">
+										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
+									</view>
+								</template>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 								</view>
@@ -90,7 +97,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['datas'])
+			...mapGetters(['user', 'datas'])
 		},
 		filters: {
 		    //格式化日期
@@ -149,6 +156,20 @@
 						}
 					}
 				})
+			},
+			//判断是否有权限
+			checkRole(roles){
+				if(roles.length == 0){
+					return false
+				}
+				let flag = false
+				for(let i=0;i<roles.length;i++){
+					if(this.user.roles.includes(roles[i])){
+						flag = true
+						break
+					}
+				}
+				return flag
 			},
 			//预览图片
 			showImage(img){
