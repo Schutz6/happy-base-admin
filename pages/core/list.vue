@@ -33,6 +33,7 @@
 						<template v-if="module.table_json != null">
 							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">{{table.remarks}}</uni-th>
 						</template>
+						<uni-th align="center">创建时间</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -52,6 +53,7 @@
 							</template>
 							</uni-td>
 						</template>
+						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<template v-if="module.api_json != null">

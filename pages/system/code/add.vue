@@ -34,6 +34,7 @@
 									<view class="flex1 d-flex-center">字段</view>
 									<view class="flex1 d-flex-center">类型</view>
 									<view class="flex1 d-flex-center">备注</view>
+									<view class="flex1 d-flex-center">默认值</view>
 									<view class="flex1 d-flex-center">绑定对象/字典</view>
 									<view class="flex1 d-flex-center">是否显示</view>
 									<view class="flex1 d-flex-center">查询字段</view>
@@ -49,6 +50,9 @@
 									</view>
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
 										<uni-easyinput type="text" trim="both" v-model="item.remarks" :clearable="false" />
+									</view>
+									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+										<uni-easyinput type="text" trim="both" v-model="item.default" :clearable="false" />
 									</view>
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
 										<uni-easyinput type="text" trim="both" v-model="item.key" :clearable="false" />
@@ -101,7 +105,7 @@
 						{"id": "getList", "name": "全部列表", "status": false, "roles": []},
 						{"id": "getInfo", "name": "获取详情", "status": false, "roles": []}
 					],
-					// {"name": "字段", "type": "类型", "remarks": "备注", "key": "绑定对象/字典", "show": "是否显示", "query": "查询字段", "unique": "唯一校验"},
+					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "是否显示", "query": "查询字段", "unique": "唯一校验"},
 					table_json: []
 				},
 				rules: {
@@ -156,7 +160,7 @@
 			},
 			//新增字段
 			addField(){
-				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "key": "", "show": true, "query": false, "unique": false})
+				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "unique": false})
 			},
 			//删除字段
 			delField(index){

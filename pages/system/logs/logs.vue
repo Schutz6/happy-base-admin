@@ -36,7 +36,6 @@
 						<uni-td align="center">{{item.ip}}</uni-td>
 						<uni-td align="center">{{item.times}}ms</uni-td>
 						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
-				
 					</uni-tr>
 				</uni-table>
 				<view class="uni-pagination-box">
