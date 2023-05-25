@@ -9,7 +9,7 @@
 					<template v-if="module.table_json != null">
 						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.type==5 && table.query">
 							<view class="filter-item d-flex" style="width: 120px;">
-								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.dict)" :placeholder="'请选择'+table.remarks"></uni-data-select>
+								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="'请选择'+table.remarks"></uni-data-select>
 							</view>
 						</view>
 					</template>
@@ -34,10 +34,10 @@
 						<template v-if="module.table_json != null">
 							<uni-td align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">
 							<template v-if="table.type==4" i="列表">
-								{{ showDicts(table.dict, item[table.name]) }}
+								{{ showDicts(table.key, item[table.name]) }}
 							</template>
 							<template v-else-if="table.type==5" i="字典">
-								{{ showDict(table.dict, item[table.name]) }}
+								{{ showDict(table.key, item[table.name]) }}
 							</template>
 							<template v-else-if="table.type==6" i="图片">
 								<img @click="showImage(item[table.name])" :src="item[table.name]" class="pointer" style="width: 40px;height: 40px;" />
@@ -171,8 +171,8 @@
 						for(let i=0;i<this.module.table_json.length;i++){
 							let item = this.module.table_json[i]
 							if(item.type==4 || item.type==5){
-								if(item.dict){
-									await this.initDict(item.dict)
+								if(item.key){
+									await this.initDict(item.key)
 								}
 							}
 						}

@@ -16,13 +16,13 @@
 							<template v-else-if="table.type==4">
 								<!-- 列表 -->
 								<view class="d-flex" style="height: 100%;">
-									<uni-data-checkbox multiple v-model="dataForm[table.name]" :localdata="getDict(table.dict)"></uni-data-checkbox>
+									<uni-data-checkbox multiple v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
 								</view>
 							</template>
 							<template v-else-if="table.type==5">
 								<!-- 字典 -->
 								<view class="d-flex" style="height: 100%;">
-									<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.dict)"></uni-data-checkbox>
+									<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
 								</view>
 							</template>
 							<template v-else-if="table.type==6">

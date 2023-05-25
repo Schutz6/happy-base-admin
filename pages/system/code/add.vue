@@ -34,9 +34,10 @@
 									<view class="flex1 d-flex-center">字段</view>
 									<view class="flex1 d-flex-center">类型</view>
 									<view class="flex1 d-flex-center">备注</view>
-									<view class="flex1 d-flex-center">绑定字典</view>
+									<view class="flex1 d-flex-center">绑定对象/字典</view>
 									<view class="flex1 d-flex-center">是否显示</view>
 									<view class="flex1 d-flex-center">查询字段</view>
+									<view class="flex1 d-flex-center">唯一校验</view>
 									<view class="flex1 d-flex-center">操作</view>
 								</view>
 								<view class="item d-flex" v-for="(item, index) in dataForm.table_json" :key="index">
@@ -50,13 +51,16 @@
 										<uni-easyinput type="text" trim="both" v-model="item.remarks" :clearable="false" />
 									</view>
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
-										<uni-easyinput type="text" trim="both" v-model="item.dict" :clearable="false" />
+										<uni-easyinput type="text" trim="both" v-model="item.key" :clearable="false" />
 									</view>
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
 										<switch @change="switchShow($event, index)" :checked="item.show" style="transform:scale(0.8)" />
 									</view>
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.8)" />
+									</view>
+									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.8)" />
 									</view>
 									<view class="flex1 d-flex-center">
 										<uni-tag text="删除" type="error" @click="delField(index)"></uni-tag>
@@ -89,15 +93,15 @@
 					mid: null,
 					name: null,
 					api_json: [
-						{"id": "add", "name": "新增", "status": true, "roles": ["super", "admin"]},
-						{"id": "update", "name": "编辑", "status": true, "roles": ["super", "admin"]},
-						{"id": "delete", "name": "删除", "status": true, "roles": ["super", "admin"]},
-						{"id": "batchDelete", "name": "批量删除", "status": false, "roles": ["super", "admin"]},
-						{"id": "list", "name": "分页列表", "status": true, "roles": ["super", "admin"]},
-						{"id": "getList", "name": "全部列表", "status": false, "roles": ["super", "admin"]},
-						{"id": "getInfo", "name": "获取详情", "status": false, "roles": ["super", "admin"]}
+						{"id": "add", "name": "新增", "status": true, "roles": []},
+						{"id": "update", "name": "编辑", "status": true, "roles": []},
+						{"id": "delete", "name": "删除", "status": true, "roles": []},
+						{"id": "batchDelete", "name": "批量删除", "status": false, "roles": []},
+						{"id": "list", "name": "分页列表", "status": true, "roles": []},
+						{"id": "getList", "name": "全部列表", "status": false, "roles": []},
+						{"id": "getInfo", "name": "获取详情", "status": false, "roles": []}
 					],
-					// {"name": "字段", "type": "类型", "remarks": "备注", "dict": "绑定字典", "show": "是否显示", "query": "查询字段"},
+					// {"name": "字段", "type": "类型", "remarks": "备注", "key": "绑定对象/字典", "show": "是否显示", "query": "查询字段", "unique": "唯一校验"},
 					table_json: []
 				},
 				rules: {
@@ -152,17 +156,23 @@
 			},
 			//新增字段
 			addField(){
-				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "dict": "", "show": true, "query": false})
+				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "key": "", "show": true, "query": false, "unique": false})
 			},
 			//删除字段
 			delField(index){
 				this.dataForm.table_json.splice(index, 1)
 			},
+			//是否显示到表格
 			switchShow(e, index){
 				this.$set(this.dataForm.table_json[index], 'show', e.detail.value)
 			},
+			//是否显示到查询
 			switchQuery(e, index){
 				this.$set(this.dataForm.table_json[index], 'query', e.detail.value)
+			},
+			//是否校验唯一性
+			switchUnique(e, index){
+				this.$set(this.dataForm.table_json[index], 'unique', e.detail.value)
 			},
 			//提交
 			submit(){
