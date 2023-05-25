@@ -12,5 +12,5 @@ export default {
 	//菜单状态
 	menu_status_json: [{'value': 1, 'text': '启用'}, {'value': 0, 'text': '禁用'}],
 	//字段类型
-	field_type_json: [{'value': 1, 'text': 'String'}, {'value': 2, 'text': 'Int'}, {'value': 3, 'text': 'Float'}, {'value': 4, 'text': 'List'}, {'value': 5, 'text': 'Dict'}, {'value': 6, 'text': 'Image'}, {'value': 7, 'text': 'Text'}, {'value': 8, 'text': 'Html'}],
+	field_type_json: [{'value': 1, 'text': 'String'}, {'value': 2, 'text': 'Int'}, {'value': 3, 'text': 'Float'}, {'value': 4, 'text': 'List'}, {'value': 5, 'text': 'Dict'}, {'value': 6, 'text': 'Image'}, {'value': 7, 'text': 'Text'}, {'value': 8, 'text': 'Html'}, {'value': 9, 'text': 'Object'}],
 }

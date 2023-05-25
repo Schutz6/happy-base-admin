@@ -297,6 +297,15 @@
 				"navigationStyle": "custom"
             }
         }
+        ,{
+            "path" : "pages/system/backup/backup",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "备份管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
