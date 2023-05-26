@@ -59,20 +59,7 @@
 				eventChannel: null,
 				loading: false,
 				dataForm: {},
-				rules: {
-					username: {
-						rules: [{
-							required: true,
-							errorMessage: "请输入"
-						}]
-					},
-					status: {
-						rules: [{
-							required: true,
-							errorMessage: "请选择"
-						}]
-					}
-				},
+				rules: {},
 			}
 		},
 		computed: {
@@ -84,12 +71,46 @@
 			this.eventChannel.on('initData', (res)=> {
 			    this.module = res.module
 				this.dict = res.dict
+				
+				this.initRules()
 			})
 		},
 		methods: {
 			//返回
 			back(){
 				uni.navigateBack()
+			},
+			//初始化验证规则
+			initRules(){
+				for(let i=0;i<this.module.table_json.length;i++){
+					let table = this.module.table_json[i]
+					if(table.type == 4 || table.type == 5){
+						this.rules[table.name] = {
+							rules: [{
+								required: true,
+								errorMessage: "请选择"
+							}]
+						}
+					}else if(table.type == 6){
+						this.rules[table.name] = {
+							rules: [{
+								required: true,
+								errorMessage: "请上传"
+							}]
+						}
+					}else{
+						this.rules[table.name] = {
+							rules: [{
+								required: true,
+								errorMessage: "请输入"
+							}]
+						}
+					}
+					//使用默认值
+					if(table.default){
+						this.dataForm[table.name] = table.default
+					}
+				}
 			},
 			//获取字典
 			getDict(name){

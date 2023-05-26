@@ -77,7 +77,7 @@
 									<view class="d-flex-center" style="width: 90px;">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.8)" />
 									</view>
-									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;">
 										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.8)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
