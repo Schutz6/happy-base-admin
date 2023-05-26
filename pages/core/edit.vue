@@ -94,12 +94,7 @@
 							}]
 						}
 					}else if(table.type == 6){
-						this.rules[table.name] = {
-							rules: [{
-								required: true,
-								errorMessage: "请上传"
-							}]
-						}
+						
 					}else{
 						this.rules[table.name] = {
 							rules: [{
