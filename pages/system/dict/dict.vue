@@ -11,46 +11,50 @@
 					</view>
 				</template>
 				<uni-collapse>
-					<uni-collapse-item v-for="(item, index) in list" :key="index" :title="item.name+' - '+item.describe">
-						<view style="padding: 0 10px 10px 10px">
-							<view class="d-flex between" style="padding-bottom: 10px;">
-								<view class="">
-									<uni-tag text="新增子集" type="primary" @click="toPage('/pages/system/dict/addValue', item)"></uni-tag>
-								</view>
-								<view class="d-flex">
-									<view class="tag-view">
-										<uni-tag text="编辑字典" type="primary" @click="toPage('/pages/system/dict/editType', item)"></uni-tag>
-									</view>
-									<view class="tag-view">
-										<uni-tag text="删除字典" type="error" @click="showDeleteTips(item.id)"></uni-tag>
-									</view>
-								</view>
-							</view>
-							<uni-table border stripe emptyText="暂无更多数据" >
-								<uni-tr>
-									<uni-th align="center">Key</uni-th>
-									<uni-th align="center">Value</uni-th>
-									<uni-th align="center">排序（降序）</uni-th>
-									<uni-th align="center">操作</uni-th>
-								</uni-tr>
-								<uni-tr v-for="(childItem, childIndex) in item.children" :key="childIndex">
-									<uni-td align="center">{{childItem.dict_name}}</uni-td>
-									<uni-td align="center">{{childItem.dict_value}}</uni-td>
-									<uni-td align="center">{{childItem.sort}}</uni-td>
-									<uni-td align="center">
-										<view class="d-flex-center">
+					<uni-row :gutter="40">
+						<uni-col :span="12" v-for="(item, index) in list" :key="index">
+							<uni-collapse-item class="box" border="false" title-border="none" :title="item.name+' - '+item.describe">
+								<view style="padding: 0 10px 10px 10px">
+									<view class="d-flex between" style="padding-bottom: 10px;">
+										<view class="">
+											<uni-tag text="新增子集" type="primary" @click="toPage('/pages/system/dict/addValue', item)"></uni-tag>
+										</view>
+										<view class="d-flex">
 											<view class="tag-view">
-												<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/dict/editValue', childItem)"></uni-tag>
+												<uni-tag text="编辑字典" type="primary" @click="toPage('/pages/system/dict/editType', item)"></uni-tag>
 											</view>
 											<view class="tag-view">
-												<uni-tag text="删除" type="error" @click="deleteChildItem(childItem.id, childItem.dict_tid)"></uni-tag>
+												<uni-tag text="删除字典" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 											</view>
 										</view>
-									</uni-td>
-								</uni-tr>
-							</uni-table>
-						</view>
-					</uni-collapse-item>
+									</view>
+									<uni-table border stripe emptyText="暂无更多数据" >
+										<uni-tr>
+											<uni-th align="center">Key</uni-th>
+											<uni-th align="center">Value</uni-th>
+											<uni-th align="center">排序（降序）</uni-th>
+											<uni-th align="center">操作</uni-th>
+										</uni-tr>
+										<uni-tr v-for="(childItem, childIndex) in item.children" :key="childIndex">
+											<uni-td align="center">{{childItem.dict_name}}</uni-td>
+											<uni-td align="center">{{childItem.dict_value}}</uni-td>
+											<uni-td align="center">{{childItem.sort}}</uni-td>
+											<uni-td align="center">
+												<view class="d-flex-center">
+													<view class="tag-view">
+														<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/dict/editValue', childItem)"></uni-tag>
+													</view>
+													<view class="tag-view">
+														<uni-tag text="删除" type="error" @click="deleteChildItem(childItem.id, childItem.dict_tid)"></uni-tag>
+													</view>
+												</view>
+											</uni-td>
+										</uni-tr>
+									</uni-table>
+								</view>
+							</uni-collapse-item>
+						</uni-col>
+					</uni-row>
 				</uni-collapse>
 			</uni-card>
 		</scroll-view>
@@ -173,5 +177,8 @@
 </script>
 
 <style scoped lang="scss">
-	
+	.box{
+		border: 1px solid #ddd;
+		margin-bottom: 10px;
+	}
 </style>

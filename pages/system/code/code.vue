@@ -17,12 +17,17 @@
 					<uni-tr>
 						<uni-th align="center">模块ID</uni-th>
 						<uni-th align="center">模块名称</uni-th>
+						<uni-th align="center">使用缓存</uni-th>
 						<uni-th align="center">激活接口</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
 						<uni-td align="center">{{ item.mid }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
+						<uni-td align="center">
+							<view v-if="item.cache == 1">是</view>
+							<view v-else-if="item.cache == 0">否</view>
+						</uni-td>
 						<uni-td align="center">
 							{{ formatApi(item.api_json.filter(data => {return data.status})) }}
 						</uni-td>

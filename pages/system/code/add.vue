@@ -4,12 +4,25 @@
 			<uni-card title="新增模块" style="padding-bottom: 100px;">
 				<view style="width: 1100px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top">
-						<uni-forms-item label="模块ID" name="mid" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.mid" />
-						</uni-forms-item>
-						<uni-forms-item label="模块名称" name="name" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
-						</uni-forms-item>
+						<uni-row :gutter="50">
+							<uni-col :span="8">
+								<uni-forms-item label="模块ID" name="mid" required>
+									<uni-easyinput type="text" trim="both" v-model="dataForm.mid" />
+								</uni-forms-item>
+							</uni-col>
+							<uni-col :span="8">
+								<uni-forms-item label="模块名称" name="name" required>
+									<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
+								</uni-forms-item>
+							</uni-col>
+							<uni-col :span="8">
+								<uni-forms-item label="使用缓存" name="cache" required>
+									<view class="box d-flex" style="height: 100%;">
+										<uni-data-checkbox v-model="dataForm.cache" :localdata="datas.if_status_json"></uni-data-checkbox>
+									</view>
+								</uni-forms-item>
+							</uni-col>
+						</uni-row>
 						<uni-forms-item label="激活接口" name="api_json" required>
 							<checkbox-group @change="checkboxChange">
 								<view class="box">
@@ -36,10 +49,10 @@
 									<view class="flex1 d-flex-center">备注</view>
 									<view class="flex1 d-flex-center">默认值</view>
 									<view class="flex1 d-flex-center">绑定对象/字典</view>
-									<view class="flex1 d-flex-center">是否显示</view>
-									<view class="flex1 d-flex-center">查询字段</view>
-									<view class="flex1 d-flex-center">唯一校验</view>
-									<view class="flex1 d-flex-center">操作</view>
+									<view class="d-flex-center" style="width: 90px;">是否显示</view>
+									<view class="d-flex-center" style="width: 90px;">查询字段</view>
+									<view class="d-flex-center" style="width: 90px;">唯一校验</view>
+									<view class="d-flex-center" style="width: 90px;">操作</view>
 								</view>
 								<view class="item d-flex" v-for="(item, index) in dataForm.table_json" :key="index">
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
@@ -57,16 +70,16 @@
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
 										<uni-easyinput type="text" trim="both" v-model="item.key" :clearable="false" />
 									</view>
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
 										<switch @change="switchShow($event, index)" :checked="item.show" style="transform:scale(0.8)" />
 									</view>
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.8)" />
 									</view>
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
 										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.8)" />
 									</view>
-									<view class="flex1 d-flex-center">
+									<view class="d-flex-center" style="width: 90px;">
 										<uni-tag text="删除" type="error" @click="delField(index)"></uni-tag>
 									</view>
 								</view>
@@ -96,6 +109,7 @@
 				dataForm: {
 					mid: null,
 					name: null,
+					cache: 0,
 					api_json: [
 						{"id": "add", "name": "新增", "status": true, "roles": []},
 						{"id": "update", "name": "编辑", "status": true, "roles": []},
@@ -219,7 +233,7 @@
 		padding: 5px 10px;
 		
 		.item{
-			padding: 5px 0;
+			padding: 2px 0;
 		}
 	}
 </style>
