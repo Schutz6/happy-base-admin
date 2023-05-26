@@ -71,16 +71,16 @@
 									<view class="flex1 d-flex-center" style="padding: 0 5px;">
 										<uni-easyinput type="text" trim="both" v-model="item.key" :clearable="false" />
 									</view>
-									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;">
 										<switch @change="switchShow($event, index)" :checked="item.show" style="transform:scale(0.8)" />
 									</view>
-									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.8)" />
 									</view>
-									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;">
 										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.8)" />
 									</view>
-									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
+									<view class="d-flex-center" style="width: 90px;">
 										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.8)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
