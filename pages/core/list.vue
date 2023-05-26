@@ -31,7 +31,7 @@
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
 						<template v-if="module.table_json != null">
-							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">{{table.remarks}}</uni-th>
+							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
 						</template>
 						<uni-th align="center">创建时间</uni-th>
 						<uni-th align="center">操作</uni-th>
@@ -92,6 +92,8 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
+					sortField: "_id",
+					sortOrder: "descending",
 					searchKey: null
 				},
 				selectedIndexs: [],
@@ -236,6 +238,14 @@
 					}
 				}
 				return names.join(",")
+			},
+			//排序
+			sortChange(e, name){
+				if(e.order){
+					this.listQuery.sortField = name
+					this.listQuery.sortOrder = e.order
+					this.search()
+				}
 			},
 			//查询
 			search(){

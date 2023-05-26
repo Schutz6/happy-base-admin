@@ -49,8 +49,9 @@
 									<view class="flex1 d-flex-center">备注</view>
 									<view class="flex1 d-flex-center">默认值</view>
 									<view class="flex1 d-flex-center">绑定对象/字典</view>
-									<view class="d-flex-center" style="width: 90px;">是否显示</view>
+									<view class="d-flex-center" style="width: 90px;">前端显示</view>
 									<view class="d-flex-center" style="width: 90px;">查询字段</view>
+									<view class="d-flex-center" style="width: 90px;">排序字段</view>
 									<view class="d-flex-center" style="width: 90px;">唯一校验</view>
 									<view class="d-flex-center" style="width: 90px;">操作</view>
 								</view>
@@ -75,6 +76,9 @@
 									</view>
 									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.8)" />
+									</view>
+									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
+										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.8)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;padding: 0 5px;">
 										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.8)" />
@@ -119,7 +123,7 @@
 						{"id": "getList", "name": "全部列表", "status": false, "roles": []},
 						{"id": "getInfo", "name": "获取详情", "status": false, "roles": []}
 					],
-					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "是否显示", "query": "查询字段", "unique": "唯一校验"},
+					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "前端显示", "query": "查询字段", "sort": "排序字段", "unique": "唯一校验"},
 					table_json: []
 				},
 				rules: {
@@ -174,7 +178,7 @@
 			},
 			//新增字段
 			addField(){
-				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "unique": false})
+				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "sort": false, "unique": false})
 			},
 			//删除字段
 			delField(index){
@@ -187,6 +191,10 @@
 			//是否显示到查询
 			switchQuery(e, index){
 				this.$set(this.dataForm.table_json[index], 'query', e.detail.value)
+			},
+			//是否显示排序
+			switchSort(e, index){
+				this.$set(this.dataForm.table_json[index], 'sort', e.detail.value)
 			},
 			//是否校验唯一性
 			switchUnique(e, index){

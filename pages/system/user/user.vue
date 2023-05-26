@@ -21,9 +21,9 @@
 				</view>
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
-						<uni-th align="center">用户编号</uni-th>
+						<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, '_id')">用户编号</uni-th>
 						<uni-th align="center">头像</uni-th>
-						<uni-th align="center">账号</uni-th>
+						<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, 'name')">账号</uni-th>
 						<uni-th align="center">昵称</uni-th>
 						<uni-th align="center">角色</uni-th>
 						<uni-th align="center">状态</uni-th>
@@ -81,6 +81,8 @@
 				listQuery: {
 					currentPage: 1,
 					pageSize: 20,
+					sortField: "_id",
+					sortOrder: "descending",
 					status: null,//状态
 					searchKey: null
 				},
@@ -181,6 +183,14 @@
 				  }
 				}else {
 				  return "--";
+				}
+			},
+			//排序
+			sortChange(e, name){
+				if(e.order){
+					this.listQuery.sortField = name
+					this.listQuery.sortOrder = e.order
+					this.search()
 				}
 			},
 			//查询
