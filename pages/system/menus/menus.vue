@@ -4,7 +4,7 @@
 			<uni-card>
 				<view class="filter-container d-flex">
 					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/menus/add')">新增一级菜单</button>
+						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/menus/add')">新增主菜单</button>
 					</view>
 				</view>
 				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
@@ -44,7 +44,7 @@
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 								</view>
 								<view class="tag-view" style="min-width: 60px" v-if="item.pid==0 && item.url=='#'">
-									<uni-tag text="+子菜单" type="primary" @click="toPage('/pages/system/menus/add', item)"></uni-tag>
+									<uni-tag text="+子菜单" type="warning" @click="toPage('/pages/system/menus/add', item)"></uni-tag>
 								</view>
 							</view>
 						</uni-td>

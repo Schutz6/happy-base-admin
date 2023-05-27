@@ -17,7 +17,7 @@
 							</uni-col>
 							<uni-col :span="8">
 								<uni-forms-item label="使用缓存" name="cache" required>
-									<view class="box d-flex" style="height: 100%;">
+									<view class="box d-flex" style="height: 100%;padding-left: 10px;">
 										<uni-data-checkbox v-model="dataForm.cache" :localdata="datas.if_status_json"></uni-data-checkbox>
 									</view>
 								</uni-forms-item>
