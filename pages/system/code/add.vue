@@ -26,11 +26,11 @@
 						<uni-forms-item label="激活接口" name="api_json" required>
 							<checkbox-group @change="checkboxChange">
 								<view class="box">
-									<view class="d-flex">
+									<view class="d-flex" style="padding-bottom: 5px;padding-left: 10px;">
 										<view style="width: 220px;">接口名称</view>
 										<view class="flex1">限制角色</view>
 									</view>
-									<view class="item d-flex" v-for="(item, index) in dataForm.api_json" :key="index">
+									<view class="item d-flex" style="padding-left: 10px;" v-for="(item, index) in dataForm.api_json" :key="index">
 										<view class="d-flex" style="width: 220px;">
 											<checkbox :value="item.id" :checked="item.status" style="transform:scale(0.8)" /> {{item.name}}
 										</view>
@@ -43,7 +43,7 @@
 						</uni-forms-item>
 						<uni-forms-item label="字段管理" name="table_json" required>
 							<view class="box">
-								<view class="d-flex">
+								<view class="d-flex" style="padding-bottom: 5px;">
 									<view class="flex1 d-flex-center">字段</view>
 									<view class="flex1 d-flex-center">类型</view>
 									<view class="flex1 d-flex-center">备注</view>
@@ -84,7 +84,9 @@
 										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.8)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
-										<uni-tag text="删除" type="error" @click="delField(index)"></uni-tag>
+										<uni-icons class="operate-item pointer" type="trash" size="20" color="red" @click="delField(index)"></uni-icons>
+										<uni-icons class="operate-item pointer" type="arrow-up" size="20" color="#007aff" @click="clickUp(index)"></uni-icons>
+										<uni-icons class="operate-item pointer" type="arrow-down" size="20" color="#007aff" @click="clickDown(index)"></uni-icons>
 									</view>
 								</view>
 							</view>
@@ -180,6 +182,23 @@
 			addField(){
 				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "sort": false, "unique": false})
 			},
+			//点击上移
+			clickUp(index){
+				if(index > 0){
+					this.swapArray(this.dataForm.table_json, index-1, index)
+				}
+			},
+			//点击下移
+			clickDown(index){
+				if(index < this.dataForm.table_json.length-1){
+					this.swapArray(this.dataForm.table_json, index, index+1)
+				}
+			},
+			//数组元素互换位置
+			swapArray(arr, index1, index2) {
+				arr[index1] = arr.splice(index2, 1, arr[index1])[0]
+				return arr
+			},
 			//删除字段
 			delField(index){
 				this.dataForm.table_json.splice(index, 1)
@@ -238,10 +257,11 @@
 	.box{
 		border: 1px solid #ddd;
 		border-radius: 5px;
-		padding: 5px 10px;
+		padding: 5px 0px;
 		
 		.item{
-			padding: 2px 0;
+			padding: 5px 0;
+			border-top: 1px solid #ddd;
 		}
 	}
 </style>
