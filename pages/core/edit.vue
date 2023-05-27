@@ -93,7 +93,7 @@
 								errorMessage: "请选择"
 							}]
 						}
-					}else if(table.type == 6){
+					}else if(table.type == 6 || table.type == 8){
 						
 					}else{
 						this.rules[table.name] = {

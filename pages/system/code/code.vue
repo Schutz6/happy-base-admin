@@ -12,14 +12,17 @@
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/code/add')">新增</button>
 					</view>
+					<view class="filter-item d-flex">
+						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/code/addM')">新增模块</button>
+					</view>
 				</view>
 				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
 					<uni-tr>
-						<uni-th align="center">模块ID</uni-th>
-						<uni-th align="center">模块名称</uni-th>
-						<uni-th align="center">使用缓存</uni-th>
+						<uni-th align="center" width="150">模块ID</uni-th>
+						<uni-th align="center" width="150">模块名称</uni-th>
+						<uni-th align="center" width="100">使用缓存</uni-th>
 						<uni-th align="center">激活接口</uni-th>
-						<uni-th align="center">操作</uni-th>
+						<uni-th align="center" width="200">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
 						<uni-td align="center">{{ item.mid }}</uni-td>
@@ -38,6 +41,9 @@
 								</view>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+								</view>
+								<view class="tag-view">
+									<uni-tag text="复制模块" type="warning" @click="copy(item)"></uni-tag>
 								</view>
 							</view>
 						</uni-td>
@@ -171,7 +177,22 @@
 					}
 				})
 			},
-			
+			//复制模块
+			copy(item){
+				let code = JSON.parse(JSON.stringify(item))
+				//删除多余字段
+				delete code["id"]
+				//复制代码
+				uni.setClipboardData({
+					data: JSON.stringify(code),
+					success: ()=> {
+						uni.showToast({
+							title: "复制成功",
+							icon: 'success'
+						})
+					}
+				});
+			},
 		}
 	}
 </script>

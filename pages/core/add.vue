@@ -27,7 +27,7 @@
 							</template>
 							<template v-else-if="table.type==6">
 								<!-- 图片 -->
-								<uni-file-picker ref="avatar" limit="1" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
+								<uni-file-picker limit="1" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
 							</template>
 							<template v-else-if="table.type==7">
 								<!-- 多文本 -->
@@ -91,7 +91,7 @@
 								errorMessage: "请选择"
 							}]
 						}
-					}else if(table.type == 6){
+					}else if(table.type == 6 || table.type == 8){
 						
 					}else{
 						this.rules[table.name] = {
