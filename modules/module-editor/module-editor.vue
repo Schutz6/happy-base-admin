@@ -29,18 +29,28 @@
 
 					<view class="iconfont icon-text_color" :style="{'color': '#000000'}" @tap.stop="showColor">
 						<view v-show="showSetColor" class="sub-view">
-							<view class="d-flex-center" style="width: 150px;height: 30px;">
-								<input v-model="color" focus placeholder="color" style="padding: 0 5px;width: 90px;" />
-								<view style="width: 50px;font-size: 14px;text-align: center;" @tap.stop="setColor">确定</view>
+							<view class="d-flex-center" style="width: 143px;height: 110px;padding-left: 7px;padding-top: 5px;">
+								<!-- <input v-model="color" focus placeholder="color" style="padding: 0 5px;width: 90px;" />
+								<view style="width: 50px;font-size: 14px;text-align: center;" @tap.stop="setColor">确定</view> -->
+								<uni-row :gutter="10">
+									<uni-col :span="3.4" v-for="(item, index) in colorList" :key="index">
+										<view class="color-box" :style="{'background-color': item}" @tap.stop="setColor(item)"></view>
+									</uni-col>
+								</uni-row>
 							</view>
 						</view>
 					</view>
 
 					<view class="iconfont icon-fontbgcolor" :style="{'color': '#000000'}" @tap.stop="showBackgroundColor">
 						<view v-show="showSetBackgroundColor" class="sub-view">
-							<view class="d-flex-center" style="width: 150px;height: 30px;">
-								<input v-model="backgroundColor" focus placeholder="color" style="padding: 0 5px;width: 90px;" />
-								<view style="width: 50px;font-size: 14px;text-align: center;" @tap.stop="setBackgroundColor">确定</view>
+							<view class="d-flex-center" style="width: 143px;height: 110px;padding-left: 7px;padding-top: 5px;">
+								<!-- <input v-model="backgroundColor" focus placeholder="color" style="padding: 0 5px;width: 90px;" />
+								<view style="width: 50px;font-size: 14px;text-align: center;" @tap.stop="setBackgroundColor">确定</view> -->
+								<uni-row :gutter="10">
+									<uni-col :span="3.4" v-for="(item, index) in colorList" :key="index">
+										<view class="color-box" :style="{'background-color': item}" @tap.stop="setBackgroundColor(item)"></view>
+									</uni-col>
+								</uni-row>
 							</view>
 						</view>
 					</view>
@@ -93,7 +103,14 @@
 				showSetBackgroundColor: false,
 				backgroundColor: "#000000",
 				showSetHeader: false,
-				header: 1
+				header: 1,
+				colorList: [
+					'#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', 
+					'#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff',
+					'#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff',
+					'#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2',
+					'#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466'
+				]
 			}
 		},
 		mounted() {
@@ -181,15 +198,17 @@
 			showColor(){
 				this.showSetColor = true
 			},
-			setColor(){
-				this.editorCtx.format("color", this.color)
+			setColor(color){
+				// this.editorCtx.format("color", this.color)
+				this.editorCtx.format("color", color)
 				this.showSetColor = false
 			},
 			showBackgroundColor(){
 				this.showSetBackgroundColor = true
 			},
-			setBackgroundColor(){
-				this.editorCtx.format("backgroundColor", this.backgroundColor)
+			setBackgroundColor(color){
+				// this.editorCtx.format("backgroundColor", this.backgroundColor)
+				this.editorCtx.format("backgroundColor", color)
 				this.showSetBackgroundColor = false
 			},
 			showHeader(){
@@ -263,5 +282,11 @@
 
 	.ql-active {
 		color: #06c;
+	}
+	
+	.color-box{
+		height: 16px;
+		width: 16px;
+		margin-bottom: 5px;
 	}
 </style>

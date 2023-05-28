@@ -11,7 +11,7 @@
 							</template>
 							<template v-else-if="table.type==2 || table.type==3">
 								<!-- 数字 -->
-								<uni-easyinput type="number" trim="both" v-model="dataForm[table.name]" />
+								<uni-easyinput type="number" trim="both" v-model="dataForm[table.name]" :disabled="table.name==='pid' || table.name==='level'" />
 							</template>
 							<template v-else-if="table.type==4">
 								<!-- 列表 -->
@@ -71,6 +71,9 @@
 			this.eventChannel.on('initData', (res)=> {
 			    this.module = res.module
 				this.dict = res.dict
+				if(res.data){
+					this.dataForm = res.data
+				}
 				
 				this.initRules()
 			})

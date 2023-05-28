@@ -120,9 +120,11 @@
 						{"id": "add", "name": "新增", "status": true, "roles": []},
 						{"id": "update", "name": "编辑", "status": true, "roles": []},
 						{"id": "delete", "name": "删除", "status": true, "roles": []},
+						{"id": "recursionDelete", "name": "递归删除", "status": false, "roles": []},
 						{"id": "batchDelete", "name": "批量删除", "status": false, "roles": []},
 						{"id": "list", "name": "分页列表", "status": true, "roles": []},
 						{"id": "getList", "name": "全部列表", "status": false, "roles": []},
+						{"id": "getCategory", "name": "分类列表", "status": false, "roles": []},
 						{"id": "getInfo", "name": "获取详情", "status": false, "roles": []}
 					],
 					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "前端显示", "query": "查询字段", "sort": "排序字段", "unique": "唯一校验"},
