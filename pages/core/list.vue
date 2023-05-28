@@ -24,7 +24,7 @@
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
 						</view>
 					</template>
-					<view class="filter-item d-flex" v-if="module.api_json[4].show">
+					<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[4].show">
 						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
 					</view>
 				</view>
@@ -61,7 +61,7 @@
 										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
 									</view>
 								</template>
-								<view class="tag-view" v-if="module.api_json[2].show">
+								<view class="tag-view" v-if="checkRole(module.api_json[0].roles) && module.api_json[2].show">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 								</view>
 							</view>
