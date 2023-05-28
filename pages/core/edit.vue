@@ -28,6 +28,9 @@
 							<template v-else-if="table.type==6">
 								<!-- 图片 -->
 								<uni-file-picker :value="{'url': dataForm[table.name]}" limit="1" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
+								<view style="margin-top: 5px;">
+									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="图片地址" />
+								</view>
 							</template>
 							<template v-else-if="table.type==7">
 								<!-- 多文本 -->

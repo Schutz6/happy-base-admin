@@ -28,11 +28,15 @@
 								<view class="box">
 									<view class="d-flex" style="padding-bottom: 5px;padding-left: 10px;">
 										<view style="width: 220px;">接口名称</view>
+										<view style="width: 90px;">按钮显示</view>
 										<view class="flex1">限制角色</view>
 									</view>
 									<view class="item d-flex" style="padding-left: 10px;" v-for="(item, index) in dataForm.api_json" :key="index">
 										<view class="d-flex" style="width: 220px;">
 											<checkbox :value="item.id" :checked="item.status" style="transform:scale(0.8)" /> {{item.name}}
+										</view>
+										<view class="d-flex" style="width: 90px;">
+											<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.8)" />
 										</view>
 										<view class="flex1">
 											<uni-data-checkbox multiple v-model="item.roles" :localdata="roles"></uni-data-checkbox>
@@ -185,6 +189,10 @@
 			//删除字段
 			delField(index){
 				this.dataForm.table_json.splice(index, 1)
+			},
+			//是否显示按钮
+			switchApiShow(e, index){
+				this.$set(this.dataForm.api_json[index], 'show', e.detail.value)
 			},
 			//是否显示到表格
 			switchShow(e, index){

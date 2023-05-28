@@ -28,11 +28,15 @@
 								<view class="box">
 									<view class="d-flex" style="padding-bottom: 5px;padding-left: 10px;">
 										<view style="width: 220px;">接口名称</view>
+										<view style="width: 90px;">按钮显示</view>
 										<view class="flex1">限制角色</view>
 									</view>
 									<view class="item d-flex" style="padding-left: 10px;" v-for="(item, index) in dataForm.api_json" :key="index">
 										<view class="d-flex" style="width: 220px;">
 											<checkbox :value="item.id" :checked="item.status" style="transform:scale(0.8)" /> {{item.name}}
+										</view>
+										<view class="d-flex" style="width: 90px;">
+											<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.8)" />
 										</view>
 										<view class="flex1">
 											<uni-data-checkbox multiple v-model="item.roles" :localdata="roles"></uni-data-checkbox>
@@ -117,15 +121,15 @@
 					name: null,
 					cache: 0,
 					api_json: [
-						{"id": "add", "name": "新增", "status": true, "roles": []},
-						{"id": "update", "name": "编辑", "status": true, "roles": []},
-						{"id": "delete", "name": "删除", "status": true, "roles": []},
-						{"id": "recursionDelete", "name": "递归删除", "status": false, "roles": []},
-						{"id": "batchDelete", "name": "批量删除", "status": false, "roles": []},
-						{"id": "list", "name": "分页列表", "status": true, "roles": []},
-						{"id": "getList", "name": "全部列表", "status": false, "roles": []},
-						{"id": "getCategory", "name": "分类列表", "status": false, "roles": []},
-						{"id": "getInfo", "name": "获取详情", "status": false, "roles": []}
+						{"id": "add", "name": "新增", "status": true, "show": true, "roles": []},
+						{"id": "update", "name": "编辑", "status": true, "show": true, "roles": []},
+						{"id": "delete", "name": "删除", "status": true, "show": true, "roles": []},
+						{"id": "recursionDelete", "name": "递归删除", "status": false, "show": false, "roles": []},
+						{"id": "batchDelete", "name": "批量删除", "status": false, "show": true, "roles": []},
+						{"id": "list", "name": "分页列表", "status": true, "show": false, "roles": []},
+						{"id": "getList", "name": "全部列表", "status": false, "show": false, "roles": []},
+						{"id": "getCategory", "name": "分类列表", "status": false, "show": false, "roles": []},
+						{"id": "getInfo", "name": "获取详情", "status": false, "show": false, "roles": []}
 					],
 					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "前端显示", "query": "查询字段", "sort": "排序字段", "unique": "唯一校验"},
 					table_json: []
@@ -204,6 +208,10 @@
 			//删除字段
 			delField(index){
 				this.dataForm.table_json.splice(index, 1)
+			},
+			//是否显示按钮
+			switchApiShow(e, index){
+				this.$set(this.dataForm.api_json[index], 'show', e.detail.value)
 			},
 			//是否显示到表格
 			switchShow(e, index){

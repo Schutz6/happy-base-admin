@@ -20,11 +20,11 @@
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
 					</view>
 					<template v-if="module.api_json != null">
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles)">
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
 						</view>
 					</template>
-					<view class="filter-item d-flex">
+					<view class="filter-item d-flex" v-if="module.api_json[4].show">
 						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
 					</view>
 				</view>
@@ -57,11 +57,11 @@
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<template v-if="module.api_json != null">
-									<view class="tag-view" v-if="checkRole(module.api_json[1].roles)">
+									<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[0].show">
 										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
 									</view>
 								</template>
-								<view class="tag-view">
+								<view class="tag-view" v-if="module.api_json[2].show">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 								</view>
 							</view>

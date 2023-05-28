@@ -40,10 +40,10 @@
 						</template>
 						<uni-td>
 							<view class="d-flex">
-								<view class="tag-view">
+								<view class="tag-view" v-if="module.api_json[1].show">
 									<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
 								</view>
-								<view class="tag-view">
+								<view class="tag-view" v-if="module.api_json[3].show">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 								</view>
 								<view class="tag-view" style="min-width: 60px" v-if="item.level < 3">
