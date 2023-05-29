@@ -12,7 +12,10 @@
 								<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
 							</view>
 							<view v-if="table.type==5" class="filter-item d-flex" style="width: 120px;">
-								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="'请选择'+table.remarks"></uni-data-select>
+								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
+							</view>
+							<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
+								<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
 							</view>
 						</view>
 					</template>
@@ -23,10 +26,21 @@
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
 						</view>
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[5].show">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate">批量修改</button>
+						</view>
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[4].show">
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
+						</view>
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[10].show">
+							<uni-file-picker ref="files" limit="1" file-mediatype="all" @select="importData" :auto-upload="false">
+								<button type="primary" size="mini" style="height: 35px;line-height: 35px;margin-top: 7px;">导入</button>
+							</uni-file-picker>
+						</view>
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[11].show">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="exportData">导出</button>
+						</view>
 					</template>
-					<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[4].show">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
-					</view>
 				</view>
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
@@ -39,7 +53,7 @@
 					<uni-tr v-for="(item, index) in tableData" :key="index">
 						<template v-if="module.table_json != null">
 							<uni-td align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">
-							<template v-if="table.type==4" i="列表">
+							<template v-if="table.type==4" i="字典列表">
 								{{ showDicts(table.key, item[table.name]) }}
 							</template>
 							<template v-else-if="table.type==5" i="字典">
@@ -47,6 +61,9 @@
 							</template>
 							<template v-else-if="table.type==6" i="图片">
 								<img @click="showImage(item[table.name])" :src="item[table.name]" class="pointer" style="width: 40px;height: 40px;" />
+							</template>
+							<template v-else-if="table.type==10" i="分类列表">
+								 {{formatCategory(item[table.name])}}
 							</template>
 							<template v-else i="其他">
 								{{ item[table.name] }}
@@ -60,10 +77,10 @@
 									<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[0].show">
 										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
 									</view>
+									<view class="tag-view" v-if="checkRole(module.api_json[0].roles) && module.api_json[2].show">
+										<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+									</view>
 								</template>
-								<view class="tag-view" v-if="checkRole(module.api_json[0].roles) && module.api_json[2].show">
-									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
-								</view>
 							</view>
 						</uni-td>
 					</uni-tr>
@@ -78,7 +95,7 @@
 </template>
 
 <script>
-	import { formatDateUtc } from '@/utils/util'
+	import { formatDateUtc, listToTree } from '@/utils/util'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -86,6 +103,7 @@
 				mid: null,//模块ID
 				module: {},//模块
 				dict: {},//字典
+				category: {},//分类
 				tableData: [],
 				total: 0,
 				listLoading: true,
@@ -101,7 +119,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['user', 'datas'])
+			...mapGetters(['user'])
 		},
 		filters: {
 		    //格式化日期
@@ -154,9 +172,9 @@
 					success: (res)=>{
 						//初始化数据
 						if(item){
-							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, data: JSON.parse(JSON.stringify(item)) })
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category, data: JSON.parse(JSON.stringify(item)) })
 						}else{
-							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict })
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category })
 						}
 					}
 				})
@@ -199,11 +217,44 @@
 								if(item.key){
 									await this.initDict(item.key)
 								}
+							}else if(item.type==10){
+								//获取分类列表
+								if(item.key){
+									await this.initCategory(item.key)
+								}
 							}
 						}
 						callback()
 					}
 				})
+			},
+			//初始化分类
+			async initCategory(name){
+				let res = await this.$api.postAsync("/core/getCategory/", {}, {"Mid": name})
+				if(res.code == 20000){
+					//转Tree
+					this.category[name] = listToTree(res.data)
+				}
+			},
+			//获取分类
+			getCategory(name){
+				return this.category[name]
+			},
+			//显示分类
+			formatCategory(categorys){
+				let names = []
+				for(let i=0;i<categorys.length;i++){
+					names.push(categorys[i].text)
+				}
+				if(names.length>0){
+					return names.join("/");
+				}else {
+					return "--";
+				}
+			},
+			//分类选择
+			onCategoryChange(e, name) {
+				this.listQuery[name] = e.detail.value
 			},
 			//初始化字典
 			async initDict(name){
@@ -344,6 +395,51 @@
 						}
 					})
 				}
+			},
+			//跳转到批量修改
+			showBatchUpdate(){
+				if(this.selectedIndexs.length > 0){
+					let ids = this.selectedIndexs.map(i => this.tableData[i].id)
+					uni.navigateTo({
+						url: "/pages/core/batchUpdate",
+						events: {
+							//更新数据
+							updateData: (res)=>{
+								this.getList()
+							}
+						},
+						success: (res)=>{
+							//初始化数据
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category, "data": {"ids": ids}})
+						}
+					})
+				}
+			},
+			//导入数据
+			importData(e){
+				uni.showLoading({
+					title: '正在导入'
+				})
+				this.$api.uploadFile('/file/upload/', e.tempFilePaths[0]).then(res => {
+					uni.hideLoading()
+					this.$refs.files.clearFiles()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "导入成功",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: "导入失败",
+							icon: 'error'
+						})
+					}
+				})
+			},
+			//导出数据
+			exportData(){
+				
 			}
 		}
 	}

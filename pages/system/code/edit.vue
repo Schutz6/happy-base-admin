@@ -2,7 +2,7 @@
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
 			<uni-card title="编辑模块" style="padding-bottom: 100px;">
-				<view style="width: 1100px;padding: 10px;">
+				<view style="padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top">
 						<uni-row :gutter="50">
 							<uni-col :span="8">
@@ -33,10 +33,10 @@
 									</view>
 									<view class="item d-flex" style="padding-left: 10px;" v-for="(item, index) in dataForm.api_json" :key="index">
 										<view class="d-flex" style="width: 220px;">
-											<checkbox :value="item.id" :checked="item.status" style="transform:scale(0.8)" /> {{item.name}}
+											<checkbox :value="item.id" :checked="item.status" style="transform:scale(0.6)" /> {{item.name}}
 										</view>
 										<view class="d-flex" style="width: 90px;">
-											<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.8)" />
+											<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
 										</view>
 										<view class="flex1">
 											<uni-data-checkbox multiple v-model="item.roles" :localdata="roles"></uni-data-checkbox>
@@ -76,16 +76,16 @@
 										<uni-easyinput type="text" trim="both" v-model="item.key" :clearable="false" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
-										<switch @change="switchShow($event, index)" :checked="item.show" style="transform:scale(0.8)" />
+										<switch @change="switchShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
-										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.8)" />
+										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.6)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
-										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.8)" />
+										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.6)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
-										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.8)" />
+										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.6)" />
 									</view>
 									<view class="d-flex-center" style="width: 90px;">
 										<uni-icons class="operate-item pointer" type="trash" size="20" color="red" @click="delField(index)"></uni-icons>

@@ -40,15 +40,17 @@
 						</template>
 						<uni-td>
 							<view class="d-flex">
-								<view class="tag-view" v-if="module.api_json[1].show">
-									<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
-								</view>
-								<view class="tag-view" v-if="module.api_json[3].show">
-									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
-								</view>
-								<view class="tag-view" style="min-width: 60px" v-if="item.level < 3">
-									<uni-tag text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
-								</view>
+								<template v-if="module.api_json != null">
+									<view class="tag-view" v-if="module.api_json[1].show">
+										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
+									</view>
+									<view class="tag-view" v-if="module.api_json[3].show">
+										<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+									</view>
+									<view class="tag-view" style="min-width: 60px" v-if="item.level < 3">
+										<uni-tag text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+									</view>
+								</template>
 							</view>
 						</uni-td>
 					</uni-tr>
@@ -60,8 +62,6 @@
 </template>
 
 <script>
-	import { formatDateUtc } from '@/utils/util'
-	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -73,15 +73,6 @@
 				listLoading: true,
 				selectId: null,//选中ID
 			}
-		},
-		computed: {
-			...mapGetters(['user', 'datas'])
-		},
-		filters: {
-		    //格式化日期
-		    formatDate(time){
-		    	return formatDateUtc(time)
-		    }
 		},
 		onReady() {
 			// 监听消息

@@ -1,20 +1,12 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
-			<uni-card :title="'新增信息 - '+module.name">
+			<uni-card :title="'批量修改 - '+module.name">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
-						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.name.indexOf('.') == -1" :label="table.remarks" :name="table.name" required>
-							<template v-if="table.type==1">
-								<!-- 字符串 -->
-								<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" />
-							</template>
-							<template v-else-if="table.type==2 || table.type==3">
-								<!-- 数字 -->
-								<uni-easyinput type="number" trim="both" v-model="dataForm[table.name]" :disabled="table.name==='pid' || table.name==='level'" />
-							</template>
-							<template v-else-if="table.type==4">
-								<!-- 列表-字典多选 -->
+						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="[4, 5, 10].includes(table.type)" :label="table.remarks" :name="table.name" required>
+							<template v-if="table.type==4">
+								<!-- 列表 -->
 								<view class="d-flex" style="height: 100%;">
 									<uni-data-checkbox multiple v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
 								</view>
@@ -25,21 +17,6 @@
 									<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
 								</view>
 							</template>
-							<template v-else-if="table.type==6">
-								<!-- 图片 -->
-								<uni-file-picker :ref="'file-'+table.name" limit="1" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
-								<view style="margin-top: 5px;">
-									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="图片地址" />
-								</view>
-							</template>
-							<template v-else-if="table.type==7">
-								<!-- 多文本 -->
-								<uni-easyinput type="textarea" trim="both" autoHeight v-model="dataForm[table.name]" />
-							</template>
-							<template v-else-if="table.type==8">
-								<!-- 富文本 -->
-								<module-editor :ref="'editor-'+table.name" html=""></module-editor>
-							</template>
 							<template v-else-if="table.type==10">
 								<!-- 分类选择 -->
 								<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
@@ -47,7 +24,7 @@
 						</uni-forms-item>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;padding-bottom: 20px;">
-						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">提交</button>
+						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">修改</button>
 						<button type="default" :loading="loading" @click="back" style="font-size: 14px;width: 100px;">返回</button>
 					</view>
 				</view>
@@ -60,6 +37,7 @@
 	export default {
 		data() {
 			return {
+				ids: [],
 				module: {},
 				dict: {},//字典
 				category: {},//分类
@@ -73,7 +51,8 @@
 			this.eventChannel = this.getOpenerEventChannel()
 			//初始化数据
 			this.eventChannel.on('initData', (res)=> {
-			    this.module = res.module
+				this.ids = res.ids
+				this.module = res.module
 				this.dict = res.dict
 				this.category = res.category
 				if(res.data){
@@ -99,19 +78,6 @@
 								errorMessage: "请选择"
 							}]
 						}
-					}else if(table.type == 6 || table.type == 8){
-						
-					}else{
-						this.rules[table.name] = {
-							rules: [{
-								required: true,
-								errorMessage: "请输入"
-							}]
-						}
-					}
-					//使用默认值
-					if(table.default){
-						this.dataForm[table.name] = table.default
 					}
 				}
 			},
@@ -129,26 +95,18 @@
 			},
 			//提交
 			submit(){
-				//判断是否有富文本
-				for(let i=0;i<this.module.table_json.length;i++){
-					let item = this.module.table_json[i]
-					if(item.type == 8){
-						//获取富文本内容
-						this.dataForm[item.name] = this.$refs["editor-"+item.name][0].getHtml()
-					}
-				}
 				this.$refs.form.validate().then(res => {
 					if (!this.loading) {
 						this.loading = true
 						uni.showLoading({
-							title: '正在提交'
+							title: '正在修改'
 						})
-						this.$api.post("/core/add/", this.dataForm, {"Mid": this.module.mid}).then(res => {
+						this.$api.post("/core/batchUpdate/", this.dataForm, {"Mid": this.module.mid}).then(res => {
 							this.loading = false
 							uni.hideLoading()
 							if(res.code == 20000){
 								uni.showToast({
-									title: "提交成功",
+									title: "修改成功",
 									icon: 'success'
 								})
 								setTimeout(()=>{
@@ -165,28 +123,6 @@
 					}
 				})
 			},
-			//选择图片后触发
-			selectFile(e, name){
-				uni.showLoading({
-					title: '正在上传'
-				})
-				this.$api.uploadFile('/file/upload/', e.tempFilePaths[0]).then(res => {
-					uni.hideLoading()
-					if(res.code == 20000){
-						uni.showToast({
-							title: "上传成功",
-							icon: 'success'
-						})
-						this.dataForm[name] = res.data.download_path
-					}else{
-						this.$refs['file-'+name][0].clearFiles()
-						uni.showToast({
-							title: "上传失败",
-							icon: 'error'
-						})
-					}
-				})
-			}
 		}
 	}
 </script>

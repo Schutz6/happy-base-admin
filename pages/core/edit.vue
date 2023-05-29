@@ -27,18 +27,22 @@
 							</template>
 							<template v-else-if="table.type==6">
 								<!-- 图片 -->
-								<uni-file-picker :value="{'url': dataForm[table.name]}" limit="1" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
+								<uni-file-picker :ref="'file-'+table.name" :value="{'url': dataForm[table.name]}" limit="1" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
 								<view style="margin-top: 5px;">
 									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="图片地址" />
 								</view>
 							</template>
 							<template v-else-if="table.type==7">
 								<!-- 多文本 -->
-								<uni-easyinput type="textarea" trim="both" v-model="dataForm[table.name]" />
+								<uni-easyinput type="textarea" trim="both" autoHeight v-model="dataForm[table.name]" />
 							</template>
 							<template v-else-if="table.type==8">
 								<!-- 富文本 -->
 								<module-editor :ref="'editor-'+table.name" :html="dataForm[table.name]"></module-editor>
+							</template>
+							<template v-else-if="table.type==10">
+								<!-- 分类选择 -->
+								<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
 							</template>
 						</uni-forms-item>
 					</uni-forms>
@@ -53,21 +57,17 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
 				module: {},
 				dict: {},//字典
+				category: {},//分类
 				eventChannel: null,
 				loading: false,
-				fileLists: [],
 				dataForm: {},
 				rules: {},
 			}
-		},
-		computed: {
-			...mapGetters(['datas'])
 		},
 		onLoad() {
 			this.eventChannel = this.getOpenerEventChannel()
@@ -75,6 +75,7 @@
 			this.eventChannel.on('initData', (res)=> {
 				this.module = res.module
 				this.dict = res.dict
+				this.category = res.category
 				this.dataForm = res.data
 				
 				this.initRules()
@@ -89,7 +90,7 @@
 			initRules(){
 				for(let i=0;i<this.module.table_json.length;i++){
 					let table = this.module.table_json[i]
-					if(table.type == 4 || table.type == 5){
+					if(table.type == 4 || table.type == 5 || table.type == 10){
 						this.rules[table.name] = {
 							rules: [{
 								required: true,
@@ -107,6 +108,14 @@
 						}
 					}
 				}
+			},
+			//获取分类
+			getCategory(name){
+				return this.category[name]
+			},
+			//分类选择
+			onCategoryChange(e, name) {
+				this.dataForm[name] = e.detail.value
 			},
 			//获取字典
 			getDict(name){
@@ -164,6 +173,7 @@
 						})
 						this.dataForm[name] = res.data.download_path
 					}else{
+						this.$refs['file-'+name][0].clearFiles()
 						uni.showToast({
 							title: res.message,
 							icon: 'error'
