@@ -59,10 +59,12 @@ class Api{
 	 * 上传文件
 	 * @param filePath 文件地址
 	 */
-	uploadFile(url, filePath){
+	uploadFile(url, filePath, data, header={}){
 		return request({
 			url: url,
-			filePath: filePath
+			filePath: filePath,
+			data: data,
+			header: header
 		})
 	}
 

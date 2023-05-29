@@ -242,13 +242,17 @@
 			},
 			//显示分类
 			formatCategory(categorys){
-				let names = []
-				for(let i=0;i<categorys.length;i++){
-					names.push(categorys[i].text)
-				}
-				if(names.length>0){
-					return names.join("/");
-				}else {
+				if(categorys){
+					let names = []
+					for(let i=0;i<categorys.length;i++){
+						names.push(categorys[i].text)
+					}
+					if(names.length>0){
+						return names.join("/");
+					}else {
+						return "--";
+					}
+				}else{
 					return "--";
 				}
 			},
@@ -288,7 +292,11 @@
 						names.push(list[i].text)
 					}
 				}
-				return names.join(",")
+				if(names.length > 0){
+					return names.join(",")
+				}else{
+					return "--";
+				}
 			},
 			//排序
 			sortChange(e, name){
@@ -420,7 +428,7 @@
 				uni.showLoading({
 					title: '正在导入'
 				})
-				this.$api.uploadFile('/file/upload/', e.tempFilePaths[0]).then(res => {
+				this.$api.uploadFile('/core/importData/', e.tempFilePaths[0], {}, {"Mid": this.mid}).then(res => {
 					uni.hideLoading()
 					this.$refs.files.clearFiles()
 					if(res.code == 20000){
@@ -439,7 +447,20 @@
 			},
 			//导出数据
 			exportData(){
-				
+				uni.showLoading({
+					title: '正在导出'
+				})
+				this.$api.post("/core/exportData/", this.listQuery, {"Mid": this.mid}).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						window.open(res.data)
+					}else{
+						uni.showToast({
+							title: "导出失败",
+							icon: 'error'
+						})
+					}
+				})
 			}
 		}
 	}
