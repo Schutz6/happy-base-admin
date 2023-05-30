@@ -30,7 +30,7 @@
 										{{ showDict(table.key, item[table.name]) }}
 									</template>
 									<template v-else-if="table.type==6" i="图片">
-										<img @click="showImage(item[table.name])" :src="item[table.name]" class="pointer" style="width: 40px;height: 40px;" />
+										<image @click="showImage(item[table.name])" :src="item[table.name]" mode="aspectFit" class="pointer" style="height: 40px;height: 40px;"></image>
 									</template>
 									<template v-else i="其他">
 										{{ item[table.name] }}
