@@ -20,6 +20,6 @@ export default {
 		{'value': 5, 'text': 'Dict'}, {'value': 6, 'text': 'Image'},
 		{'value': 7, 'text': 'Text'}, {'value': 8, 'text': 'Html'},
 		{'value': 9, 'text': 'Object'}, {'value': 10, 'text': 'Category'},
-		{'value': 11, 'text': 'List<Object>'}
+		{'value': 11, 'text': 'List<Object>'},{'value': 12, 'text': 'List<Image>'}
 	],
 }

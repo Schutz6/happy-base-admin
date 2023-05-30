@@ -4,7 +4,7 @@
 			<uni-card :title="'批量修改 - '+module.name">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
-						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="[4, 5, 10].includes(table.type)" :label="table.remarks" :name="table.name" required>
+						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="[4, 5, 9, 10].includes(table.type)" :label="table.remarks" :name="table.name" required>
 							<template v-if="table.type==4">
 								<!-- 列表 -->
 								<view class="d-flex" style="height: 100%;">
@@ -16,6 +16,10 @@
 								<view class="d-flex" style="height: 100%;">
 									<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
 								</view>
+							</template>
+							<template v-else-if="table.type==9 && table.name!='uid'">
+								<!-- 对象选择 -->
+								<uni-data-select v-model="dataForm[table.name]" :localdata="getObject(table.key)"></uni-data-select>
 							</template>
 							<template v-else-if="table.type==10">
 								<!-- 分类选择 -->
@@ -41,6 +45,7 @@
 				module: {},
 				dict: {},//字典
 				category: {},//分类
+				object: {},//对象
 				eventChannel: null,
 				loading: false,
 				dataForm: {},
@@ -55,6 +60,7 @@
 				this.module = res.module
 				this.dict = res.dict
 				this.category = res.category
+				this.object = res.object
 				if(res.data){
 					this.dataForm = res.data
 				}
@@ -80,6 +86,10 @@
 						}
 					}
 				}
+			},
+			//获取对象
+			getObject(name){
+				return this.object[name]
 			},
 			//获取分类
 			getCategory(name){

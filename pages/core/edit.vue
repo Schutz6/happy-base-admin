@@ -26,11 +26,15 @@
 								</view>
 							</template>
 							<template v-else-if="table.type==6">
-								<!-- 图片 -->
-								<uni-file-picker :ref="'file-'+table.name" :value="{'url': dataForm[table.name]}" limit="1" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
+								<!-- 单图片 -->
+								<uni-file-picker :ref="'file-'+table.name" :value="formatImage(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
 								<view style="margin-top: 5px;">
 									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="图片地址" />
 								</view>
+							</template>
+							<template v-else-if="table.type==12">
+								<!-- 多图片 -->
+								<uni-file-picker :ref="'file-'+table.name" :value="formatImages(dataForm[table.name])" limit="3" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" :auto-upload="false"></uni-file-picker>
 							</template>
 							<template v-else-if="table.type==7">
 								<!-- 多文本 -->
@@ -103,7 +107,7 @@
 								errorMessage: "请选择"
 							}]
 						}
-					}else if(table.type == 6 || table.type == 8){
+					}else if(table.type == 6 || table.type == 8 || table.type == 12){
 						
 					}else{
 						this.rules[table.name] = {
@@ -130,6 +134,24 @@
 			//获取字典
 			getDict(name){
 				return this.dict[name]
+			},
+			//格式化单图片
+			formatImage(img){
+				let results = []
+				if(img){
+					results.push({'url': img})
+				}
+				return results
+			},
+			//格式化多图片
+			formatImages(imgs){
+				let results = []
+				if(imgs){
+					for(let i=0;i<imgs.length;i++){
+						results.push({'url': imgs[i]})
+					}
+				}
+				return results
 			},
 			//提交
 			submit(){
@@ -190,7 +212,45 @@
 						})
 					}
 				})
-			}
+			},
+			//删除图片
+			deleteFile(e, name){
+				this.dataForm[name] = null
+			},
+			//选择图片后触发
+			selectFiles(e, name){
+				uni.showLoading({
+					title: '正在上传'
+				})
+				this.$api.uploadFile('/file/upload/', e.tempFilePaths[0]).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "上传成功",
+							icon: 'success'
+						})
+						if(!this.dataForm[name]){
+							this.dataForm[name] = [res.data.download_path]
+						}else{
+							this.dataForm[name].push(res.data.download_path)
+						}
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
+				})
+			},
+			//删除图片
+			deleteFiles(e, name){
+				for(let i=0;i<this.dataForm[name].length;i++){
+					if(this.dataForm[name][i] === e.tempFilePath){
+						this.dataForm[name].splice(i, 1)
+						break;
+					}
+				}
+			},
 		}
 	}
 </script>

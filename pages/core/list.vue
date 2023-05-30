@@ -63,6 +63,9 @@
 							<template v-else-if="table.type==6" i="图片">
 								<img @click="showImage(item[table.name])" :src="item[table.name]" class="pointer" style="width: 40px;height: 40px;" />
 							</template>
+							<template v-else-if="table.type==7" i="多文本">
+								{{ item[table.name] | ellipsis}}
+							</template>
 							<template v-else-if="table.type==9" i="对象">
 								<view v-if="table.name=='uid'">{{ item[table.name] }}</view>
 								<view v-else>{{formatObject(table.key, item[table.name])}}</view>
@@ -131,7 +134,15 @@
 		    //格式化日期
 		    formatDate(time){
 		    	return formatDateUtc(time)
-		    }
+		    },
+			//限制长度
+			ellipsis(value) {
+			  if (!value) return ''
+			  if (value.length > 20) {
+			    return value.slice(0, 20) + '...'
+			  }
+			  return value
+			}
 		},
 		onReady() {
 			// 监听消息
@@ -226,7 +237,7 @@
 								}
 							}else if(item.type==9){
 								//获取对象列表
-								if(item.key){
+								if(item.key && item.name!='uid'){
 									await this.initObject(item.key)
 								}
 							}else if(item.type==10){
@@ -459,7 +470,7 @@
 						},
 						success: (res)=>{
 							//初始化数据
-							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category, "data": {"ids": ids}})
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category, "object": this.object, "data": {"ids": ids}})
 						}
 					})
 				}
