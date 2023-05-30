@@ -40,6 +40,10 @@
 								<!-- 富文本 -->
 								<module-editor :ref="'editor-'+table.name" html=""></module-editor>
 							</template>
+							<template v-else-if="table.type==9">
+								<!-- 对象选择 -->
+								<uni-data-select v-model="dataForm[table.name]" :localdata="getObject(table.key)"></uni-data-select>
+							</template>
 							<template v-else-if="table.type==10">
 								<!-- 分类选择 -->
 								<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
@@ -63,6 +67,7 @@
 				module: {},
 				dict: {},//字典
 				category: {},//分类
+				object: {},//对象
 				eventChannel: null,
 				loading: false,
 				dataForm: {},
@@ -76,6 +81,7 @@
 			    this.module = res.module
 				this.dict = res.dict
 				this.category = res.category
+				this.object = res.object
 				if(res.data){
 					this.dataForm = res.data
 				}
@@ -114,6 +120,10 @@
 						this.dataForm[table.name] = table.default
 					}
 				}
+			},
+			//获取对象
+			getObject(name){
+				return this.object[name]
 			},
 			//获取分类
 			getCategory(name){

@@ -16,9 +16,10 @@ export default {
 	//字段类型
 	field_type_json: [
 		{'value': 1, 'text': 'String'}, {'value': 2, 'text': 'Int'},
-		{'value': 3, 'text': 'Float'}, {'value': 4, 'text': 'List'},
+		{'value': 3, 'text': 'Float'}, {'value': 4, 'text': 'List<Dict>'},
 		{'value': 5, 'text': 'Dict'}, {'value': 6, 'text': 'Image'},
 		{'value': 7, 'text': 'Text'}, {'value': 8, 'text': 'Html'},
-		{'value': 9, 'text': 'Object'}, {'value': 10, 'text': 'Category'}
+		{'value': 9, 'text': 'Object'}, {'value': 10, 'text': 'Category'},
+		{'value': 11, 'text': 'List<Object>'}
 	],
 }

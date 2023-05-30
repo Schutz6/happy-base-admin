@@ -279,6 +279,14 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
+        },{
+            "path" : "pages/core/category",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "分类页面",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
         }
         ,{
             "path" : "pages/core/list",

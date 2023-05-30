@@ -9,13 +9,14 @@
 					<template v-if="module.table_json != null">
 						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.query">
 							<view v-if="table.type==9" class="filter-item d-flex" style="width: 120px;">
-								<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
+								<uni-easyinput v-if="table.name=='uid'" v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
+								<uni-data-select v-else v-model="listQuery[table.name]" :localdata="getObject(table.key)" :placeholder="table.remarks"></uni-data-select>
 							</view>
 							<view v-if="table.type==5" class="filter-item d-flex" style="width: 120px;">
 								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
 							</view>
 							<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
-								<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+								<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" placeholder="请选择分类" popup-title="请选择分类" @change="onCategoryChange($event, table.name)"></uni-data-picker>
 							</view>
 						</view>
 					</template>
@@ -62,8 +63,12 @@
 							<template v-else-if="table.type==6" i="图片">
 								<img @click="showImage(item[table.name])" :src="item[table.name]" class="pointer" style="width: 40px;height: 40px;" />
 							</template>
+							<template v-else-if="table.type==9" i="对象">
+								<view v-if="table.name=='uid'">{{ item[table.name] }}</view>
+								<view v-else>{{formatObject(table.key, item[table.name])}}</view>
+							</template>
 							<template v-else-if="table.type==10" i="分类列表">
-								 {{formatCategory(item[table.name])}}
+								{{formatCategory(item[table.name])}}
 							</template>
 							<template v-else i="其他">
 								{{ item[table.name] }}
@@ -104,6 +109,7 @@
 				module: {},//模块
 				dict: {},//字典
 				category: {},//分类
+				object: {},//对象
 				tableData: [],
 				total: 0,
 				listLoading: true,
@@ -172,9 +178,9 @@
 					success: (res)=>{
 						//初始化数据
 						if(item){
-							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category, data: JSON.parse(JSON.stringify(item)) })
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category, "object": this.object, data: JSON.parse(JSON.stringify(item)) })
 						}else{
-							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category })
+							res.eventChannel.emit('initData', { "module": this.module, "dict": this.dict, "category": this.category, "object": this.object })
 						}
 					}
 				})
@@ -214,8 +220,14 @@
 						for(let i=0;i<this.module.table_json.length;i++){
 							let item = this.module.table_json[i]
 							if(item.type==4 || item.type==5){
+								//获取字典
 								if(item.key){
 									await this.initDict(item.key)
+								}
+							}else if(item.type==9){
+								//获取对象列表
+								if(item.key){
+									await this.initObject(item.key)
 								}
 							}else if(item.type==10){
 								//获取分类列表
@@ -227,6 +239,35 @@
 						callback()
 					}
 				})
+			},
+			//初始化对象
+			async initObject(name){
+				let res = await this.$api.postAsync("/core/getList/", {}, {"Mid": name})
+				if(res.code == 20000){
+					//列表转换
+					let result = []
+					for(let i=0;i<res.data.length;i++){
+						let item = res.data[i]
+						result.push({"text": item.name, "value": item.id})
+					}
+					this.object[name] = result
+				}
+			},
+			//获取对象
+			getObject(name){
+				return this.object[name]
+			},
+			//显示对象
+			formatObject(name, value){
+				let list = this.object[name]
+				let names = "--"
+				for(let i=0;i<list.length;i++){
+					if(value == list[i].value){
+						names = list[i].text
+						break
+					}
+				}
+				return names
 			},
 			//初始化分类
 			async initCategory(name){
