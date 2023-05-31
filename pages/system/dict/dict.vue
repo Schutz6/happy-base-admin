@@ -13,7 +13,7 @@
 				<uni-collapse>
 					<uni-row :gutter="40">
 						<uni-col :span="12" v-for="(item, index) in list" :key="index">
-							<uni-collapse-item class="box" border="false" title-border="none" :title="item.name+' - '+item.describe">
+							<uni-collapse-item class="box" :border="false" title-border="none" :title="item.name+' - '+item.describe">
 								<view style="padding: 0 10px 10px 10px">
 									<view class="d-flex between" style="padding-bottom: 10px;">
 										<view class="">
