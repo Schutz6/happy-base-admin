@@ -8,7 +8,7 @@
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 						</uni-forms-item>
 						<uni-forms-item label="执行方法" name="func" required>
-							<uni-easyinput type="text" trim="both" v-model="dataForm.func" placeholder="apps.tasks.tasks:task_test" />
+							<uni-easyinput type="text" trim="both" v-model="dataForm.func" placeholder="core.tasks.tasks:test" />
 						</uni-forms-item>
 						<uni-forms-item label="任务类型" name="type" required>
 							<view class="d-flex" style="height: 100%;">

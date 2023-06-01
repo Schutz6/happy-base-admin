@@ -38,7 +38,7 @@
 							</template>
 							<template v-else-if="table.type==7">
 								<!-- 多文本 -->
-								<uni-easyinput type="textarea" trim="both" autoHeight v-model="dataForm[table.name]" />
+								<uni-easyinput type="textarea" trim="both" autoHeight :maxlength="-1" v-model="dataForm[table.name]" />
 							</template>
 							<template v-else-if="table.type==8">
 								<!-- 富文本 -->
