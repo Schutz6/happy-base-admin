@@ -47,8 +47,11 @@
 									<view class="tag-view" v-if="module.api_json[3].show">
 										<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 									</view>
-									<view class="tag-view" style="min-width: 60px" v-if="item.level < 3">
-										<uni-tag text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+									<template v-if="item.level < 3"></template>
+									<view class="tag-view" style="min-width: 60px">
+										<uni-tag v-if="item.level==1" text="+子分类" type="primary" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+										<uni-tag v-else-if="item.level==2" text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+										<uni-tag v-else-if="item.level==3" text="+子分类" type="default" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
 									</view>
 								</template>
 							</view>
