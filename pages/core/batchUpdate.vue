@@ -64,28 +64,12 @@
 				if(res.data){
 					this.dataForm = res.data
 				}
-				
-				this.initRules()
 			})
 		},
 		methods: {
 			//返回
 			back(){
 				uni.navigateBack()
-			},
-			//初始化验证规则
-			initRules(){
-				for(let i=0;i<this.module.table_json.length;i++){
-					let table = this.module.table_json[i]
-					if(table.type == 4 || table.type == 5 || table.type == 10){
-						this.rules[table.name] = {
-							rules: [{
-								required: true,
-								errorMessage: "请选择"
-							}]
-						}
-					}
-				}
 			},
 			//获取对象
 			getObject(name){

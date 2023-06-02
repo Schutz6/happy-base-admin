@@ -193,7 +193,7 @@
 			//获取列表
 			getList() {
 				this.listLoading = true
-				this.$api.post("/core/getCategory/", {}, {"Mid": this.mid}).then(res => {
+				this.$api.post("/core/getCategory/", {"statistics": 1}, {"Mid": this.mid}).then(res => {
 					this.listLoading = false
 					this.tableData = res.data
 				})

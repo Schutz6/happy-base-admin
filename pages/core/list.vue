@@ -27,18 +27,18 @@
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
 						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[5].show">
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[5].roles) && module.api_json[5].show">
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate">批量修改</button>
 						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[4].show">
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[4].roles) && module.api_json[4].show">
 							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
 						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[10].show">
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[10].roles) && module.api_json[10].show">
 							<uni-file-picker ref="files" limit="1" file-mediatype="all" @select="importData" :auto-upload="false">
 								<button type="primary" size="mini" style="height: 35px;line-height: 35px;margin-top: 7px;">导入</button>
 							</uni-file-picker>
 						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[11].show">
+						<view class="filter-item d-flex" v-if="checkRole(module.api_json[11].roles) && module.api_json[11].show">
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="exportData">导出</button>
 						</view>
 					</template>
@@ -82,10 +82,10 @@
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<template v-if="module.api_json != null">
-									<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[0].show">
+									<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[1].show">
 										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
 									</view>
-									<view class="tag-view" v-if="checkRole(module.api_json[0].roles) && module.api_json[2].show">
+									<view class="tag-view" v-if="checkRole(module.api_json[2].roles) && module.api_json[2].show">
 										<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
 									</view>
 								</template>
