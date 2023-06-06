@@ -75,7 +75,7 @@
 				</view>
 
 				<view class="editor-wrapper">
-					<editor id="editor" class="ql-container" show-img-size show-img-toolbar show-img-resize
+					<editor :id="id" class="ql-container" show-img-size show-img-toolbar show-img-resize
 						@statuschange="onStatusChange" @focus="onFocus" :read-only="readOnly" @ready="onEditorReady"
 						@input="onInput">
 					</editor>
@@ -88,6 +88,10 @@
 <script>
 	export default {
 		props: {
+			id: {
+				type: String,
+				default: 'editor'
+			},
 			html: {
 				type: String,
 				default: ''
@@ -135,7 +139,7 @@
 			},
 			onEditorReady() {
 				// #ifdef APP-PLUS || MP-WEIXIN || H5
-				uni.createSelectorQuery().select('#editor').context((res) => {
+				uni.createSelectorQuery().select('#'+this.id).context((res) => {
 					this.editorCtx = res.context
 					
 					//初始化

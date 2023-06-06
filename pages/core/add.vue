@@ -42,7 +42,7 @@
 							</template>
 							<template v-else-if="table.type==8">
 								<!-- 富文本 -->
-								<module-editor :ref="'editor-'+table.name" html=""></module-editor>
+								<module-editor :id="'editor-'+table.name" :ref="'editor-'+table.name" html=""></module-editor>
 							</template>
 							<template v-else-if="table.type==9">
 								<!-- 对象选择 -->
