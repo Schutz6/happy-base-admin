@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-iframe-box" :scroll-y="true">
-			<uni-card>
+			<uni-card style="width: 750px;">
 				<template v-slot:title>
 					<view class="d-flex between" style="padding: 10px;border-bottom: 1px solid #EBEEF5;">
 						<view style="font-size: 15px;">字典管理</view>
@@ -12,7 +12,7 @@
 				</template>
 				<uni-collapse>
 					<uni-row :gutter="40">
-						<uni-col :span="12" v-for="(item, index) in list" :key="index">
+						<uni-col :span="24" v-for="(item, index) in list" :key="index">
 							<uni-collapse-item class="box" :border="false" title-border="none" :title="item.name+' - '+item.describe">
 								<view style="padding: 0 10px 10px 10px">
 									<view class="d-flex between" style="padding-bottom: 10px;">
