@@ -12,7 +12,7 @@
 								<uni-easyinput v-if="table.name=='uid'" v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
 								<uni-data-select v-else v-model="listQuery[table.name]" :localdata="getObject(table.key)" :placeholder="table.remarks"></uni-data-select>
 							</view>
-							<view v-if="table.type==5" class="filter-item d-flex" style="width: 120px;">
+							<view v-if="table.type==4 || table.type==5" class="filter-item d-flex" style="width: 120px;">
 								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
 							</view>
 							<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
