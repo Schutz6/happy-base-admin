@@ -65,6 +65,7 @@
 </template>
 
 <script>
+	import { formatToCategory } from '@/utils/util'
 	export default {
 		data() {
 			return {
@@ -129,7 +130,7 @@
 			},
 			//分类选择
 			onCategoryChange(e, name) {
-				this.dataForm[name] = e.detail.value
+				this.dataForm[name] = formatToCategory(e.detail.value)
 			},
 			//获取字典
 			getDict(name){

@@ -103,7 +103,7 @@
 </template>
 
 <script>
-	import { formatDateUtc, listToTree } from '@/utils/util'
+	import { formatDateUtc, listToTree, formatToCategory } from '@/utils/util'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -310,7 +310,7 @@
 			},
 			//分类选择
 			onCategoryChange(e, name) {
-				this.listQuery[name] = e.detail.value
+				this.listQuery[name] = formatToCategory(e.detail.value)
 			},
 			//初始化字典
 			async initDict(name){
