@@ -12,7 +12,9 @@
 		    {
 		        "navigationBarTitleText": "正在启动",
 		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"topWindow": false,
+				"leftWindow": false
 		    }
 		},
 		{
@@ -21,7 +23,9 @@
 		    {
 		        "navigationBarTitleText": "登录",
 		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"topWindow": false,
+				"leftWindow": false
 		    }
 		},
 		{
@@ -336,6 +340,21 @@
 		"navigationBarTitleText": "管理后台",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"topWindow": {
+	    "path": "pages/common/top/top.vue",
+	    "style": {
+	      "height": "44px"
+	    },
+		"matchMedia": {
+		  "minWidth": 300
+		}
+	},
+	"leftWindow": {
+	    "path": "pages/common/left/left.vue",
+	    "style": {
+	      "width": "180px"
+	    }
 	},
 	"uniIdRouter": {}
 }

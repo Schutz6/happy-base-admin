@@ -42,7 +42,8 @@
 						}]
 					}
 				},
-				
+				menus: [],//菜单数据
+				path: null,//默认跳转页面
 			}
 		},
 		computed: {
@@ -86,10 +87,32 @@
 								this.$store.dispatch('getUserInfo').then(res => {
 									//获取菜单数据
 									this.$store.dispatch('getMenus').then(res => {
-										//跳转首页
-										uni.reLaunch({
-											url: '/pages/common/home/home'
-										});
+										//跳转第一页
+										this.menus = res.data
+										for(let i=0;i<this.menus.length;i++){
+											let menu = this.menus[i]
+											if(menu.value == "#"){
+												for(let j=0;j<menu.children.length;j++){
+													let menu = menu.children[j]
+													if(menu.value != "#"){
+														flag = true
+														this.path = menu.value
+														break
+													}
+												}
+												if(flag){
+													break
+												}
+											}else{
+												this.path = menu.value
+												break
+											}
+										}
+										if(this.path){
+											uni.reLaunch({
+												url: this.path
+											});
+										}
 									})
 								})
 							} else if (res.code == 10005) {

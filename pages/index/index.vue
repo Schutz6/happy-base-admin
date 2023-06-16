@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
+		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<uni-section title="会注册统计" type="line"></uni-section>
 				<uni-row :gutter="4">
