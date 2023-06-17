@@ -1,10 +1,5 @@
 <template>
 	<view class="page">
-	<!-- 	<uni-breadcrumb separator="/">
-		  <uni-breadcrumb-item v-for="(route,index) in routes" :key="index" :to="route.to">
-		    {{route.name}}
-		  </uni-breadcrumb-item>
-		</uni-breadcrumb> -->
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<uni-section title="会注册统计" type="line"></uni-section>
