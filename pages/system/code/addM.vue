@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
+		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card title="新增模块代码" style="padding-bottom: 100px;">
 				<view style="padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top">

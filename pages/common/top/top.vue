@@ -43,6 +43,11 @@
 		<uni-popup ref="logoutDialog" type="dialog">
 			<uni-popup-dialog type="info" cancelText="取消" confirmText="确定" title="提示" content="是否退出登录？" @confirm="logout"></uni-popup-dialog>
 		</uni-popup>
+		
+		<!-- 消息提示框 -->
+		<uni-popup ref="tipsDialog" type="dialog">
+			<uni-popup-dialog type="info" cancelText="取消" confirmText="确定" title="提示" :content="dialogData.tipContent" @confirm="onTipsConfirm"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -51,6 +56,11 @@
 	export default {
 		data() {
 			return {
+				dialogData: {
+					cmd: "",
+					tipContent: "",//提示内容
+					func: null,//提示确认方法
+				},
 				showBars: false,
 				loading: false,
 				passwordForm: {
@@ -77,24 +87,42 @@
 		    ...mapGetters(['user', 'params'])
 		},
 		mounted() {
+			//监听方法
+			uni.$on('showOpenDialog', this.showOpenDialog)
 			//获取页面大小
 			uni.getSystemInfo({
 				success: (res)=> {
-					if(res.windowWidth < 500){
+					if(res.windowWidth < 768){
 						this.showBars = true
 					}
 				}
 			})
 			//监听页面大小
 			uni.onWindowResize((res) => {
-				if(res.size.windowWidth >= 500){
+				if(res.size.windowWidth >= 768){
 					this.showBars = false
 				}else{
 					this.showBars = true
 				}
 			})
 		},
+		destroyed() {
+			//移除监听
+			uni.$off('showOpenDialog', this.showOpenDialog)
+		},
 		methods: {
+			//显示提示框
+			showOpenDialog(data){
+				this.dialogData = data
+				if(this.dialogData.cmd == "tips"){
+					//打开消息提示框
+					this.$refs["tipsDialog"].open()
+				}
+			},
+			//点击提示确认框
+			onTipsConfirm(){
+				uni.$emit("onHandleMessage", this.dialogData)
+			},
 			//显示左侧菜单
 			showLeftMenus(){
 				uni.$emit("showLeftMenus", {})

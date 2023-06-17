@@ -51,3 +51,15 @@ export const listToTree = function(list) {
 	})
 	return parentList
 }
+
+
+/**
+ * 格式化分类
+ */
+export const formatToCategory = function(list) {
+	const categorys = []
+	list.forEach((item) => {
+		categorys.push({"text": item["text"], "value": item["value"]})
+	})
+	return categorys
+}

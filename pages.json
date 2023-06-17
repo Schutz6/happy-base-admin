@@ -29,14 +29,6 @@
 		    }
 		},
 		{
-			"path": "pages/common/home/home",
-			"style": {
-				"navigationBarTitleText": "主页",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-			}
-		},
-		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -347,13 +339,14 @@
 	      "height": "44px"
 	    },
 		"matchMedia": {
-		  "minWidth": 300
+			"minWidth": 0
 		}
 	},
 	"leftWindow": {
 	    "path": "pages/common/left/left.vue",
 	    "style": {
-	      "width": "180px"
+	      "width": "180px",
+		  "flex-shrink": 0
 	    }
 	},
 	"uniIdRouter": {}

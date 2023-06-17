@@ -97,7 +97,7 @@
 		// },
 		methods: {
 			...mapActions({
-				setRoutes: 'app/setRoutes'
+				setRoutes: 'setRoutes'
 			}),
 			getUserMenu(menuList) {
 				const {

@@ -29,9 +29,8 @@
 	page {
 		background-color: #edf0f2;
 	}
-	
-	.page {
-		height: calc(100vh - 44px);
+	uni-main{
+		width: 0;
 		flex: 1;
 	}
 	.scroll-view-box {

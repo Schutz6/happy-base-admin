@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
+		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<view class="filter-container d-flex">
 					<view class="filter-item d-flex">
@@ -77,11 +77,13 @@
 				selectId: null,//选中ID
 			}
 		},
-		onReady() {
+		onShow() {
 			// 监听消息
-			// #ifdef H5
-			window.addEventListener("message", this.handleMessage)
-			// #endif
+			uni.$on('onHandleMessage', this.onHandleMessage)
+		},
+		onHide() {
+			// 移除消息
+			uni.$off('onHandleMessage', this.onHandleMessage)
 		},
 		onLoad(options) {
 			this.mid = options.mid
@@ -92,18 +94,15 @@
 		},
 		methods: {
 			//处理消息
-			handleMessage(event){
-				if(event.data){
-					let obj = event.data
-					switch (obj.cmd) {
-						case 'tips':
-							//弹出提示框，点击确认回调
-							if(obj.func === "deleteItem"){
-								//执行删除方法
-								this.deleteItem()
-							}
-							break;
-					}
+			onHandleMessage(data){
+				switch (data.cmd) {
+					case 'tips':
+						//弹出提示框，点击确认回调
+						if(data.func === "deleteItem"){
+							//执行删除方法
+							this.deleteItem()
+						}
+						break;
 				}
 			},
 			//跳转页面
@@ -201,7 +200,7 @@
 			//显示删除提示
 			showDeleteTips(id){
 				this.selectId = id
-				window.parent.postMessage({"cmd": "tips", "func": "deleteItem", "data": {"tips": "是否删除该数据？"}}, '*')
+				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "deleteItem", "tipContent": "是否删除该数据？"})
 			},
 			//删除数据
 			deleteItem(){

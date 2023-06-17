@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
+		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<view class="filter-container d-flex">
 					<view class="filter-item d-flex" style="width: 180px;">
@@ -66,31 +66,32 @@
 		    	return formatDateUtc(time)
 		    }
 		},
-		onReady() {
+		onShow() {
 			// 监听消息
-			// #ifdef H5
-			window.addEventListener("message", this.handleMessage)
-			// #endif
+			uni.$on('onHandleMessage', this.onHandleMessage)
+		},
+		onHide() {
+			// 移除消息
+			uni.$off('onHandleMessage', this.onHandleMessage)
+		},
+		onReady() {
 			//初始化
 			this.init()
 		},
 		methods: {
 			//处理消息
-			handleMessage(event){
-				if(event.data){
-					let obj = event.data
-					switch (obj.cmd) {
-						case 'tips':
-							//弹出提示框，点击确认回调
-							if(obj.func === "deleteItem"){
-								//执行删除方法
-								this.deleteItem()
-							}else if(obj.func === "batchDelete"){
-								//批量删除
-								this.batchDelete()
-							}
-							break;
-					}
+			onHandleMessage(data){
+				switch (data.cmd) {
+					case 'tips':
+						//弹出提示框，点击确认回调
+						if(data.func === "deleteItem"){
+							//执行删除方法
+							this.deleteItem()
+						}else if(data.func === "batchDelete"){
+							//批量删除
+							this.batchDelete()
+						}
+						break;
 				}
 			},
 			//初始化
@@ -137,7 +138,7 @@
 			//显示删除提示
 			showDeleteTips(id){
 				this.selectId = id
-				window.parent.postMessage({"cmd": "tips", "func": "deleteItem", "data": {"tips": "是否删除该数据？"}}, '*')
+				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "deleteItem", "tipContent": "是否删除该数据？"})
 			},
 			//删除数据
 			deleteItem(){
@@ -163,7 +164,7 @@
 			//弹出批量删除提示框
 			showBatchDelete(){
 				if(this.selectedIndexs.length > 0){
-					window.parent.postMessage({"cmd": "tips", "func": "batchDelete", "data": {"tips": "是否批量删除数据？"}}, '*')
+					uni.$emit("showOpenDialog", {"cmd": "tips", "func": "batchDelete", "tipContent": "是否批量删除数据？"})
 				}
 			},
 			// 多选

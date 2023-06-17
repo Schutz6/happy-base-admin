@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
+		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<view class="filter-container d-flex">
 					<view class="filter-item d-flex">
@@ -62,34 +62,35 @@
 		    	return formatDateUtc(time)
 		    }
 		},
-		onReady() {
+		onShow() {
 			// 监听消息
-			// #ifdef H5
-			window.addEventListener("message", this.handleMessage)
-			// #endif
+			uni.$on('onHandleMessage', this.onHandleMessage)
+		},
+		onHide() {
+			// 移除消息
+			uni.$off('onHandleMessage', this.onHandleMessage)
+		},
+		onReady() {
 			//初始化
 			this.init()
 		},
 		methods: {
 			//处理消息
-			handleMessage(event){
-				if(event.data){
-					let obj = event.data
-					switch (obj.cmd) {
-						case 'tips':
-							//弹出提示框，点击确认回调
-							if(obj.func === "deleteItem"){
-								//执行删除方法
-								this.deleteItem()
-							}else if(obj.func === "dumpDatabase"){
-								//备份数据库
-								this.dumpDatabase()
-							}else if(obj.func === "restoreDatabase"){
-								//恢复数据库
-								this.restoreDatabase()
-							}
-							break;
-					}
+			onHandleMessage(data){
+				switch (data.cmd) {
+					case 'tips':
+						//弹出提示框，点击确认回调
+						if(data.func === "deleteItem"){
+							//执行删除方法
+							this.deleteItem()
+						}else if(data.func === "dumpDatabase"){
+							//备份数据库
+							this.dumpDatabase()
+						}else if(data.func === "restoreDatabase"){
+							//恢复数据库
+							this.restoreDatabase()
+						}
+						break;
 				}
 			},
 			//初始化
@@ -118,7 +119,7 @@
 			//显示删除提示
 			showDeleteTips(id){
 				this.selectId = id
-				window.parent.postMessage({"cmd": "tips", "func": "deleteItem", "data": {"tips": "是否删除该数据？"}}, '*')
+				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "deleteItem", "tipContent": "是否删除该数据？"})
 			},
 			//删除数据
 			deleteItem(){
@@ -143,7 +144,7 @@
 			},
 			//显示是否备份数据库
 			showDumpTips(){
-				window.parent.postMessage({"cmd": "tips", "func": "dumpDatabase", "data": {"tips": "是否备份数据库？备份前请先清空日志"}}, '*')
+				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "dumpDatabase", "tipContent": "是否备份数据库？"})
 			},
 			//执行备份
 			dumpDatabase(){
@@ -169,7 +170,7 @@
 			//显示是否恢复数据库
 			showRestoreTips(id){
 				this.selectId = id
-				window.parent.postMessage({"cmd": "tips", "func": "restoreDatabase", "data": {"tips": "是否恢复该数据库？"}}, '*')
+				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "restoreDatabase", "tipContent": "是否恢复该数据库？"})
 			},
 			//执行恢复
 			restoreDatabase(){

@@ -13,6 +13,7 @@ export default new Vuex.Store({
 		params: null,//参数信息
 		menus: [],//菜单数据
 		datas: {},//静态数据
+		routes: [],//路由
     },
     getters: {
         // state的计算属性
@@ -20,10 +21,15 @@ export default new Vuex.Store({
         user:state => state.user,
 		params:state => state.params,
 		menus:state => state.menus,
-		datas:state => state.datas
+		datas:state => state.datas,
+		routes:state => state.routes
     },
     mutations: {
         // 更改state中状态的逻辑，同步操作
+		//设置路由
+		setRoutes(state, routes){
+			state.routes = routes
+		},
 		//设置静态数据
 		setDatas(state, datas){
 			state.datas = datas
@@ -54,6 +60,10 @@ export default new Vuex.Store({
     },
     actions: {
         // 提交mutation，异步操作
+		//设置路由
+		setRoutes({ commit }, routes){
+			commit('setRoutes', routes)
+		},
 		//获取参数信息
 		getParams({ commit }){
 			Api.get("/param/getList/").then(res => {

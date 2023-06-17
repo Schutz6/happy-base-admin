@@ -27,13 +27,13 @@
 					if (res.code == 20000) {
 						//跳转第一页
 						for(let i=0;i<this.menus.length;i++){
-							let menu = this.menus[i]
-							if(menu.value == "#"){
-								for(let j=0;j<menu.children.length;j++){
-									let menu = menu.children[j]
-									if(menu.value != "#"){
+							let menu1 = this.menus[i]
+							if(menu1.value == "#"){
+								for(let j=0;j<menu1.children.length;j++){
+									let menu2 = menu1.children[j]
+									if(menu2.value != "#"){
 										flag = true
-										this.path = menu.value
+										this.path = menu2.value
 										break
 									}
 								}
@@ -41,7 +41,7 @@
 									break
 								}
 							}else{
-								this.path = menu.value
+								this.path = menu1.value
 								break
 							}
 						}

@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<scroll-view class="scroll-iframe-box" :scroll-y="true" :scroll-x="false">
+		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card title="编辑角色">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
