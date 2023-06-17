@@ -42,7 +42,7 @@
 						}]
 					}
 				},
-				menus: [],//菜单数据
+				menus: [],//初始化菜单
 				path: null,//默认跳转页面
 			}
 		},
@@ -54,11 +54,6 @@
 			if(username){
 				//初始化账号
 				this.loginForm.username = username
-			}
-			//获取参数
-			let res = await this.$api.getAsync("/param/getList/")
-			if(res.code == 20000){
-				this.$store.commit('setParams', res.data)
 			}
 			if(this.params){
 				uni.setNavigationBarTitle({

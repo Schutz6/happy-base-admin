@@ -2,12 +2,12 @@
 	<view>
 		<view class="left-menus" v-if="showMenus">
 			<scroll-view class="sidebar" scroll-y="true">
-				<uni-data-menu :value="activeUrl" :staticMenu="menus" :unique-opened="true" active-text-color="#409eff" @select="select"></uni-data-menu>
+				<uni-data-menu v-if="menus" :value="activeUrl" :staticMenu="menus" :unique-opened="true" active-text-color="#409eff" @select="select"></uni-data-menu>
 			</scroll-view>
 		</view>
 		<uni-drawer ref="leftMenus" mode="left" :width="180">
 			<scroll-view class="sidebar-full" scroll-y="true">
-				<uni-data-menu :value="activeUrl" :staticMenu="menus" :unique-opened="true" active-text-color="#409eff" @select="select"></uni-data-menu>
+				<uni-data-menu v-if="menus" :value="activeUrl" :staticMenu="menus" :unique-opened="true" active-text-color="#409eff" @select="select"></uni-data-menu>
 			</scroll-view>
 		</uni-drawer>
 	</view>
@@ -23,7 +23,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['menus'])
+			...mapGetters(['params', 'menus'])
 		},
 		watch: {
 			$route(to, form){
@@ -51,6 +51,11 @@
 				}
 				if(flag){
 					this.activeUrl = to.fullPath
+				}
+				if(this.params){
+					uni.setNavigationBarTitle({
+						title: this.params.siteName
+					})
 				}
 			}
 		},

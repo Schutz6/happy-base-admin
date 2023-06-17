@@ -16,9 +16,14 @@
 		},
 		onLoad() {
 			this.init()
+			if(this.params){
+				uni.setNavigationBarTitle({
+					title: this.params.siteName + " - 启动中"
+				})
+			}
 		},
 		computed: {
-			...mapGetters(['menus'])
+			...mapGetters(['params', 'menus'])
 		},
 		methods: {
 			 init(){

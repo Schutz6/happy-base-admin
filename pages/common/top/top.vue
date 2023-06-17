@@ -89,6 +89,13 @@
 		mounted() {
 			//监听方法
 			uni.$on('showOpenDialog', this.showOpenDialog)
+			setTimeout(()=>{
+				if(this.params){
+					uni.setNavigationBarTitle({
+						title: this.params.siteName
+					})
+				}
+			}, 100)
 			//获取页面大小
 			uni.getSystemInfo({
 				success: (res)=> {
