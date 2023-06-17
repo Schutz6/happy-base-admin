@@ -4,7 +4,7 @@
 			<template v-if="!item.children || !item.children.length">
 				<uni-menu-item :index="item">
 					<template v-if="item.icon">
-						<image :src="'./static'+item.icon" style="width: 16px;height: 16px;" />
+						<image :src="require('@/static'+item.icon)" style="width: 16px;height: 16px;" />
 					</template>
 					<text :class="{title: item.icon}">{{item.text}}</text>
 				</uni-menu-item>
@@ -12,7 +12,7 @@
 			<uni-sub-menu v-else :index="item">
 				<template v-slot:title>
 					<template v-if="item.icon">
-						<image :src="'./static'+item.icon" style="width: 16px;height: 16px;" />
+						<image :src="require('@/static'+item.icon)" style="width: 16px;height: 16px;" />
 					</template>
 					<text :class="{title: item.icon}">{{item.text}}</text>
 				</template>
