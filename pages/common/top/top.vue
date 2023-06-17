@@ -95,7 +95,7 @@
 						title: this.params.siteName
 					})
 				}
-			}, 100)
+			}, 300)
 			//获取页面大小
 			uni.getSystemInfo({
 				success: (res)=> {
