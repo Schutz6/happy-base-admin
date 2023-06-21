@@ -13,12 +13,12 @@
 			//初始化网站设置信息
 			this.$store.commit('setParams', getParams())
 			
-			//异步请求参数
+			//获取系统参数
 			let resParam = await this.$api.getAsync("/param/getList/")
 			if(resParam && resParam.code == 20000){
 				this.$store.commit('setParams', resParam.data)
 			}
-			//异步请求菜单
+			//获取系统菜单
 			let resMenu = await this.$api.getAsync("/menu/getList/")
 			if(resMenu && resMenu.code == 20000){
 				this.$store.commit('setMenus', resMenu.data)
