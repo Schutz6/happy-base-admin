@@ -3,20 +3,17 @@
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 180px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/昵称"></uni-easyinput>
+					<view class="filter-item d-flex" style="width: 120px;">
+						<uni-easyinput v-model="listQuery.uid" trim="both" placeholder="用户编号"></uni-easyinput>
 					</view>
 					<view class="filter-item d-flex" style="width: 120px;">
-						<uni-data-select v-model="listQuery.role" :localdata="roles" placeholder="请选择角色"></uni-data-select>
+						<uni-easyinput v-model="listQuery.pid" trim="both" placeholder="上级编号"></uni-easyinput>
 					</view>
 					<view class="filter-item d-flex" style="width: 120px;">
 						<uni-data-select v-model="listQuery.status" :localdata="datas.user_status_json" placeholder="请选择状态"></uni-data-select>
 					</view>
 					<view class="filter-item d-flex">
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/user/add')">新增</button>
 					</view>
 					<view class="filter-item d-flex">
 						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
@@ -28,10 +25,10 @@
 						<uni-th align="center">头像</uni-th>
 						<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, 'name')">账号</uni-th>
 						<uni-th align="center">昵称</uni-th>
-						<uni-th align="center">角色</uni-th>
+						<uni-th align="center">余额</uni-th>
+						<uni-th align="center">积分</uni-th>
+						<uni-th align="center">上级编号</uni-th>
 						<uni-th align="center">状态</uni-th>
-						<uni-th align="center">最后登录时间</uni-th>
-						<uni-th align="center">最后登录IP</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -41,20 +38,17 @@
 						</uni-td>
 						<uni-td align="center">{{ item.username }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
-						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
+						<uni-td align="center">{{ item.balance || 0 }}</uni-td>
+						<uni-td align="center">{{ item.integral || 0 }}</uni-td>
+						<uni-td align="center">{{ item.pid || "--" }}</uni-td>
 						<uni-td align="center">
 							<view v-if="item.status==1" style="color: green;">正常</view>
 							<view v-else-if="item.status==2" style="color: red;">禁用</view>
 						</uni-td>
 						<uni-td align="center">
-							<view v-if="item.last_time"><uni-dateformat :date="item.last_time | formatDate"></uni-dateformat></view>
-							<view v-else>--</view>
-						</uni-td>
-						<uni-td align="center">{{item.last_ip || "--"}}</uni-td>
-						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view">
-									<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/user/edit', item)"></uni-tag>
+									<uni-tag text="充值" type="primary"></uni-tag>
 								</view>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
@@ -86,13 +80,14 @@
 					pageSize: 20,
 					sortField: "_id",
 					sortOrder: "descending",
-					roles: [],//角色
+					uid: null,//用户编号
+					pid: null,//上级编号
 					status: null,//状态
-					searchKey: null
+					searchKey: null,
+					roles: ['user']
 				},
 				selectedIndexs: [],
 				selectId: null,//选中ID
-				roles:[], //角色列表
 			}
 		},
 		computed: {
@@ -145,50 +140,17 @@
 					success: (res)=>{
 						//初始化数据
 						if(item){
-							res.eventChannel.emit('initData', { roles: this.roles, data: JSON.parse(JSON.stringify(item)) })
+							res.eventChannel.emit('initData', {data: JSON.parse(JSON.stringify(item)) })
 						}else{
-							res.eventChannel.emit('initData', { roles: this.roles })
+							res.eventChannel.emit('initData', {})
 						}
 					}
 				})
 			},
 			//初始化
 			init() {
-				//获取角色列表
-				this.getRoleList(()=>{
-					//获取用户列表
-					this.getList()
-				})
-			},
-			//角色列表
-			getRoleList(callback){
-				this.$api.get("/role/getList/").then(res => {
-					if(res.code == 20000){
-						this.roles = res.data
-						callback()
-					}
-				})
-			},
-			//格式化角色
-			formatRoles(roles){
-				if(roles){
-				  let roleNames = []
-				  for(let j=0;j<roles.length;j++){
-					for(let i=0;i<this.roles.length;i++){
-					  if(roles[j] == this.roles[i].value){
-						roleNames.push(this.roles[i].text)
-						break
-					  }
-					}
-				  }
-				  if(roleNames.length>0){
-					return roleNames.join("、");
-				  }else {
-					return "--";
-				  }
-				}else {
-				  return "--";
-				}
+				//获取用户列表
+				this.getList()
 			},
 			//排序
 			sortChange(e, name){
@@ -210,11 +172,6 @@
 				this.tableData = []
 				//加载数据
 				this.listLoading = true
-				if(this.listQuery.role){
-					this.listQuery.roles = [this.listQuery.role]
-				}else{
-					this.listQuery.roles = []
-				}
 				this.$api.post("/user/list/", this.listQuery).then(res => {
 					this.listLoading = false
 					this.tableData = res.data.results

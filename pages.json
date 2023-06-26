@@ -290,6 +290,22 @@
 				"navigationStyle": "custom"
             }
         }
+		,{
+		    "path" : "pages/ext/member/member", //会员管理
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		}
+        ,{
+            "path" : "pages/ext/member/realname",//会员认证
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

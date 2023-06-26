@@ -24,76 +24,78 @@
 							</uni-col>
 						</uni-row>
 						<uni-forms-item label="激活接口" name="api_json" required>
-							<checkbox-group @change="checkboxChange">
-								<view class="box">
-									<view class="d-flex" style="padding-bottom: 5px;padding-left: 10px;">
-										<view style="width: 220px;">接口名称</view>
-										<view style="width: 90px;">按钮显示</view>
-										<view class="flex1">限制角色</view>
-									</view>
-									<view class="item d-flex" style="padding-left: 10px;" v-for="(item, index) in dataForm.api_json" :key="index">
-										<view class="d-flex" style="width: 220px;">
-											<checkbox :value="item.id" :checked="item.status" style="transform:scale(0.6)" /> {{item.name}}
-										</view>
-										<view class="d-flex" style="width: 90px;">
-											<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
-										</view>
-										<view class="flex1">
-											<uni-data-checkbox multiple v-model="item.roles" :localdata="roles"></uni-data-checkbox>
-										</view>
-									</view>
-								</view>
-							</checkbox-group>
+							<uni-table ref="multipleTable" border stripe type="selection" @selection-change="selectionChange">
+								<uni-tr>
+									<uni-th align="center" width="200px">接口名称</uni-th>
+									<uni-th align="center" width="100px">按钮显示</uni-th>
+									<uni-th align="left">限制角色</uni-th>
+								</uni-tr>
+								<uni-tr v-for="(item, index) in dataForm.api_json" :key="index">
+									<uni-td align="center">
+										{{item.name}}
+									</uni-td>
+									<uni-td align="center">
+										<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
+									</uni-td>
+									<uni-td align="center">
+										<uni-data-checkbox multiple v-model="item.roles" :localdata="roles"></uni-data-checkbox>
+									</uni-td>
+								</uni-tr>
+							</uni-table>
 						</uni-forms-item>
 						<uni-forms-item label="字段管理" name="table_json" required>
-							<view class="box">
-								<view class="d-flex" style="padding-bottom: 5px;">
-									<view class="flex1 d-flex-center">字段</view>
-									<view class="flex1 d-flex-center">类型</view>
-									<view class="flex1 d-flex-center">备注</view>
-									<view class="flex1 d-flex-center">默认值</view>
-									<view class="flex1 d-flex-center">绑定对象/字典</view>
-									<view class="d-flex-center" style="width: 90px;">是否显示</view>
-									<view class="d-flex-center" style="width: 90px;">查询字段</view>
-									<view class="d-flex-center" style="width: 90px;">排序字段</view>
-									<view class="d-flex-center" style="width: 90px;">唯一校验</view>
-									<view class="d-flex-center" style="width: 90px;">操作</view>
-								</view>
-								<view class="item d-flex" v-for="(item, index) in dataForm.table_json" :key="index">
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+							<uni-table border stripe emptyText="请新增字段" style="min-height: 200px;">
+								<uni-tr>
+									<uni-th align="center">字段</uni-th>
+									<uni-th align="center">类型</uni-th>
+									<uni-th align="center">备注</uni-th>
+									<uni-th align="center">默认值</uni-th>
+									<uni-th align="center">绑定对象/字典</uni-th>
+									<uni-th align="center">前端显示</uni-th>
+									<uni-th align="center">查询字段</uni-th>
+									<uni-th align="center">排序字段</uni-th>
+									<uni-th align="center">唯一校验</uni-th>
+									<uni-th align="center">是否编辑</uni-th>
+									<uni-th align="center">操作</uni-th>
+								</uni-tr>
+								<uni-tr v-for="(item, index) in dataForm.table_json" :key="index">
+									<uni-td align="center">
 										<uni-easyinput type="text" trim="both" v-model="item.name" :clearable="false" />
-									</view>
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+									</uni-td>
+									<uni-td align="center">
 										<uni-data-select v-model="item.type" :localdata="datas.field_type_json" :clear="false"></uni-data-select>
-									</view>
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+									</uni-td>
+									<uni-td align="center">
 										<uni-easyinput type="text" trim="both" v-model="item.remarks" :clearable="false" />
-									</view>
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+									</uni-td>
+									<uni-td align="center">
 										<uni-easyinput type="text" trim="both" v-model="item.default" :clearable="false" />
-									</view>
-									<view class="flex1 d-flex-center" style="padding: 0 5px;">
+									</uni-td>
+									<uni-td align="center">
 										<uni-easyinput type="text" trim="both" v-model="item.key" :clearable="false" />
-									</view>
-									<view class="d-flex-center" style="width: 90px;">
+									</uni-td>
+									<uni-td align="center">
 										<switch @change="switchShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
-									</view>
-									<view class="d-flex-center" style="width: 90px;">
+									</uni-td>
+									<uni-td align="center">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.6)" />
-									</view>
-									<view class="d-flex-center" style="width: 90px;">
+									</uni-td>
+									<uni-td align="center">
 										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.6)" />
-									</view>
-									<view class="d-flex-center" style="width: 90px;">
+									</uni-td>
+									<uni-td align="center">
 										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.6)" />
-									</view>
-									<view class="d-flex-center" style="width: 90px;">
+									</uni-td>
+									<uni-td align="center">
+										<switch @change="switchEdit($event, index)" :checked="item.edit" style="transform:scale(0.6)" />
+									</uni-td>
+									<uni-td align="center">
 										<uni-icons class="operate-item pointer" type="trash" size="20" color="red" @click="delField(index)"></uni-icons>
 										<uni-icons class="operate-item pointer" type="arrow-up" size="20" color="#007aff" @click="clickUp(index)"></uni-icons>
 										<uni-icons class="operate-item pointer" type="arrow-down" size="20" color="#007aff" @click="clickDown(index)"></uni-icons>
-									</view>
-								</view>
-							</view>
+									</uni-td>
+								</uni-tr>
+							</uni-table>
 							<view style="padding-top: 5px;text-align: right;">
 								<uni-tag text="新增字段" @click="addField()"></uni-tag>
 							</view>
@@ -139,6 +141,8 @@
 			})
 			//获取角色列表
 			this.getRoleList()
+			//默认选中
+			this.toggleSelection()
 		},
 		methods: {
 			//返回
@@ -153,12 +157,26 @@
 					}
 				})
 			},
-			//多选
-			checkboxChange(e){
-				let values = e.detail.value
+			//默认选中
+			toggleSelection() {
+				this.$nextTick(() => {
+					let indexs = []
+					for(let i=0;i<this.dataForm.api_json.length;i++) {
+						//判断是否满足选择条件
+						if(this.dataForm.api_json[i].status){
+							indexs.push(i)
+						}
+					}
+					if(indexs.length>0){
+						this.$refs.multipleTable.toggleRowSelection(indexs, true)
+					}
+			  })
+			},
+			// 多选
+			selectionChange(e) {
+				let indexs = e.detail.index
 				for (let i = 0; i < this.dataForm.api_json.length; i++) {
-					let item = this.dataForm.api_json[i]
-					if(values.includes(item.id)){
+					if(indexs.includes(i)){
 						this.$set(this.dataForm.api_json[i], 'status', true)
 					}else{
 						this.$set(this.dataForm.api_json[i], 'status', false)
@@ -167,7 +185,7 @@
 			},
 			//新增字段
 			addField(){
-				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "sort": false, "unique": false})
+				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "sort": false, "unique": false, "edit": true})
 			},
 			//点击上移
 			clickUp(index){
@@ -209,6 +227,10 @@
 			//是否校验唯一性
 			switchUnique(e, index){
 				this.$set(this.dataForm.table_json[index], 'unique', e.detail.value)
+			},
+			//是否编辑
+			switchEdit(e, index){
+				this.$set(this.dataForm.table_json[index], 'edit', e.detail.value)
 			},
 			//提交
 			submit(){
