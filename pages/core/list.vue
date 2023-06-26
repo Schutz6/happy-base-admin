@@ -8,6 +8,9 @@
 					</view>
 					<template v-if="module.table_json != null">
 						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.query">
+							<view v-if="table.type==2 && table.name=='uid'" class="filter-item d-flex" style="width: 120px;">
+								<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
+							</view>
 							<view v-if="table.type==9" class="filter-item d-flex" style="width: 120px;">
 								<uni-easyinput v-if="table.name=='uid'" v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
 								<uni-data-select v-else v-model="listQuery[table.name]" :localdata="getObject(table.key)" :placeholder="table.remarks"></uni-data-select>
