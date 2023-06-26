@@ -66,6 +66,13 @@
 							<template v-else-if="table.type==6" i="图片">
 								<image @click="showImage(item[table.name])" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 120px;height: 40px;"></image>
 							</template>
+							<template v-else-if="table.type==12" i="多图片">
+								<view class="d-flex-center">
+									<view v-for="(pic, picIndex) in item[table.name]" style="padding: 0 5px;">
+										<image @click="showImage(pic)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
+									</view>
+								</view>
+							</template>
 							<template v-else-if="table.type==7" i="多文本">
 								{{ item[table.name] | ellipsis}}
 							</template>
