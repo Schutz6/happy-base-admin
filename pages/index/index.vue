@@ -54,7 +54,7 @@
 		methods: {
 			init() {
 				//获取会员统计数据
-				this.$api.get("/statistics/user/").then(res => {
+				this.$api.get("/user/statistics/").then(res => {
 					if (res.code == 20000) {
 						this.user_statistics = res.data
 					}

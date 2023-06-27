@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
-			<uni-card title="编辑字典子集">
+			<uni-card title="编辑字典子集" style="width: 750px;">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
 						<uni-forms-item label="字典ID" name="dict_tid" required>
