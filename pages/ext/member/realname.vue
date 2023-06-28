@@ -55,7 +55,25 @@
 		
 		<!-- 审核提示框 -->
 		<uni-popup ref="certifiedDialog" type="dialog">
-			<uni-popup-dialog type="info" cancelText="审核失败" confirmText="审核成功" title="提示" content="请确认审核结果" @close="certified(3)" @confirm="certified(1)"></uni-popup-dialog>
+			<view class="uni-popup-dialog">
+				<view class="uni-dialog-title">
+					<text class="uni-dialog-title-text uni-popup__info">提示</text>
+				</view>
+				<view class="uni-dialog-content">
+					<text class="uni-dialog-content-text">请选择审核结果</text>
+				</view>
+				<view class="uni-dialog-button-group">
+					<view class="uni-dialog-button" @click="hideDialog('certifiedDialog')">
+						<text class="uni-dialog-button-text">取消</text>
+					</view>
+					<view class="uni-dialog-button uni-border-left" @click="certified(3)">
+						<text class="uni-dialog-button-text">审核失败</text>
+					</view>
+					<view class="uni-dialog-button uni-border-left" @click="certified(1)">
+						<text class="uni-dialog-button-text uni-button-color">审核成功</text>
+					</view>
+				</view>
+			</view>
 		</uni-popup>
 	</view>
 </template>
@@ -105,6 +123,14 @@
 			this.init()
 		},
 		methods: {
+			//显示弹出框
+			showDialog(id){
+				this.$refs[id].open()
+			},
+			//关闭弹出框
+			hideDialog(id){
+				this.$refs[id].close()
+			},
 			//处理消息
 			onHandleMessage(data){
 				switch (data.cmd) {
@@ -254,7 +280,7 @@
 			//打开审核提示框
 			showCertifiedTips(id){
 				this.selectId = id
-				this.$refs["certifiedDialog"].open()
+				this.showDialog("certifiedDialog")
 			},
 			//提交审核结果
 			certified(certified){
@@ -263,6 +289,7 @@
 				})
 				this.$api.post("/user/certified/", {"id": this.selectId, "certified": certified}).then(res => {
 					uni.hideLoading()
+					this.hideDialog('certifiedDialog')
 					if(res.code == 20000){
 						uni.showToast({
 							title: "执行成功",

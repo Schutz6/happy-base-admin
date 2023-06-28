@@ -90,3 +90,67 @@
 		height: auto !important;
 	}
 </style>
+<style lang="scss">
+	.uni-popup-dialog{
+		width: 300px;
+		border-radius: 11px;
+		background-color: #fff;
+		
+		.uni-dialog-title {
+		    display: flex;
+		    flex-direction: row;
+		    justify-content: center;
+		    padding-top: 25px;
+			
+			.uni-popup__info {
+			    color: #909399;
+			}
+			.uni-dialog-title-text {
+			    font-size: 16px;
+			    font-weight: 500;
+			}
+		}
+		.uni-dialog-content {
+		    display: flex;
+		    flex-direction: row;
+		    justify-content: center;
+		    align-items: center;
+		    padding: 20px;
+			
+			.uni-dialog-content-text {
+			    font-size: 14px;
+			    color: #6C6C6C;
+			}
+		}
+		.uni-dialog-button-group {
+		    display: flex;
+		    flex-direction: row;
+		    border-top-color: #f5f5f5;
+		    border-top-style: solid;
+		    border-top-width: 1px;
+			
+			.uni-dialog-button {
+			    display: flex;
+			    flex: 1;
+			    flex-direction: row;
+			    justify-content: center;
+			    align-items: center;
+			    height: 45px;
+				cursor: pointer;
+			}
+			.uni-dialog-button-text {
+			    font-size: 16px;
+			    color: #333;
+			}
+			.uni-border-left {
+			    border-left-color: #f0f0f0;
+			    border-left-style: solid;
+			    border-left-width: 1px;
+			}
+			.uni-button-color {
+			    color: #007aff;
+			}
+		}
+		
+	}
+</style>
