@@ -37,7 +37,7 @@
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view" v-if="item.certified==2">
-									<uni-tag text="认证审核" type="primary" @click="showCertifiedTips(item.id)"></uni-tag>
+									<uni-tag text="审核" type="primary" @click="showCertifiedTips(item.id)"></uni-tag>
 								</view>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>

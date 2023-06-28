@@ -121,6 +121,15 @@
 			    font-size: 14px;
 			    color: #6C6C6C;
 			}
+			.uni-dialog-input {
+			    flex: 1;
+			    font-size: 14px;
+			    border: 1px #eee solid;
+			    height: 40px;
+			    padding: 0 10px;
+			    border-radius: 5px;
+			    color: #555;
+			}
 		}
 		.uni-dialog-button-group {
 		    display: flex;

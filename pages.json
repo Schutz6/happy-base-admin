@@ -306,6 +306,22 @@
 				"navigationStyle": "custom"
             }
         }
+        ,{
+            "path" : "pages/ext/recharge/recharge",//充值
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false,
+                "navigationStyle": "custom"
+            }
+        }
+        ,{
+            "path" : "pages/ext/withdraw/withdraw",//提现
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false,
+                "navigationStyle": "custom"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
