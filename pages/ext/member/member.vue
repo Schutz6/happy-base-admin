@@ -26,6 +26,8 @@
 						<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, 'name')">账号</uni-th>
 						<uni-th align="center">昵称</uni-th>
 						<uni-th align="center">余额</uni-th>
+						<uni-th align="center">累计充值</uni-th>
+						<uni-th align="center">累计提现</uni-th>
 						<uni-th align="center">积分</uni-th>
 						<uni-th align="center">上级编号</uni-th>
 						<uni-th align="center">状态</uni-th>
@@ -39,6 +41,8 @@
 						<uni-td align="center">{{ item.username }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
 						<uni-td align="center">{{ item.balance || 0 }}</uni-td>
+						<uni-td align="center">{{ item.total_recharge || 0 }}</uni-td>
+						<uni-td align="center">{{ item.total_withdraw || 0 }}</uni-td>
 						<uni-td align="center">{{ item.integral || 0 }}</uni-td>
 						<uni-td align="center">{{ item.pid || "--" }}</uni-td>
 						<uni-td align="center">
@@ -48,7 +52,7 @@
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view">
-									<uni-tag text="充值" type="primary"></uni-tag>
+									<uni-tag text="充值/提现" type="primary" @click="showInputBox(item.id)"></uni-tag>
 								</view>
 								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
@@ -63,6 +67,11 @@
 				</view>
 			</uni-card>
 		</scroll-view>
+		
+		<!-- 充值或提现 -->
+		<uni-popup ref="inputDialog" type="dialog">
+			<uni-popup-dialog mode="input" title="充值/提现" cancelText="取消" confirmText="确定" placeholder="请输入充值/提现金额" @confirm="dialogInputConfirm"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -255,6 +264,43 @@
 								icon: 'error'
 							})
 						}
+					})
+				}
+			},
+			//显示充值/提现框
+			showInputBox(id){
+				this.selectId = id
+				this.$refs["inputDialog"].open()
+			},
+			//确定
+			dialogInputConfirm(val){
+				let money = parseFloat(val)
+				if(money){
+					this.$api.post("/user/balance/", {"id": this.selectId, "money": money}).then(res => {
+						if(res.code == 20000){
+							if(money>0){
+								uni.showToast({
+									title: "充值成功",
+									icon: 'success'
+								})
+							}else{
+								uni.showToast({
+									title: "提现成功",
+									icon: 'success'
+								})
+							}
+							this.getList()
+						}else{
+							uni.showToast({
+								title: res.message,
+								icon: 'error'
+							})
+						}
+					})
+				}else{
+					uni.showToast({
+						title: "输入错误",
+						icon: 'error'
 					})
 				}
 			}

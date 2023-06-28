@@ -37,10 +37,10 @@
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view">
-									<uni-tag text="认证审核" type="primary"></uni-tag>
-								</view>
-								<view class="tag-view">
 									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+								</view>
+								<view class="tag-view" v-if="item.certified==2">
+									<uni-tag text="认证审核" type="primary" @click="showCertifiedTips(item.id)"></uni-tag>
 								</view>
 							</view>
 						</uni-td>
@@ -52,6 +52,11 @@
 				</view>
 			</uni-card>
 		</scroll-view>
+		
+		<!-- 审核提示框 -->
+		<uni-popup ref="certifiedDialog" type="dialog">
+			<uni-popup-dialog type="info" cancelText="审核失败" confirmText="审核成功" title="提示" content="请确认审核结果" @close="certified(3)" @confirm="certified(1)"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -245,6 +250,32 @@
 						}
 					})
 				}
+			},
+			//打开审核提示框
+			showCertifiedTips(id){
+				this.selectId = id
+				this.$refs["certifiedDialog"].open()
+			},
+			//提交审核结果
+			certified(certified){
+				uni.showLoading({
+					title: '正在执行'
+				})
+				this.$api.post("/user/certified/", {"id": this.selectId, "certified": certified}).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "执行成功",
+							icon: 'success'
+						})
+						this.getList()
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
+				})
 			}
 		}
 	}
