@@ -84,7 +84,7 @@
 								{{formatCategory(item[table.name])}}
 							</template>
 							<template v-else i="其他">
-								{{ item[table.name] }}
+								{{ item[table.name] || "--"}}
 							</template>
 							</uni-td>
 						</template>
