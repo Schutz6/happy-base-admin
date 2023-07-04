@@ -25,6 +25,8 @@
 						<uni-th align="center">头像</uni-th>
 						<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, 'name')">账号</uni-th>
 						<uni-th align="center">昵称</uni-th>
+						<uni-th align="center">手机</uni-th>
+						<uni-th align="center">邮箱</uni-th>
 						<uni-th align="center">余额</uni-th>
 						<uni-th align="center">累计充值</uni-th>
 						<uni-th align="center">累计提现</uni-th>
@@ -40,6 +42,8 @@
 						</uni-td>
 						<uni-td align="center">{{ item.username }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
+						<uni-td align="center">{{ item.mobile?"+"+item.area+" "+item.mobile:"--" }}</uni-td>
+						<uni-td align="center">{{ item.email || "--" }}</uni-td>
 						<uni-td align="center">{{ item.balance || 0 }}</uni-td>
 						<uni-td align="center">{{ item.total_recharge || 0 }}</uni-td>
 						<uni-td align="center">{{ item.total_withdraw || 0 }}</uni-td>
