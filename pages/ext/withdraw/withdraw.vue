@@ -7,7 +7,7 @@
 						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="综合查询条件"></uni-easyinput>
 					</view>
 					<template v-if="module.table_json != null">
-						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.single_query">
+						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show && table.single_query">
 							<view v-if="table.type==1 || table.type==2" class="filter-item d-flex" style="width: 120px;">
 								<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
 							</view>
@@ -46,7 +46,7 @@
 						</view>
 					</template>
 				</view>
-				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据" style="min-height: 200px;">
+				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 					<uni-tr>
 						<template v-if="module.table_json != null">
 							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>

@@ -44,20 +44,20 @@
 							</uni-table>
 						</uni-forms-item>
 						<uni-forms-item label="字段管理" name="table_json" required>
-							<uni-table border stripe emptyText="请新增字段" style="padding-bottom: 220px;">
+							<uni-table stripe emptyText="请新增字段" style="padding-bottom: 220px;border: 1px #ebeef5 solid;">
 								<uni-tr>
-									<uni-th align="center">字段</uni-th>
-									<uni-th align="center">类型</uni-th>
-									<uni-th align="center">备注</uni-th>
-									<uni-th align="center">默认值</uni-th>
-									<uni-th align="center">绑定对象/字典</uni-th>
-									<uni-th align="center">表格显示</uni-th>
-									<uni-th align="center">综合查询</uni-th>
-									<uni-th align="center">单独查询</uni-th>
-									<uni-th align="center">排序字段</uni-th>
-									<uni-th align="center">唯一校验</uni-th>
-									<uni-th align="center">是否编辑</uni-th>
-									<uni-th align="center">操作</uni-th>
+									<uni-th align="center" width="140px">字段</uni-th>
+									<uni-th align="center" width="100px">类型</uni-th>
+									<uni-th align="center" width="140px">备注</uni-th>
+									<uni-th align="center" width="100px">默认值</uni-th>
+									<uni-th align="center" width="140px">绑定对象/字典</uni-th>
+									<uni-th align="center" width="60px">表格显示</uni-th>
+									<uni-th align="center" width="60px">综合查询</uni-th>
+									<uni-th align="center" width="60px">单独查询</uni-th>
+									<uni-th align="center" width="60px">排序字段</uni-th>
+									<uni-th align="center" width="60px">唯一校验</uni-th>
+									<uni-th align="center" width="60px">是否编辑</uni-th>
+									<uni-th align="center" width="80px">操作</uni-th>
 								</uni-tr>
 								<uni-tr v-for="(item, index) in dataForm.table_json" :key="index">
 									<uni-td align="center">
