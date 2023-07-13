@@ -169,6 +169,12 @@
 				this.init()
 			}
 		},
+		onReady() {
+			//根据角色，初始化查询条件
+			if(this.user.roles.includes("admin")){
+				this.listQuery.uid = this.user.id
+			}
+		},
 		methods: {
 			//处理消息
 			onHandleMessage(data){
