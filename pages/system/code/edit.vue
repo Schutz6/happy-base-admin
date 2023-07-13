@@ -44,15 +44,16 @@
 							</uni-table>
 						</uni-forms-item>
 						<uni-forms-item label="字段管理" name="table_json" required>
-							<uni-table border stripe emptyText="请新增字段" style="min-height: 200px;">
+							<uni-table border stripe emptyText="请新增字段" style="padding-bottom: 220px;">
 								<uni-tr>
 									<uni-th align="center">字段</uni-th>
 									<uni-th align="center">类型</uni-th>
 									<uni-th align="center">备注</uni-th>
 									<uni-th align="center">默认值</uni-th>
 									<uni-th align="center">绑定对象/字典</uni-th>
-									<uni-th align="center">前端显示</uni-th>
-									<uni-th align="center">查询字段</uni-th>
+									<uni-th align="center">表格显示</uni-th>
+									<uni-th align="center">综合查询</uni-th>
+									<uni-th align="center">单独查询</uni-th>
 									<uni-th align="center">排序字段</uni-th>
 									<uni-th align="center">唯一校验</uni-th>
 									<uni-th align="center">是否编辑</uni-th>
@@ -79,6 +80,9 @@
 									</uni-td>
 									<uni-td align="center">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.6)" />
+									</uni-td>
+									<uni-td align="center">
+										<switch @change="switchSingleQuery($event, index)" :checked="item.single_query" style="transform:scale(0.6)" />
 									</uni-td>
 									<uni-td align="center">
 										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.6)" />
@@ -185,7 +189,7 @@
 			},
 			//新增字段
 			addField(){
-				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "sort": false, "unique": false, "edit": true})
+				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "single_query": false, "sort": false, "unique": false, "edit": true})
 			},
 			//点击上移
 			clickUp(index){
@@ -219,6 +223,10 @@
 			//是否显示到查询
 			switchQuery(e, index){
 				this.$set(this.dataForm.table_json[index], 'query', e.detail.value)
+			},
+			//是否显示单独查询
+			switchSingleQuery(e, index){
+				this.$set(this.dataForm.table_json[index], 'single_query', e.detail.value)
 			},
 			//是否显示排序
 			switchSort(e, index){
