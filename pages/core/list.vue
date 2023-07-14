@@ -31,10 +31,10 @@
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
 						</view>
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[5].roles) && module.api_json[5].show">
-							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate">批量修改</button>
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate()">批量修改</button>
 						</view>
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[4].roles) && module.api_json[4].show">
-							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
 						</view>
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[10].roles) && module.api_json[10].show">
 							<uni-file-picker ref="files" limit="1" file-mediatype="all" @select="importData" :auto-upload="false">
@@ -42,7 +42,7 @@
 							</uni-file-picker>
 						</view>
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[11].roles) && module.api_json[11].show">
-							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="exportData">导出</button>
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="exportData()">导出</button>
 						</view>
 					</template>
 				</view>
@@ -68,7 +68,7 @@
 							</template>
 							<template v-else-if="table.type==12" i="多图片">
 								<view class="d-flex-center">
-									<view v-for="(pic, picIndex) in item[table.name]" style="padding: 0 5px;">
+									<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
 										<image @click="showImage(pic)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
 									</view>
 								</view>
@@ -96,7 +96,7 @@
 										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
 									</view>
 									<view class="tag-view" v-if="checkRole(module.api_json[2].roles) && module.api_json[2].show">
-										<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+										<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
 									</view>
 								</template>
 							</view>
@@ -134,7 +134,6 @@
 					searchKey: null
 				},
 				selectedIndexs: [],
-				selectId: null,//选中ID
 			}
 		},
 		computed: {
@@ -154,14 +153,6 @@
 			  return value
 			}
 		},
-		onShow() {
-			// 监听消息
-			uni.$on('onHandleMessage', this.onHandleMessage)
-		},
-		onHide() {
-			// 移除消息
-			uni.$off('onHandleMessage', this.onHandleMessage)
-		},
 		onLoad(options) {
 			this.mid = options.mid
 			if(this.mid){
@@ -176,21 +167,6 @@
 			}
 		},
 		methods: {
-			//处理消息
-			onHandleMessage(data){
-				switch (data.cmd) {
-					case 'tips':
-						//弹出提示框，点击确认回调
-						if(data.func === "deleteItem"){
-							//执行删除方法
-							this.deleteItem()
-						}else if(data.func === "batchDelete"){
-							//批量删除
-							this.batchDelete()
-						}
-						break;
-				}
-			},
 			//跳转页面
 			toPage(path, item){
 				uni.navigateTo({
@@ -411,37 +387,34 @@
 					this.$refs.table.clearSelection()
 				}
 			},
-			//显示删除提示
-			showDeleteTips(id){
-				this.selectId = id
-				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "deleteItem", "tipContent": "是否删除该数据？"})
-			},
 			//删除数据
-			deleteItem(){
-				uni.showLoading({
-					title: '正在删除'
-				})
-				this.$api.post("/core/delete/", {"id": this.selectId}, {"Mid": this.mid}).then(res => {
-					uni.hideLoading()
-					if(res.code == 20000){
-						uni.showToast({
-							title: "删除成功",
-							icon: 'success'
-						})
-						this.getList()
-					}else{
-						uni.showToast({
-							title: res.message,
-							icon: 'error'
-						})
+			deleteItem(id){
+				uni.showModal({
+					title: "提示",
+					content: "是否删除该数据？",
+					success: (r) => {
+						if(r.confirm){
+							uni.showLoading({
+								title: '正在删除'
+							})
+							this.$api.post("/core/delete/", {"id": id}, {"Mid": this.mid}).then(res => {
+								uni.hideLoading()
+								if(res.code == 20000){
+									uni.showToast({
+										title: "删除成功",
+										icon: 'success'
+									})
+									this.getList()
+								}else{
+									uni.showToast({
+										title: res.message,
+										icon: 'error'
+									})
+								}
+							})
+						}
 					}
 				})
-			},
-			//弹出批量删除提示框
-			showBatchDelete(){
-				if(this.selectedIndexs.length > 0){
-					uni.$emit("showOpenDialog", {"cmd": "tips", "func": "batchDelete", "tipContent": "是否批量删除数据？"})
-				}
 			},
 			// 多选
 			selectionChange(e) {
@@ -450,23 +423,31 @@
 			//批量删除
 			batchDelete(){
 				if(this.selectedIndexs.length > 0){
-					let ids = this.selectedIndexs.map(i => this.tableData[i].id)
-					uni.showLoading({
-						title: '正在删除'
-					})
-					this.$api.post("/core/batchDelete/", {"ids": ids}, {"Mid": this.mid}).then(res => {
-						uni.hideLoading()
-						if(res.code == 20000){
-							uni.showToast({
-								title: "删除成功",
-								icon: 'success'
-							})
-							this.getList()
-						}else{
-							uni.showToast({
-								title: res.message,
-								icon: 'error'
-							})
+					uni.showModal({
+						title: "提示",
+						content: "是否批量删除数据？",
+						success: (r) => {
+							if(r.confirm){
+								let ids = this.selectedIndexs.map(i => this.tableData[i].id)
+								uni.showLoading({
+									title: '正在删除'
+								})
+								this.$api.post("/core/batchDelete/", {"ids": ids}, {"Mid": this.mid}).then(res => {
+									uni.hideLoading()
+									if(res.code == 20000){
+										uni.showToast({
+											title: "删除成功",
+											icon: 'success'
+										})
+										this.getList()
+									}else{
+										uni.showToast({
+											title: res.message,
+											icon: 'error'
+										})
+									}
+								})
+							}
 						}
 					})
 				}

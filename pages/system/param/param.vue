@@ -40,7 +40,7 @@
 									<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/param/edit', item)"></uni-tag>
 								</view>
 								<view class="tag-view">
-									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+									<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
 								</view>
 							</view>
 						</uni-td>
@@ -70,37 +70,16 @@
 					searchKey: null,
 					status: null
 				},
-				selectId: null,//选中ID
 			}
 		},
 		computed: {
 			...mapGetters(['datas'])
-		},
-		onShow() {
-			// 监听消息
-			uni.$on('onHandleMessage', this.onHandleMessage)
-		},
-		onHide() {
-			// 移除消息
-			uni.$off('onHandleMessage', this.onHandleMessage)
 		},
 		onReady() {
 			//初始化
 			this.init()
 		},
 		methods: {
-			//处理消息
-			onHandleMessage(data){
-				switch (data.cmd) {
-					case 'tips':
-						//弹出提示框，点击确认回调
-						if(data.func === "deleteItem"){
-							//执行删除方法
-							this.deleteItem()
-						}
-						break;
-				}
-			},
 			//跳转页面
 			toPage(path, item){
 				uni.navigateTo({
@@ -142,20 +121,35 @@
 				this.listQuery.currentPage = e.current
 				this.getList()
 			},
-			//显示删除提示
-			showDeleteTips(id){
-				this.selectId = id
-				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "deleteItem", "tipContent": "是否删除该数据？"})
-			},
 			//删除数据
-			deleteItem(){
-				this.$api.post("/param/delete/", {"id": this.selectId}).then(res => {
-					uni.showToast({
-						title: "删除成功",
-						icon: 'success'
-					})
-					this.getList()
+			deleteItem(id){
+				uni.showModal({
+					title: "提示",
+					content: "是否删除该数据？",
+					success: (r) => {
+						if(r.confirm){
+							uni.showLoading({
+								title: '正在删除'
+							})
+							this.$api.post("/param/delete/", {"id": id}).then(res => {
+								uni.hideLoading()
+								if(res.code == 20000){
+									uni.showToast({
+										title: "删除成功",
+										icon: 'success'
+									})
+									this.getList()
+								}else{
+									uni.showToast({
+										title: res.message,
+										icon: 'error'
+									})
+								}
+							})
+						}
+					}
 				})
+				
 			},
 			
 		}

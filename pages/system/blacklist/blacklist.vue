@@ -10,7 +10,7 @@
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
 					</view>
 					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
+						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
 					</view>
 				</view>
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
@@ -27,7 +27,7 @@
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view">
-									<uni-tag text="删除" type="error" @click="showDeleteTips(item.id)"></uni-tag>
+									<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
 								</view>
 							</view>
 						</uni-td>
@@ -57,7 +57,6 @@
 					searchKey: null
 				},
 				selectedIndexs: [],
-				selectId: null,//选中ID
 			}
 		},
 		filters: {
@@ -66,34 +65,11 @@
 		    	return formatDateUtc(time)
 		    }
 		},
-		onShow() {
-			// 监听消息
-			uni.$on('onHandleMessage', this.onHandleMessage)
-		},
-		onHide() {
-			// 移除消息
-			uni.$off('onHandleMessage', this.onHandleMessage)
-		},
 		onReady() {
 			//初始化
 			this.init()
 		},
 		methods: {
-			//处理消息
-			onHandleMessage(data){
-				switch (data.cmd) {
-					case 'tips':
-						//弹出提示框，点击确认回调
-						if(data.func === "deleteItem"){
-							//执行删除方法
-							this.deleteItem()
-						}else if(data.func === "batchDelete"){
-							//批量删除
-							this.batchDelete()
-						}
-						break;
-				}
-			},
 			//初始化
 			init() {
 				this.getList()
@@ -135,37 +111,34 @@
 					this.$refs.table.clearSelection()
 				}
 			},
-			//显示删除提示
-			showDeleteTips(id){
-				this.selectId = id
-				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "deleteItem", "tipContent": "是否删除该数据？"})
-			},
 			//删除数据
-			deleteItem(){
-				uni.showLoading({
-					title: '正在删除'
-				})
-				this.$api.post("/blacklist/delete/", {"id": this.selectId}).then(res => {
-					uni.hideLoading()
-					if(res.code == 20000){
-						uni.showToast({
-							title: "删除成功",
-							icon: 'success'
-						})
-						this.getList()
-					}else{
-						uni.showToast({
-							title: res.message,
-							icon: 'error'
-						})
+			deleteItem(id){
+				uni.showModal({
+					title: "提示",
+					content: "是否删除该数据？",
+					success: (r) => {
+						if(r.confirm){
+							uni.showLoading({
+								title: '正在删除'
+							})
+							this.$api.post("/blacklist/delete/", {"id": id}).then(res => {
+								uni.hideLoading()
+								if(res.code == 20000){
+									uni.showToast({
+										title: "删除成功",
+										icon: 'success'
+									})
+									this.getList()
+								}else{
+									uni.showToast({
+										title: res.message,
+										icon: 'error'
+									})
+								}
+							})
+						}
 					}
 				})
-			},
-			//弹出批量删除提示框
-			showBatchDelete(){
-				if(this.selectedIndexs.length > 0){
-					uni.$emit("showOpenDialog", {"cmd": "tips", "func": "batchDelete", "tipContent": "是否批量删除数据？"})
-				}
 			},
 			// 多选
 			selectionChange(e) {
@@ -174,23 +147,31 @@
 			//批量删除
 			batchDelete(){
 				if(this.selectedIndexs.length > 0){
-					let ids = this.selectedIndexs.map(i => this.tableData[i].id)
-					uni.showLoading({
-						title: '正在删除'
-					})
-					this.$api.post("/blacklist/batchDelete/", {"ids": ids}).then(res => {
-						uni.hideLoading()
-						if(res.code == 20000){
-							uni.showToast({
-								title: "删除成功",
-								icon: 'success'
-							})
-							this.getList()
-						}else{
-							uni.showToast({
-								title: res.message,
-								icon: 'error'
-							})
+					uni.showModal({
+						title: "提示",
+						content: "是否批量删除数据？",
+						success: (r) => {
+							if(r.confirm){
+								let ids = this.selectedIndexs.map(i => this.tableData[i].id)
+								uni.showLoading({
+									title: '正在删除'
+								})
+								this.$api.post("/blacklist/batchDelete/", {"ids": ids}).then(res => {
+									uni.hideLoading()
+									if(res.code == 20000){
+										uni.showToast({
+											title: "删除成功",
+											icon: 'success'
+										})
+										this.getList()
+									}else{
+										uni.showToast({
+											title: res.message,
+											icon: 'error'
+										})
+									}
+								})
+							}
 						}
 					})
 				}

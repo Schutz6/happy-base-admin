@@ -10,10 +10,10 @@
 						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
 					</view>
 					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchDelete">批量删除</button>
+						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
 					</view>
 					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="showClear">清空</button>
+						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="clear()">清空</button>
 					</view>
 				</view>
 				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
@@ -70,34 +70,11 @@
 		    	return formatDateUtc(time)
 		    }
 		},
-		onShow() {
-			// 监听消息
-			uni.$on('onHandleMessage', this.onHandleMessage)
-		},
-		onHide() {
-			// 移除消息
-			uni.$off('onHandleMessage', this.onHandleMessage)
-		},
 		onReady() {
 			//初始化
 			this.init()
 		},
 		methods: {
-			//处理消息
-			onHandleMessage(data){
-				switch (data.cmd) {
-					case 'tips':
-						//弹出提示框，点击确认回调
-						if(data.func === "clear"){
-							//清空日志
-							this.clear()
-						}else if(data.func === "batchDelete"){
-							//批量删除
-							this.batchDelete()
-						}
-						break;
-				}
-			},
 			//初始化
 			init() {
 				this.getList()
@@ -139,31 +116,29 @@
 					this.$refs.table.clearSelection()
 				}
 			},
-			//弹出清空提示框
-			showClear(){
-				uni.$emit("showOpenDialog", {"cmd": "tips", "func": "clear", "tipContent": "是否清空系统日志？"})
-			},
 			//清空日志
 			clear(){
-				uni.showLoading({
-					title: '正在删除'
-				})
-				this.$api.get("/log/clear/").then(res => {
-					uni.hideLoading()
-					if(res.code == 20000){
-						uni.showToast({
-							title: "删除成功",
-							icon: 'success'
-						})
-						this.getList()
+				uni.showModal({
+					title: "提示",
+					content: "是否清空系统日志？",
+					success: (r) => {
+						if(r.confirm){
+							uni.showLoading({
+								title: '正在删除'
+							})
+							this.$api.get("/log/clear/").then(res => {
+								uni.hideLoading()
+								if(res.code == 20000){
+									uni.showToast({
+										title: "删除成功",
+										icon: 'success'
+									})
+									this.getList()
+								}
+							})
+						}
 					}
 				})
-			},
-			//弹出批量删除提示框
-			showBatchDelete(){
-				if(this.selectedIndexs.length > 0){
-					uni.$emit("showOpenDialog", {"cmd": "tips", "func": "batchDelete", "tipContent": "是否批量删除数据？"})
-				}
 			},
 			// 多选
 			selectionChange(e) {
@@ -172,18 +147,31 @@
 			//批量删除
 			batchDelete(){
 				if(this.selectedIndexs.length > 0){
-					let ids = this.selectedIndexs.map(i => this.tableData[i].id)
-					uni.showLoading({
-						title: '正在删除'
-					})
-					this.$api.post("/log/batchDelete/", {"ids": ids}).then(res => {
-						uni.hideLoading()
-						if(res.code == 20000){
-							uni.showToast({
-								title: "删除成功",
-								icon: 'success'
-							})
-							this.getList()
+					uni.showModal({
+						title: "提示",
+						content: "是否批量删除数据？",
+						success: (r) => {
+							if(r.confirm){
+								let ids = this.selectedIndexs.map(i => this.tableData[i].id)
+								uni.showLoading({
+									title: '正在删除'
+								})
+								this.$api.post("/log/batchDelete/", {"ids": ids}).then(res => {
+									uni.hideLoading()
+									if(res.code == 20000){
+										uni.showToast({
+											title: "删除成功",
+											icon: 'success'
+										})
+										this.getList()
+									}else{
+										uni.showToast({
+											title: res.message,
+											icon: 'error'
+										})
+									}
+								})
+							}
 						}
 					})
 				}
