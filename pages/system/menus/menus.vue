@@ -138,7 +138,7 @@
 				})
 			},
 			//删除数据
-			deleteItem(){
+			deleteItem(id){
 				uni.showModal({
 					title: "提示",
 					content: "是否删除该数据？",
