@@ -51,7 +51,7 @@
 						<template v-if="module.table_json != null">
 							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
 						</template>
-						<uni-th align="center" class="pointer" sortable="add_time" @sort-change="sortChange($event, 'add_time')">创建时间</uni-th>
+						<uni-th align="center">创建时间</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -64,18 +64,14 @@
 								{{ showDict(table.key, item[table.name]) }}
 							</template>
 							<template v-else-if="table.type==6" i="图片">
-								<view v-if="item[table.name]">
-									<image @click="showImage(item[table.name])" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 120px;height: 40px;"></image>
-								</view>
-								<view v-else>--</view>
+								<image @click="showImage(item[table.name])" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 120px;height: 40px;"></image>
 							</template>
 							<template v-else-if="table.type==12" i="多图片">
-								<view class="d-flex-center" v-if="item[table.name]">
+								<view class="d-flex-center">
 									<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
 										<image @click="showImage(pic)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
 									</view>
 								</view>
-								<view v-else>--</view>
 							</template>
 							<template v-else-if="table.type==7" i="多文本">
 								{{ item[table.name] | ellipsis}}
@@ -92,9 +88,7 @@
 							</template>
 							</uni-td>
 						</template>
-						<uni-td align="center">
-							<uni-dateformat :date="item.add_time | formatDate"></uni-dateformat>
-						</uni-td>
+						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<template v-if="module.api_json != null">
@@ -137,7 +131,8 @@
 					pageSize: 20,
 					sortField: "_id",
 					sortOrder: "descending",
-					searchKey: null
+					searchKey: null,
+					uid: null
 				},
 				selectedIndexs: [],
 			}
@@ -161,16 +156,14 @@
 		},
 		onLoad(options) {
 			this.mid = options.mid
-			if(this.mid){
-				//初始化
-				this.init()
-			}
 		},
 		onReady() {
 			//根据角色，初始化查询条件
-			if(this.user.roles.includes("admin")){
+			if(!this.user.roles.includes("super")){
 				this.listQuery.uid = this.user.id
 			}
+			//初始化
+			this.init()
 		},
 		methods: {
 			//跳转页面
