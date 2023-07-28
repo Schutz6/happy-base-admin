@@ -55,6 +55,7 @@
 				showBars: false,
 				loading: false,
 				passwordForm: {
+					type: 1,
 					oldPassword: '',
 					newPassword: ''
 				},
