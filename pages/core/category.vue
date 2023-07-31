@@ -30,7 +30,14 @@
 										{{ showDict(table.key, item[table.name]) }}
 									</template>
 									<template v-else-if="table.type==6" i="图片">
-										<image @click="showImage(item[table.name])" :src="item[table.name]" mode="aspectFit" class="pointer" style="height: 40px;height: 40px;"></image>
+										<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="height: 40px;height: 40px;"></image>
+									</template>
+									<template v-else-if="table.type==12" i="多图片">
+										<view class="d-flex-center">
+											<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
+												<image @click="showImage(item[table.name], picIndex)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
+											</view>
+										</view>
 									</template>
 									<template v-else i="其他">
 										{{ item[table.name] }}
@@ -107,8 +114,8 @@
 				})
 			},
 			//预览图片
-			showImage(img){
-				uni.previewImage({"urls": [img]})
+			showImage(imgs, index){
+				uni.previewImage({"current": index, "urls": imgs})
 			},
 			//初始化
 			init() {

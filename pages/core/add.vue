@@ -34,14 +34,18 @@
 							</template>
 							<template v-else-if="table.type==12">
 								<!-- 多图片 -->
-								<uni-file-picker :ref="'file-'+table.name" limit="3" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
+								<uni-file-picker :ref="'file-'+table.name" title="最多选择9张图片" limit="9" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
 							</template>
 							<template v-else-if="table.type==13">
-								<!-- 单视频 -->
-								<uni-file-picker :ref="'file-'+table.name" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="video" :auto-upload="false"></uni-file-picker>
+								<!-- 单文件 -->
+								<uni-file-picker :ref="'file-'+table.name" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="all" :auto-upload="false"></uni-file-picker>
 								<view style="margin-top: 5px;">
-									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="视频地址" />
+									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="文件地址" />
 								</view>
+							</template>
+							<template v-else-if="table.type==14">
+								<!-- 多文件 -->
+								<uni-file-picker :ref="'file-'+table.name" title="最多选择9个文件" limit="9" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="all" :auto-upload="false"></uni-file-picker>
 							</template>
 							<template v-else-if="table.type==7">
 								<!-- 多文本 -->
