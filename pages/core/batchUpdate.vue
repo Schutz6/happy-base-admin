@@ -81,7 +81,8 @@
 			},
 			//分类选择
 			onCategoryChange(e, name) {
-				this.dataForm[name] = e.detail.value
+				// this.dataForm[name] = e.detail.value
+				this.$set(this.dataForm, name, formatToCategory(e.detail.value))
 			},
 			//获取字典
 			getDict(name){

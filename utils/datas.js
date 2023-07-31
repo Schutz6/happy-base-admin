@@ -17,11 +17,18 @@ export default {
 	if_status_json: [{'value': 1, 'text': '是'}, {'value': 0, 'text': '否'}],
 	//字段类型
 	field_type_json: [
-		{'value': 1, 'text': 'String'}, {'value': 2, 'text': 'Int'},
-		{'value': 3, 'text': 'Float'}, {'value': 4, 'text': 'List<Dict>'},
-		{'value': 5, 'text': 'Dict'}, {'value': 6, 'text': 'Image'},
-		{'value': 7, 'text': 'Text'}, {'value': 8, 'text': 'Html'},
-		{'value': 9, 'text': 'Object'}, {'value': 10, 'text': 'Category'},
-		{'value': 12, 'text': 'List<Image>'}
+		{'value': 1, 'text': 'String'},
+		{'value': 2, 'text': 'Int'},
+		{'value': 3, 'text': 'Float'},
+		{'value': 5, 'text': 'Dict'},
+		{'value': 4, 'text': 'List<Dict>'},
+		{'value': 6, 'text': 'Image'},
+		{'value': 12, 'text': 'List<Image>'},
+		{'value': 13, 'text': 'Video'},
+		{'value': 14, 'text': 'List<Video>'},
+		{'value': 7, 'text': 'Text'},
+		{'value': 8, 'text': 'Html'},
+		{'value': 9, 'text': 'Object'},
+		{'value': 10, 'text': 'Category'}
 	],
 }

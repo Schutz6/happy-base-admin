@@ -57,6 +57,7 @@
 									<uni-th align="center" width="60px">排序字段</uni-th>
 									<uni-th align="center" width="60px">唯一校验</uni-th>
 									<uni-th align="center" width="60px">是否编辑</uni-th>
+									<uni-th align="center" width="60px">是否必填</uni-th>
 									<uni-th align="center" width="80px">操作</uni-th>
 								</uni-tr>
 								<uni-tr v-for="(item, index) in dataForm.table_json" :key="index">
@@ -92,6 +93,9 @@
 									</uni-td>
 									<uni-td align="center">
 										<switch @change="switchEdit($event, index)" :checked="item.edit" style="transform:scale(0.6)" />
+									</uni-td>
+									<uni-td align="center">
+										<switch @change="switchMust($event, index)" :checked="item.must" style="transform:scale(0.6)" />
 									</uni-td>
 									<uni-td align="center">
 										<uni-icons class="operate-item pointer" type="trash" size="20" color="red" @click="delField(index)"></uni-icons>
@@ -140,7 +144,7 @@
 						{"id": "importData", "name": "导入数据", "status": false, "show": false, "roles": []},
 						{"id": "exportData", "name": "导出数据", "status": false, "show": false, "roles": []}
 					],
-					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "表格显示", "query": "综合查询", "single_query": "单独查询", "sort": "排序字段", "unique": "唯一校验", "edit": "是否编辑"},
+					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "表格显示", "query": "综合查询", "single_query": "单独查询", "sort": "排序字段", "unique": "唯一校验", "edit": "是否编辑", "must": "是否必填"},
 					table_json: []
 				},
 				rules: {
@@ -261,6 +265,10 @@
 			//是否编辑
 			switchEdit(e, index){
 				this.$set(this.dataForm.table_json[index], 'edit', e.detail.value)
+			},
+			//是否必填
+			switchMust(e, index){
+				this.$set(this.dataForm.table_json[index], 'must', e.detail.value)
 			},
 			//提交
 			submit(){

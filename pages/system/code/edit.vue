@@ -57,6 +57,7 @@
 									<uni-th align="center" width="60px">排序字段</uni-th>
 									<uni-th align="center" width="60px">唯一校验</uni-th>
 									<uni-th align="center" width="60px">是否编辑</uni-th>
+									<uni-th align="center" width="60px">是否必填</uni-th>
 									<uni-th align="center" width="80px">操作</uni-th>
 								</uni-tr>
 								<uni-tr v-for="(item, index) in dataForm.table_json" :key="index">
@@ -92,6 +93,9 @@
 									</uni-td>
 									<uni-td align="center">
 										<switch @change="switchEdit($event, index)" :checked="item.edit" style="transform:scale(0.6)" />
+									</uni-td>
+									<uni-td align="center">
+										<switch @change="switchMust($event, index)" :checked="item.must" style="transform:scale(0.6)" />
 									</uni-td>
 									<uni-td align="center">
 										<uni-icons class="operate-item pointer" type="trash" size="20" color="red" @click="delField(index)"></uni-icons>
@@ -239,6 +243,10 @@
 			//是否编辑
 			switchEdit(e, index){
 				this.$set(this.dataForm.table_json[index], 'edit', e.detail.value)
+			},
+			//是否必填
+			switchMust(e, index){
+				this.$set(this.dataForm.table_json[index], 'must', e.detail.value)
 			},
 			//提交
 			submit(){

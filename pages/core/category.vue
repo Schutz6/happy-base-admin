@@ -69,6 +69,7 @@
 		data() {
 			return {
 				mid: null,//模块ID
+				statistics: null,//是否统计
 				module: {},//模块
 				dict: {},//字典
 				tableData: [],
@@ -78,6 +79,7 @@
 		},
 		onLoad(options) {
 			this.mid = options.mid
+			this.statistics = options.statistics
 			if(this.mid){
 				//初始化
 				this.init()
@@ -171,7 +173,7 @@
 			//获取列表
 			getList() {
 				this.listLoading = true
-				this.$api.post("/core/getCategory/", {"statistics": 1}, {"Mid": this.mid}).then(res => {
+				this.$api.post("/core/getCategory/", {"statistics": this.statistics}, {"Mid": this.mid}).then(res => {
 					this.listLoading = false
 					this.tableData = res.data
 				})

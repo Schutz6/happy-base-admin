@@ -4,7 +4,7 @@
 			<uni-card :title="'编辑信息 - '+module.name">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
-						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit" :label="table.remarks" :name="table.name" required>
+						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit" :label="table.remarks" :name="table.name" :required="table.must">
 							<template v-if="table.type==1">
 								<!-- 字符串 -->
 								<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" />
@@ -27,14 +27,21 @@
 							</template>
 							<template v-else-if="table.type==6">
 								<!-- 单图片 -->
-								<uni-file-picker :ref="'file-'+table.name" :value="formatImage(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" :auto-upload="false"></uni-file-picker>
+								<uni-file-picker :ref="'file-'+table.name" :value="formatFile(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
 								<view style="margin-top: 5px;">
 									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="图片地址" />
 								</view>
 							</template>
 							<template v-else-if="table.type==12">
 								<!-- 多图片 -->
-								<uni-file-picker :ref="'file-'+table.name" :value="formatImages(dataForm[table.name])" limit="3" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" :auto-upload="false"></uni-file-picker>
+								<uni-file-picker :ref="'file-'+table.name" :value="formatFiles(dataForm[table.name])" limit="3" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
+							</template>
+							<template v-else-if="table.type==13">
+								<!-- 单视频 -->
+								<uni-file-picker :ref="'file-'+table.name" :value="formatFile(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="video" :auto-upload="false"></uni-file-picker>
+								<view style="margin-top: 5px;">
+									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="视频地址" />
+								</view>
 							</template>
 							<template v-else-if="table.type==7">
 								<!-- 多文本 -->
@@ -101,21 +108,29 @@
 			initRules(){
 				for(let i=0;i<this.module.table_json.length;i++){
 					let table = this.module.table_json[i]
-					if(table.type == 4 || table.type == 5 || table.type == 10){
-						this.rules[table.name] = {
-							rules: [{
-								required: true,
-								errorMessage: "请选择"
-							}]
-						}
-					}else if(table.type == 6 || table.type == 8 || table.type == 12){
-						
-					}else{
-						this.rules[table.name] = {
-							rules: [{
-								required: true,
-								errorMessage: "请输入"
-							}]
+					//是否必填验证
+					if(table.must){
+						if(table.type == 4 || table.type == 5 || table.type == 10){
+							this.rules[table.name] = {
+								rules: [{
+									required: true,
+									errorMessage: "请选择"
+								}]
+							}
+						}else if(table.type == 6 || table.type == 8 || table.type == 12){
+							this.rules[table.name] = {
+								rules: [{
+									required: true,
+									errorMessage: "请上传"
+								}]
+							}
+						}else{
+							this.rules[table.name] = {
+								rules: [{
+									required: true,
+									errorMessage: "请输入"
+								}]
+							}
 						}
 					}
 				}
@@ -130,26 +145,28 @@
 			},
 			//分类选择
 			onCategoryChange(e, name) {
-				this.dataForm[name] = formatToCategory(e.detail.value)
+				// this.dataForm[name] = formatToCategory(e.detail.value)
+				this.$set(this.dataForm, name, formatToCategory(e.detail.value))
 			},
 			//获取字典
 			getDict(name){
 				return this.dict[name]
 			},
-			//格式化单图片
-			formatImage(img){
+			//格式化单文件
+			formatFile(file){
 				let results = []
-				if(img){
-					results.push({'url': img})
+				if(file){
+					name = file.substr(file.lastIndexOf('/')+1)
+					results.push({'name': name, 'url': file})
 				}
 				return results
 			},
-			//格式化多图片
-			formatImages(imgs){
+			//格式化多文件
+			formatFiles(files){
 				let results = []
-				if(imgs){
-					for(let i=0;i<imgs.length;i++){
-						results.push({'url': imgs[i]})
+				if(files){
+					for(let i=0;i<files.length;i++){
+						results.push({'url': files[i]})
 					}
 				}
 				return results
@@ -161,7 +178,8 @@
 					let item = this.module.table_json[i]
 					if(item.type == 8){
 						//获取富文本内容
-						this.dataForm[item.name] = this.$refs["editor-"+item.name][0].getHtml()
+						// this.dataForm[item.name] = this.$refs["editor-"+item.name][0].getHtml()
+						this.$set(this.dataForm, item.name, this.$refs["editor-"+item.name][0].getHtml())
 					}
 				}
 				this.$refs.form.validate().then(res => {
@@ -204,7 +222,8 @@
 							title: "上传成功",
 							icon: 'success'
 						})
-						this.dataForm[name] = res.data.download_path
+						// this.dataForm[name] = res.data.download_path
+						this.$set(this.dataForm, name, res.data.download_path)
 					}else{
 						this.$refs['file-'+name][0].clearFiles()
 						uni.showToast({
@@ -231,7 +250,8 @@
 							icon: 'success'
 						})
 						if(!this.dataForm[name]){
-							this.dataForm[name] = [res.data.download_path]
+							// this.dataForm[name] = [res.data.download_path]
+							this.$set(this.dataForm, name, [res.data.download_path])
 						}else{
 							this.dataForm[name].push(res.data.download_path)
 						}
