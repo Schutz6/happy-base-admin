@@ -193,7 +193,7 @@
 			},
 			//新增字段
 			addField(){
-				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "single_query": false, "sort": false, "unique": false, "edit": true})
+				this.dataForm.table_json.push({"name": "", "type": 1, "remarks": "", "default": "", "key": "", "show": true, "query": false, "single_query": false, "sort": false, "unique": false, "edit": true, "must": true})
 			},
 			//点击上移
 			clickUp(index){
