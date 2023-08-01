@@ -31,22 +31,34 @@ export const formatDateUtc = function(timestamp) {
 export const listToTree = function(list) {
 	const obj = {}
 	list.forEach((item) => {
-		obj[item.id] = item
+		let flag = false
+		if(item.status == "0"){
+			flag = true
+		}
+		if(!flag){
+			obj[item.id] = item
+		}
 	})
 	const parentList = []
 	list.forEach((item) => {
-		const parent = obj[item.pid]
-		if (parent) {
-			// * 当前项有父节点
-			parent.children = parent.children || []
-			item["text"] = item.name
-			item["value"] = item.id
-			parent.children.push(item)
-		} else {
-			// * 当前项没有父节点 -> 顶层
-			item["text"] = item.name
-			item["value"] = item.id
-			parentList.push(item)
+		let flag = false
+		if(item.status == "0"){
+			flag = true
+		}
+		if(!flag){
+			const parent = obj[item.pid]
+			if (parent) {
+				// * 当前项有父节点
+				parent.children = parent.children || []
+				item["text"] = item.name
+				item["value"] = item.id
+				parent.children.push(item)
+			} else {
+				// * 当前项没有父节点 -> 顶层
+				item["text"] = item.name
+				item["value"] = item.id
+				parentList.push(item)
+			}
 		}
 	})
 	return parentList
