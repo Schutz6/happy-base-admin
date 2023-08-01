@@ -34,6 +34,7 @@
 						for(let i=0;i<this.menus.length;i++){
 							let menu1 = this.menus[i]
 							if(menu1.value == "#"){
+								let flag = false
 								for(let j=0;j<menu1.children.length;j++){
 									let menu2 = menu1.children[j]
 									if(menu2.value != "#"){
