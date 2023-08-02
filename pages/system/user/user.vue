@@ -7,7 +7,7 @@
 						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/昵称"></uni-easyinput>
 					</view>
 					<view class="filter-item d-flex" style="width: 120px;">
-						<uni-data-select v-model="listQuery.role" :localdata="roles" placeholder="请选择角色"></uni-data-select>
+						<uni-data-select v-model="listQuery.role" :localdata="roles" :clear="false" placeholder="请选择角色"></uni-data-select>
 					</view>
 					<view class="filter-item d-flex" style="width: 120px;">
 						<uni-data-select v-model="listQuery.status" :localdata="datas.user_status_json" placeholder="请选择状态"></uni-data-select>
@@ -43,8 +43,8 @@
 						<uni-td align="center">{{ item.name }}</uni-td>
 						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
 						<uni-td align="center">
-							<view v-if="item.status==1" style="color: green;">正常</view>
-							<view v-else-if="item.status==2" style="color: red;">禁用</view>
+							<view v-if="item.status=='1'" style="color: green;">启用</view>
+							<view v-else-if="item.status=='0'" style="color: red;">禁用</view>
 						</uni-td>
 						<uni-td align="center">
 							<view v-if="item.last_time"><uni-dateformat :date="item.last_time | formatDate"></uni-dateformat></view>
@@ -86,6 +86,7 @@
 					pageSize: 20,
 					sortField: "_id",
 					sortOrder: "descending",
+					role: null,//角色
 					roles: [],//角色
 					status: null,//状态
 					searchKey: null
@@ -95,7 +96,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['datas'])
+			...mapGetters(['user', 'datas'])
 		},
 		filters: {
 		    //格式化日期
@@ -104,6 +105,14 @@
 		    }
 		},
 		onReady() {
+			//判断用户角色
+			if(this.user.roles.includes("super")){
+				this.listQuery.role = "super"
+				this.roles = [{"text": "开发者", "value": "super"}, {"text": "管理员", "value": "admin"}]
+			}else if(this.user.roles.includes("admin")){
+				this.listQuery.role = "admin"
+				this.roles = [{"text": "管理员", "value": "admin"}]
+			}
 			//初始化
 			this.init()
 		},
@@ -130,15 +139,17 @@
 			},
 			//初始化
 			init() {
-				//获取角色列表
-				this.getRoleList(()=>{
-					//获取用户列表
-					this.getList()
-				})
+				//获取用户列表
+				this.getList()
+				// //获取角色列表
+				// this.getRoleList(()=>{
+				// 	//获取用户列表
+				// 	this.getList()
+				// })
 			},
 			//角色列表
 			getRoleList(callback){
-				this.$api.get("/role/getList/").then(res => {
+				this.$api.post("/dict/getList/", {"type_name": "Role"}).then(res => {
 					if(res.code == 20000){
 						this.roles = res.data
 						callback()
@@ -191,7 +202,7 @@
 				}else{
 					this.listQuery.roles = []
 				}
-				this.$api.post("/user/list/", this.listQuery).then(res => {
+				this.$api.post("/core/list/", this.listQuery, {"Mid": "User"}).then(res => {
 					this.listLoading = false
 					this.tableData = res.data.results
 					this.total = res.data.total
@@ -227,7 +238,7 @@
 							uni.showLoading({
 								title: '正在删除'
 							})
-							this.$api.post("/user/delete/", {"id": id}).then(res => {
+							this.$api.post("/core/delete/", {"id": id}, {"Mid": "User"}).then(res => {
 								uni.hideLoading()
 								if(res.code == 20000){
 									uni.showToast({
@@ -262,7 +273,7 @@
 								uni.showLoading({
 									title: '正在删除'
 								})
-								this.$api.post("/user/batchDelete/", {"ids": ids}).then(res => {
+								this.$api.post("/core/batchDelete/", {"ids": ids}, {"Mid": "User"}).then(res => {
 									uni.hideLoading()
 									if(res.code == 20000){
 										uni.showToast({

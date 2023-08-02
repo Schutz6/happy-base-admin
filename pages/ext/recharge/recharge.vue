@@ -51,7 +51,6 @@
 						<template v-if="module.table_json != null">
 							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
 						</template>
-						<uni-th align="center" class="pointer" sortable="add_time" @sort-change="sortChange($event, 'add_time')">创建时间</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -87,12 +86,14 @@
 							<template v-else-if="table.type==10" i="分类列表">
 								{{formatCategory(item[table.name])}}
 							</template>
+							<template v-else-if="table.type==15" i="时间戳">
+								<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
+							</template>
 							<template v-else i="其他">
 								{{ item[table.name] || "--"}}
 							</template>
 							</uni-td>
 						</template>
-						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
 						<uni-td align="center">
 							<view class="d-flex-center">
 								<view class="tag-view" v-if="item.status=='0'">
@@ -337,7 +338,7 @@
 			},
 			//初始化字典
 			async initDict(name){
-				let res = await this.$api.postAsync("/dict/getList/", {"name": name})
+				let res = await this.$api.postAsync("/dict/getList/", {"type_name": name})
 				if(res.code == 20000){
 					this.dict[name] = res.data
 				}

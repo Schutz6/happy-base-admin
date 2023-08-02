@@ -33,14 +33,7 @@
 				"navigationStyle": "custom"
 			}
 		}
-        ,{
-            "path" : "pages/system/logs/logs",//系统日志
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-        }
+       
         ,{
             "path" : "pages/system/user/user",//用户管理
             "style" :                                                                                    
@@ -65,8 +58,15 @@
 				"navigationStyle": "custom"
 		    }
 		}
-        ,{
-            "path" : "pages/system/role/role",//角色管理
+		,{
+		    "path" : "pages/system/menu/menu",//菜单
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		},{
+            "path" : "pages/system/dictType/dictType",//字典类型
             "style" :                                                                                    
             {
                 "enablePullDownRefresh": false,
@@ -74,85 +74,13 @@
             }
         }
         ,{
-            "path" : "pages/system/role/add",//角色新增
+            "path" : "pages/system/dictValue/dictValue",//字典值
             "style" :                                                                                    
             {
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         }
-        ,{
-            "path" : "pages/system/role/edit",//角色编辑
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-        }
-        ,{
-            "path" : "pages/system/param/param",//参数管理
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-        }
-		,{
-		    "path" : "pages/system/param/add",//参数新增
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/param/edit",//参数编辑
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/dict/dict",//字典管理
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-        ,{
-            "path" : "pages/system/dict/addType",//字典新增
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-        }
-		,{
-		    "path" : "pages/system/dict/editType",//字典编辑
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/dict/addValue",//字典子集新增
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/dict/editValue",//字典子集编辑
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
         ,{
             "path" : "pages/system/task/task",//任务管理
             "style" :                                                                                    
@@ -186,31 +114,15 @@
             }
         }
 		,{
-		    "path" : "pages/system/menus/menus",//菜单管理
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/menus/add",//菜单新增
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/menus/edit",//菜单编辑
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
 		    "path" : "pages/system/blacklist/blacklist",//IP黑名单
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		}
+		,{
+		    "path" : "pages/system/logs/logs",//系统日志
 		    "style" :                                                                                    
 		    {
 		        "enablePullDownRefresh": false,
@@ -298,30 +210,7 @@
 				"navigationStyle": "custom"
 		    }
 		}
-        ,{
-            "path" : "pages/ext/member/realname",//会员认证
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-        }
-        ,{
-            "path" : "pages/ext/recharge/recharge",//充值
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false,
-                "navigationStyle": "custom"
-            }
-        }
-        ,{
-            "path" : "pages/ext/withdraw/withdraw",//提现
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false,
-                "navigationStyle": "custom"
-            }
-        }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

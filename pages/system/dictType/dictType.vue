@@ -83,10 +83,7 @@
 								{{formatCategory(item[table.name])}}
 							</template>
 							<template v-else-if="table.type==15" i="时间戳">
-								<view v-if="item[table.name]">
-									<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
-								</view>
-								<view v-else>--</view>
+								<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
 							</template>
 							<template v-else i="其他">
 								{{ item[table.name] || "--"}}
@@ -95,6 +92,9 @@
 						</template>
 						<uni-td align="center">
 							<view class="d-flex-center">
+								<view class="tag-view">
+									<uni-tag text="+字典值" type="primary" @click="toPage('/pages/system/dictValue/dictValue?mid=DictValue&type_name='+item.name)"></uni-tag>
+								</view>
 								<template v-if="module.api_json != null">
 									<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[1].show">
 										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
@@ -266,9 +266,6 @@
 			formatObject(name, value){
 				let list = this.object[name]
 				let names = "--"
-				if(!list){
-					return names
-				}
 				for(let i=0;i<list.length;i++){
 					if(value == list[i].value){
 						names = list[i].text
@@ -324,9 +321,6 @@
 			showDict(name, value){
 				let list = this.dict[name]
 				let names = "--"
-				if(!list){
-					return names
-				}
 				for(let i=0;i<list.length;i++){
 					if(value == list[i].value){
 						names = list[i].text
@@ -339,9 +333,6 @@
 			showDicts(name, values){
 				let list = this.dict[name]
 				let names = []
-				if(!list){
-					return names
-				}
 				for(let i=0;i<list.length;i++){
 					if(values.includes(list[i].value)){
 						names.push(list[i].text)

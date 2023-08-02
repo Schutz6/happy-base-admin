@@ -4,6 +4,9 @@
 			<uni-card title="新增用户">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
+						<uni-forms-item label="头像" name="avatar" required>
+							<uni-file-picker :value="fileLists" ref="avatar" limit="1" @select="selectAvatar" :auto-upload="false"></uni-file-picker>
+						</uni-forms-item>
 						<uni-forms-item label="账号" name="username" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.username" />
 						</uni-forms-item>
@@ -41,8 +44,10 @@
 			return {
 				eventChannel: null,
 				roles:[], //角色列表
+				fileLists: [],
 				loading: false,
 				dataForm: {
+					avatar: null,
 					username: '',
 					name: '',
 					password: '',
@@ -51,6 +56,12 @@
 					status: 1
 				},
 				rules: {
+					avatar: {
+						rules: [{
+							required: true,
+							errorMessage: "请上传"
+						}]
+					},
 					username: {
 						rules: [{
 							required: true,
@@ -129,6 +140,27 @@
 					}
 				})
 			},
+			//选择头像后触发
+			selectAvatar(e){
+				uni.showLoading({
+					title: '正在上传'
+				})
+				this.$api.uploadFile('/file/upload/head/', e.tempFilePaths[0]).then(res => {
+					uni.hideLoading()
+					if(res.code == 20000){
+						uni.showToast({
+							title: "上传成功",
+							icon: 'success'
+						})
+						this.$set(this.dataForm, "avatar", res.data.download_path)
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'error'
+						})
+					}
+				})
+			}
 		}
 	}
 </script>

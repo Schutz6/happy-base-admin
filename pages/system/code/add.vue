@@ -5,20 +5,27 @@
 				<view style="padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top">
 						<uni-row :gutter="50">
-							<uni-col :span="8">
+							<uni-col :span="6">
 								<uni-forms-item label="模块ID" name="mid" required>
 									<uni-easyinput type="text" trim="both" v-model="dataForm.mid" />
 								</uni-forms-item>
 							</uni-col>
-							<uni-col :span="8">
+							<uni-col :span="6">
 								<uni-forms-item label="模块名称" name="name" required>
 									<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
 								</uni-forms-item>
 							</uni-col>
-							<uni-col :span="8">
+							<uni-col :span="6">
 								<uni-forms-item label="使用缓存" name="cache" required>
 									<view class="box d-flex" style="height: 100%;padding-left: 10px;">
 										<uni-data-checkbox v-model="dataForm.cache" :localdata="datas.if_status_json"></uni-data-checkbox>
+									</view>
+								</uni-forms-item>
+							</uni-col>
+							<uni-col :span="6">
+								<uni-forms-item label="是否追溯" name="retrace" required>
+									<view class="box d-flex" style="height: 100%;padding-left: 10px;">
+										<uni-data-checkbox v-model="dataForm.retrace" :localdata="datas.if_status_json"></uni-data-checkbox>
 									</view>
 								</uni-forms-item>
 							</uni-col>
@@ -130,6 +137,7 @@
 					mid: null,
 					name: null,
 					cache: 0,
+					retrace: 0,
 					api_json: [
 						{"id": "add", "name": "新增", "status": true, "show": true, "roles": ['super', 'admin']},
 						{"id": "update", "name": "编辑", "status": true, "show": true, "roles": ['super', 'admin']},
@@ -181,7 +189,7 @@
 			},
 			//角色列表
 			getRoleList(){
-				this.$api.get("/role/getList/").then(res => {
+				this.$api.post("/dict/getList/", {"type_name": "Role"}).then(res => {
 					if(res.code == 20000){
 						this.roles = res.data
 					}

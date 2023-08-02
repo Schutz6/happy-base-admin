@@ -1,9 +1,9 @@
 <template>
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
-			<uni-card :title="'编辑信息 - '+module.name">
+			<uni-card :title="'编辑 - '+module.name">
 				<view style="width: 550px;padding: 10px;">
-					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
+					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="120px">
 						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit" :label="table.remarks" :name="table.name" :required="table.must">
 							<template v-if="table.type==1">
 								<!-- 字符串 -->

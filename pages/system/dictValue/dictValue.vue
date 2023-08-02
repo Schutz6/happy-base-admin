@@ -3,11 +3,14 @@
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
 				<view class="filter-container d-flex">
+					<view class="filter-item d-flex">
+						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="back()">返回</button>
+					</view>
 					<view class="filter-item d-flex" style="width: 180px;">
 						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="综合查询"></uni-easyinput>
 					</view>
 					<template v-if="module.table_json != null">
-						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show && table.single_query">
+						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show && table.single_query && table.name!='type_name'">
 							<view v-if="table.type==1 || table.type==2" class="filter-item d-flex" style="width: 120px;">
 								<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
 							</view>
@@ -28,7 +31,7 @@
 					</view>
 					<template v-if="module.api_json != null">
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
-							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add', {'type_id': type_id})">新增</button>
 						</view>
 						<view class="filter-item d-flex" v-if="checkRole(module.api_json[5].roles) && module.api_json[5].show">
 							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate()">批量修改</button>
@@ -83,10 +86,7 @@
 								{{formatCategory(item[table.name])}}
 							</template>
 							<template v-else-if="table.type==15" i="时间戳">
-								<view v-if="item[table.name]">
-									<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
-								</view>
-								<view v-else>--</view>
+								<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
 							</template>
 							<template v-else i="其他">
 								{{ item[table.name] || "--"}}
@@ -117,12 +117,13 @@
 </template>
 
 <script>
-	import { formatDateUtc, listToTree, formatToCategory } from '@/utils/util'
+	import { navigateBack, formatDateUtc, listToTree, formatToCategory } from '@/utils/util'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
 				mid: null,//模块ID
+				type_name: null,//字典类型
 				module: {},//模块
 				dict: {},//字典
 				category: {},//分类
@@ -136,6 +137,7 @@
 					sortField: "_id",
 					sortOrder: "descending",
 					searchKey: null,
+					type_name: null,
 					uid: null
 				},
 				selectedIndexs: [],
@@ -160,6 +162,8 @@
 		},
 		onLoad(options) {
 			this.mid = options.mid
+			this.type_name = options.type_name
+			this.listQuery.type_name = options.type_name
 		},
 		onReady() {
 			//根据角色，初始化查询条件
@@ -170,6 +174,10 @@
 			this.init()
 		},
 		methods: {
+			//返回
+			back(){
+				navigateBack()
+			},
 			//跳转页面
 			toPage(path, item){
 				uni.navigateTo({
@@ -266,9 +274,6 @@
 			formatObject(name, value){
 				let list = this.object[name]
 				let names = "--"
-				if(!list){
-					return names
-				}
 				for(let i=0;i<list.length;i++){
 					if(value == list[i].value){
 						names = list[i].text
@@ -324,9 +329,6 @@
 			showDict(name, value){
 				let list = this.dict[name]
 				let names = "--"
-				if(!list){
-					return names
-				}
 				for(let i=0;i<list.length;i++){
 					if(value == list[i].value){
 						names = list[i].text
@@ -339,9 +341,6 @@
 			showDicts(name, values){
 				let list = this.dict[name]
 				let names = []
-				if(!list){
-					return names
-				}
 				for(let i=0;i<list.length;i++){
 					if(values.includes(list[i].value)){
 						names.push(list[i].text)

@@ -5,7 +5,7 @@ export const navigateBack = function() {
 	let pages = getCurrentPages()
 	if (pages.length == 1) {
 		uni.reLaunch({
-			url: '/pages/index/index'
+			url: '/'
 		});
 	} else {
 		uni.navigateBack()

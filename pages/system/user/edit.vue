@@ -4,11 +4,11 @@
 			<uni-card title="编辑用户">
 				<view style="width: 550px;padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
+						<uni-forms-item label="头像" name="avatar" required>
+							<uni-file-picker :value="fileLists" ref="avatar" limit="1" @select="selectAvatar" :auto-upload="false"></uni-file-picker>
+						</uni-forms-item>
 						<uni-forms-item label="账号" name="username" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.username" disabled />
-						</uni-forms-item>
-						<uni-forms-item label="头像" name="avatar">
-							<uni-file-picker :value="fileLists" ref="avatar" limit="1" @select="selectAvatar" :auto-upload="false"></uni-file-picker>
 						</uni-forms-item>
 						<uni-forms-item label="昵称" name="name" required>
 							<uni-easyinput type="text" trim="both" v-model="dataForm.name" />
@@ -48,6 +48,12 @@
 				fileLists: [],
 				dataForm: {},
 				rules: {
+					avatar: {
+						rules: [{
+							required: true,
+							errorMessage: "请上传"
+						}]
+					},
 					username: {
 						rules: [{
 							required: true,
@@ -135,7 +141,7 @@
 							title: "上传成功",
 							icon: 'success'
 						})
-						this.dataForm.avatar = res.data.download_path
+						this.$set(this.dataForm, "avatar", res.data.download_path)
 					}else{
 						uni.showToast({
 							title: res.message,

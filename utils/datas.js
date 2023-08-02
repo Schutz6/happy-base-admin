@@ -3,8 +3,6 @@ export default {
 	user_status_json: [{'value': 1, 'text': '正常'}, {'value': 0, 'text': '禁用'}],
 	//用户认证
 	user_certified_json: [{'value': 0, 'text': '未认证'}, {'value': 1, 'text': '已认证'}, {'value': 2, 'text': '审核中'}, {'value': 3, 'text': '认证失败'}],
-	//参数状态
-	param_status_json: [{'value': 0, 'text': '公共'}, {'value': 1, 'text': '私有'}],
 	//任务类型
 	task_type_json: [{'value': 3, 'text': '间隔任务'}, {'value': 2, 'text': 'cron任务'}],
 	//文件类型
@@ -29,6 +27,7 @@ export default {
 		{'value': 7, 'text': 'Text'},
 		{'value': 8, 'text': 'Html'},
 		{'value': 9, 'text': 'Object'},
-		{'value': 10, 'text': 'Category'}
+		{'value': 10, 'text': 'Category'},
+		{'value': 15, 'text': 'Timestamp'}
 	],
 }
