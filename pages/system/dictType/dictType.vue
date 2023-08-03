@@ -15,7 +15,7 @@
 								<uni-easyinput v-if="table.name=='uid'" v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
 								<uni-data-select v-else v-model="listQuery[table.name]" :localdata="getObject(table.key)" :placeholder="table.remarks"></uni-data-select>
 							</view>
-							<view v-if="table.type==4 || table.type==5" class="filter-item d-flex" style="width: 120px;">
+							<view v-if="user.roles.includes('super') && (table.type==4 || table.type==5)" class="filter-item d-flex" style="width: 120px;">
 								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
 							</view>
 							<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
@@ -136,7 +136,8 @@
 					sortField: "_id",
 					sortOrder: "descending",
 					searchKey: null,
-					uid: null
+					uid: null,
+					status: null
 				},
 				selectedIndexs: [],
 			}
@@ -165,6 +166,8 @@
 			//根据角色，初始化查询条件
 			if(!this.user.roles.includes("super")){
 				this.listQuery.uid = this.user.id
+				//只能查看私有
+				this.listQuery.status = "0"
 			}
 			//初始化
 			this.init()
@@ -310,7 +313,13 @@
 			async initDict(name){
 				let res = await this.$api.postAsync("/dict/getList/", {"type_name": name})
 				if(res.code == 20000){
-					this.dict[name] = res.data
+					//判断角色
+					if(name=="PublicStatus" && !this.user.roles.includes("super")){
+						//删除私有状态
+						this.dict[name] = [{"text": "公有", "value": "0"}]
+					}else{
+						this.dict[name] = res.data
+					}
 				}
 			},
 			//获取字典

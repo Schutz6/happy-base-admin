@@ -107,7 +107,7 @@
 						uni.showLoading({
 							title: '正在提交'
 						})
-						this.$api.post("/user/update/", this.dataForm).then(res => {
+						this.$api.post("/core/update/", this.dataForm, {"Mid": "User"}).then(res => {
 							this.loading = false
 							uni.hideLoading()
 							if(res.code == 20000){
