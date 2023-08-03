@@ -28,6 +28,8 @@ export default {
 		{'value': 8, 'text': 'Html'},
 		{'value': 9, 'text': 'Object'},
 		{'value': 10, 'text': 'Category'},
-		{'value': 15, 'text': 'Timestamp'}
+		{'value': 15, 'text': 'Timestamp'},
+		{'value': 16, 'text': 'Date'},
+		{'value': 17, 'text': 'Datetime'}
 	],
 }

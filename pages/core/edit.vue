@@ -2,7 +2,7 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card :title="'编辑 - '+module.name">
-				<view style="width: 550px;padding: 10px;">
+				<view style="width: 550px;padding: 10px;padding-bottom: 300px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="120px">
 						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit" :label="table.remarks" :name="table.name" :required="table.must">
 							<template v-if="table.type==1">
@@ -62,6 +62,14 @@
 							<template v-else-if="table.type==10">
 								<!-- 分类选择 -->
 								<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+							</template>
+							<template v-else-if="table.type==16">
+								<!-- 选择日期 -->
+								<uni-datetime-picker type="date" v-model="dataForm[table.name]" return-type="string" />
+							</template>
+							<template v-else-if="table.type==17">
+								<!-- 选择时间 -->
+								<uni-datetime-picker type="datetime" v-model="dataForm[table.name]" return-type="string" />
 							</template>
 						</uni-forms-item>
 					</uni-forms>
