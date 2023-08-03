@@ -7,7 +7,7 @@
 						<view class="filter-item d-flex" style="width: 180px;">
 							<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/昵称"></uni-easyinput>
 						</view>
-						<view class="filter-item d-flex" style="width: 120px;" v-if="user.roles.includes('super')">
+						<view class="filter-item d-flex" style="width: 120px;">
 							<uni-data-select v-model="listQuery.role" :localdata="roles" placeholder="请选择角色"></uni-data-select>
 						</view>
 						<view class="filter-item d-flex" style="width: 120px;">
@@ -107,13 +107,6 @@
 		    }
 		},
 		onReady() {
-			//判断用户角色
-			if(this.user.roles.includes("super")){
-				this.roles = [{"text": "开发者", "value": "super"}, {"text": "管理员", "value": "admin"}]
-			}else if(this.user.roles.includes("admin")){
-				this.listQuery.role = "admin"
-				this.roles = [{"text": "管理员", "value": "admin"}]
-			}
 			//初始化
 			this.init()
 		},
@@ -140,19 +133,29 @@
 			},
 			//初始化
 			init() {
-				//获取用户列表
-				this.getList()
-				// //获取角色列表
-				// this.getRoleList(()=>{
-				// 	//获取用户列表
-				// 	this.getList()
-				// })
+				//获取角色列表
+				this.getRoleList(()=>{
+					//获取用户列表
+					this.getList()
+				})
 			},
 			//角色列表
 			getRoleList(callback){
 				this.$api.post("/dict/getList/", {"type_name": "Role"}).then(res => {
 					if(res.code == 20000){
-						this.roles = res.data
+						//对比当前用户的最大角色
+						if(this.user.roles.length>0){
+							let flag = false
+							for(let i=0;i<res.data.length;i++){
+								if(this.user.roles[0] == res.data[i].value){
+									//从这里开始获取角色列表
+									flag = true
+								}
+								if(flag){
+									this.roles.push(res.data[i])
+								}
+							}
+						}
 						callback()
 					}
 				})
@@ -201,7 +204,7 @@
 				if(this.listQuery.role){
 					this.listQuery.roles = [this.listQuery.role]
 				}else{
-					this.listQuery.roles = null
+					this.listQuery.roles = this.roles.map(item=>item.value)
 				}
 				this.$api.post("/core/list/", this.listQuery, {"Mid": "User"}).then(res => {
 					this.listLoading = false

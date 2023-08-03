@@ -150,9 +150,11 @@
 			},
 			//初始化字典
 			async initDict(name){
-				let res = await this.$api.postAsync("/dict/getList/", {"type_name": name})
-				if(res.code == 20000){
-					this.dict[name] = res.data
+				if(!this.dict[name]){
+					let res = await this.$api.postAsync("/dict/getList/", {"type_name": name})
+					if(res.code == 20000){
+						this.dict[name] = res.data
+					}
 				}
 			},
 			//获取字典

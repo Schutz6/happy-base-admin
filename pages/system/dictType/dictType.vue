@@ -252,15 +252,17 @@
 			},
 			//初始化对象
 			async initObject(name){
-				let res = await this.$api.postAsync("/core/getList/", {}, {"Mid": name})
-				if(res.code == 20000){
-					//列表转换
-					let result = []
-					for(let i=0;i<res.data.length;i++){
-						let item = res.data[i]
-						result.push({"text": item.name, "value": item.id})
+				if(!this.object[name]){
+					let res = await this.$api.postAsync("/core/getList/", {}, {"Mid": name})
+					if(res.code == 20000){
+						//列表转换
+						let result = []
+						for(let i=0;i<res.data.length;i++){
+							let item = res.data[i]
+							result.push({"text": item.name, "value": item.id})
+						}
+						this.object[name] = result
 					}
-					this.object[name] = result
 				}
 			},
 			//获取对象
@@ -281,10 +283,12 @@
 			},
 			//初始化分类
 			async initCategory(name){
-				let res = await this.$api.postAsync("/core/getCategory/", {}, {"Mid": name})
-				if(res.code == 20000){
-					//转Tree
-					this.category[name] = listToTree(res.data)
+				if(!this.category[name]){
+					let res = await this.$api.postAsync("/core/getCategory/", {}, {"Mid": name})
+					if(res.code == 20000){
+						//转Tree
+						this.category[name] = listToTree(res.data)
+					}
 				}
 			},
 			//获取分类
@@ -313,14 +317,16 @@
 			},
 			//初始化字典
 			async initDict(name){
-				let res = await this.$api.postAsync("/dict/getList/", {"type_name": name})
-				if(res.code == 20000){
-					//判断角色
-					if(name=="PublicStatus" && !this.user.roles.includes("super")){
-						//删除私有状态
-						this.dict[name] = [{"text": "公有", "value": "0"}]
-					}else{
-						this.dict[name] = res.data
+				if(!this.dict[name]){
+					let res = await this.$api.postAsync("/dict/getList/", {"type_name": name})
+					if(res.code == 20000){
+						//判断角色
+						if(name=="PublicStatus" && !this.user.roles.includes("super")){
+							//删除私有状态
+							this.dict[name] = [{"text": "公有", "value": "0"}]
+						}else{
+							this.dict[name] = res.data
+						}
 					}
 				}
 			},

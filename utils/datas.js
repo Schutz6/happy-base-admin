@@ -10,7 +10,7 @@ export default {
 	//文件状态
 	file_status_json: [{'value': 1, 'text': '临时'}, {'value': 2, 'text': '永存'}],
 	//是否状态
-	if_status_json: [{'value': "1", 'text': '是'}, {'value': "0", 'text': '否'}],
+	if_status_json: [{'value': 1, 'text': '是'}, {'value': 0, 'text': '否'}],
 	//字段类型
 	field_type_json: [
 		{'value': 1, 'text': 'String'},
