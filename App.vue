@@ -47,6 +47,9 @@
 	.scroll-view-box {
 		height: calc(100vh - 44px);
 	}
+	.container{
+		min-height: calc(100vh - 96px);
+	}
 	.uni-dialog-button{
 		cursor: pointer;
 	}

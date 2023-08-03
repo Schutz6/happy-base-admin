@@ -2,70 +2,72 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
-				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 180px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/昵称"></uni-easyinput>
+				<view class="container">
+					<view class="filter-container d-flex">
+						<view class="filter-item d-flex" style="width: 180px;">
+							<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/昵称"></uni-easyinput>
+						</view>
+						<view class="filter-item d-flex" style="width: 120px;" v-if="user.roles.includes('super')">
+							<uni-data-select v-model="listQuery.role" :localdata="roles" placeholder="请选择角色"></uni-data-select>
+						</view>
+						<view class="filter-item d-flex" style="width: 120px;">
+							<uni-data-select v-model="listQuery.status" :localdata="datas.user_status_json" placeholder="请选择状态"></uni-data-select>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/user/add')">新增</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
+						</view>
 					</view>
-					<view class="filter-item d-flex" style="width: 120px;" v-if="user.roles.includes('super')">
-						<uni-data-select v-model="listQuery.role" :localdata="roles" placeholder="请选择角色"></uni-data-select>
-					</view>
-					<view class="filter-item d-flex" style="width: 120px;">
-						<uni-data-select v-model="listQuery.status" :localdata="datas.user_status_json" placeholder="请选择状态"></uni-data-select>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/user/add')">新增</button>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
-					</view>
-				</view>
-				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
-					<uni-tr>
-						<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, '_id')">用户编号</uni-th>
-						<uni-th align="center">头像</uni-th>
-						<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, 'name')">账号</uni-th>
-						<uni-th align="center">昵称</uni-th>
-						<uni-th align="center">角色</uni-th>
-						<uni-th align="center">状态</uni-th>
-						<uni-th align="center">最后登录时间</uni-th>
-						<uni-th align="center">最后登录IP</uni-th>
-						<uni-th align="center">操作</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<uni-td align="center">{{ item.id }}</uni-td>
-						<uni-td align="center">
-							<img :src="item.avatar" style="width: 40px;height: 40px;border-radius: 20px;" />
-						</uni-td>
-						<uni-td align="center">{{ item.username }}</uni-td>
-						<uni-td align="center">{{ item.name }}</uni-td>
-						<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
-						<uni-td align="center">
-							<view v-if="item.status=='1'" style="color: green;">启用</view>
-							<view v-else-if="item.status=='0'" style="color: red;">禁用</view>
-						</uni-td>
-						<uni-td align="center">
-							<view v-if="item.last_time"><uni-dateformat :date="item.last_time | formatDate"></uni-dateformat></view>
-							<view v-else>--</view>
-						</uni-td>
-						<uni-td align="center">{{item.last_ip || "--"}}</uni-td>
-						<uni-td align="center">
-							<view class="d-flex-center">
-								<view class="tag-view">
-									<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/user/edit', item)"></uni-tag>
+					<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
+						<uni-tr>
+							<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, '_id')">用户编号</uni-th>
+							<uni-th align="center">头像</uni-th>
+							<uni-th align="center" class="pointer" sortable @sort-change="sortChange($event, 'name')">账号</uni-th>
+							<uni-th align="center">昵称</uni-th>
+							<uni-th align="center">角色</uni-th>
+							<uni-th align="center">状态</uni-th>
+							<uni-th align="center">最后登录时间</uni-th>
+							<uni-th align="center">最后登录IP</uni-th>
+							<uni-th align="center">操作</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in tableData" :key="index">
+							<uni-td align="center">{{ item.id }}</uni-td>
+							<uni-td align="center">
+								<img :src="item.avatar" style="width: 40px;height: 40px;border-radius: 20px;" />
+							</uni-td>
+							<uni-td align="center">{{ item.username }}</uni-td>
+							<uni-td align="center">{{ item.name }}</uni-td>
+							<uni-td align="center">{{formatRoles(item.roles)}}</uni-td>
+							<uni-td align="center">
+								<view v-if="item.status=='1'" style="color: green;">启用</view>
+								<view v-else-if="item.status=='0'" style="color: red;">禁用</view>
+							</uni-td>
+							<uni-td align="center">
+								<view v-if="item.last_time"><uni-dateformat :date="item.last_time | formatDate"></uni-dateformat></view>
+								<view v-else>--</view>
+							</uni-td>
+							<uni-td align="center">{{item.last_ip || "--"}}</uni-td>
+							<uni-td align="center">
+								<view class="d-flex-center">
+									<view class="tag-view">
+										<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/user/edit', item)"></uni-tag>
+									</view>
+									<view class="tag-view">
+										<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+									</view>
 								</view>
-								<view class="tag-view">
-									<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
-								</view>
-							</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
-				<view class="uni-pagination-box">
-					<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+							</uni-td>
+						</uni-tr>
+					</uni-table>
+					<view class="uni-pagination-box">
+						<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+							:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+					</view>
 				</view>
 			</uni-card>
 		</scroll-view>

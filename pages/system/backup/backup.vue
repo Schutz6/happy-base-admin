@@ -2,38 +2,40 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
-				<view class="filter-container d-flex">
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search()">刷新</button>
+				<view class="container">
+					<view class="filter-container d-flex">
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search()">刷新</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="dumpDatabase()">备份数据库</button>
+						</view>
 					</view>
-					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="dumpDatabase()">备份数据库</button>
+					<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
+						<uni-tr>
+							<uni-th align="center">备份目录</uni-th>
+							<uni-th align="center">备份时间</uni-th>
+							<uni-th align="center">操作</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in tableData" :key="index">
+							<uni-td align="center">{{ item.directory }}</uni-td>
+							<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
+							<uni-td align="center">
+								<view class="d-flex-center">
+									<view class="tag-view">
+										<uni-tag text="恢复" type="primary" @click="restoreDatabase(item.id)"></uni-tag>
+									</view>
+									<view class="tag-view">
+										<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+									</view>
+								</view>
+							</uni-td>
+						</uni-tr>
+					</uni-table>
+					<view class="uni-pagination-box">
+						<uni-pagination show-icon :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+							:total="total" @change="changeTable" />
 					</view>
-				</view>
-				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
-					<uni-tr>
-						<uni-th align="center">备份目录</uni-th>
-						<uni-th align="center">备份时间</uni-th>
-						<uni-th align="center">操作</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<uni-td align="center">{{ item.directory }}</uni-td>
-						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
-						<uni-td align="center">
-							<view class="d-flex-center">
-								<view class="tag-view">
-									<uni-tag text="恢复" type="primary" @click="restoreDatabase(item.id)"></uni-tag>
-								</view>
-								<view class="tag-view">
-									<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
-								</view>
-							</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
-				<view class="uni-pagination-box">
-					<uni-pagination show-icon :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" />
 				</view>
 			</uni-card>
 		</scroll-view>

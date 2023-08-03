@@ -2,114 +2,116 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
-				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 180px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="综合查询"></uni-easyinput>
-					</view>
-					<template v-if="module.table_json != null">
-						<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show && table.single_query">
-							<view v-if="table.type==1 || table.type==2" class="filter-item d-flex" style="width: 120px;">
-								<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
-							</view>
-							<view v-if="table.type==9" class="filter-item d-flex" style="width: 120px;">
-								<uni-easyinput v-if="table.name=='uid'" v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
-								<uni-data-select v-else v-model="listQuery[table.name]" :localdata="getObject(table.key)" :placeholder="table.remarks"></uni-data-select>
-							</view>
-							<view v-if="user.roles.includes('super') && (table.type==4 || table.type==5)" class="filter-item d-flex" style="width: 120px;">
-								<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
-							</view>
-							<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
-								<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" placeholder="请选择分类" popup-title="请选择分类" @change="onCategoryChange($event, table.name)"></uni-data-picker>
-							</view>
+				<view class="container">
+					<view class="filter-container d-flex">
+						<view class="filter-item d-flex" style="width: 180px;">
+							<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="综合查询"></uni-easyinput>
 						</view>
-					</template>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
-					</view>
-					<template v-if="module.api_json != null">
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
-							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
-						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[5].roles) && module.api_json[5].show">
-							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate()">批量修改</button>
-						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[4].roles) && module.api_json[4].show">
-							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
-						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[10].roles) && module.api_json[10].show">
-							<uni-file-picker ref="files" limit="1" file-mediatype="all" @select="importData" :auto-upload="false">
-								<button type="primary" size="mini" style="height: 35px;line-height: 35px;margin-top: 7px;">导入</button>
-							</uni-file-picker>
-						</view>
-						<view class="filter-item d-flex" v-if="checkRole(module.api_json[11].roles) && module.api_json[11].show">
-							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="exportData()">导出</button>
-						</view>
-					</template>
-				</view>
-				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
-					<uni-tr>
 						<template v-if="module.table_json != null">
-							<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
-						</template>
-						<uni-th align="center">操作</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<template v-if="module.table_json != null">
-							<uni-td align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">
-							<template v-if="table.type==4" i="字典列表">
-								{{ showDicts(table.key, item[table.name]) }}
-							</template>
-							<template v-else-if="table.type==5" i="字典">
-								{{ showDict(table.key, item[table.name]) }}
-							</template>
-							<template v-else-if="table.type==6" i="图片">
-								<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 120px;height: 40px;"></image>
-							</template>
-							<template v-else-if="table.type==12" i="多图片">
-								<view class="d-flex-center">
-									<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
-										<image @click="showImage(item[table.name], picIndex)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
-									</view>
+							<view v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show && table.single_query">
+								<view v-if="table.type==1 || table.type==2" class="filter-item d-flex" style="width: 120px;">
+									<uni-easyinput v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
 								</view>
-							</template>
-							<template v-else-if="table.type==7" i="多文本">
-								{{ item[table.name] | ellipsis}}
-							</template>
-							<template v-else-if="table.type==9" i="对象">
-								<view v-if="table.name=='uid'">{{ item[table.name] }}</view>
-								<view v-else>{{formatObject(table.key, item[table.name])}}</view>
-							</template>
-							<template v-else-if="table.type==10" i="分类列表">
-								{{formatCategory(item[table.name])}}
-							</template>
-							<template v-else-if="table.type==15" i="时间戳">
-								<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
-							</template>
-							<template v-else i="其他">
-								{{ item[table.name] || "--"}}
-							</template>
-							</uni-td>
-						</template>
-						<uni-td align="center">
-							<view class="d-flex-center">
-								<view class="tag-view">
-									<uni-tag text="+字典值" type="primary" @click="toPage('/pages/system/dictValue/dictValue?mid=DictValue&type_name='+item.name)"></uni-tag>
+								<view v-if="table.type==9" class="filter-item d-flex" style="width: 120px;">
+									<uni-easyinput v-if="table.name=='uid'" v-model="listQuery[table.name]" trim="both" :placeholder="table.remarks"></uni-easyinput>
+									<uni-data-select v-else v-model="listQuery[table.name]" :localdata="getObject(table.key)" :placeholder="table.remarks"></uni-data-select>
 								</view>
-								<template v-if="module.api_json != null">
-									<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[1].show">
-										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
-									</view>
-									<view class="tag-view" v-if="checkRole(module.api_json[2].roles) && module.api_json[2].show">
-										<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+								<view v-if="user.roles.includes('super') && (table.type==4 || table.type==5)" class="filter-item d-flex" style="width: 120px;">
+									<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
+								</view>
+								<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
+									<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" placeholder="请选择分类" popup-title="请选择分类" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+								</view>
+							</view>
+						</template>
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
+						</view>
+						<template v-if="module.api_json != null">
+							<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
+								<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
+							</view>
+							<view class="filter-item d-flex" v-if="checkRole(module.api_json[5].roles) && module.api_json[5].show">
+								<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate()">批量修改</button>
+							</view>
+							<view class="filter-item d-flex" v-if="checkRole(module.api_json[4].roles) && module.api_json[4].show">
+								<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
+							</view>
+							<view class="filter-item d-flex" v-if="checkRole(module.api_json[10].roles) && module.api_json[10].show">
+								<uni-file-picker ref="files" limit="1" file-mediatype="all" @select="importData" :auto-upload="false">
+									<button type="primary" size="mini" style="height: 35px;line-height: 35px;margin-top: 7px;">导入</button>
+								</uni-file-picker>
+							</view>
+							<view class="filter-item d-flex" v-if="checkRole(module.api_json[11].roles) && module.api_json[11].show">
+								<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="exportData()">导出</button>
+							</view>
+						</template>
+					</view>
+					<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
+						<uni-tr>
+							<template v-if="module.table_json != null">
+								<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
+							</template>
+							<uni-th align="center">操作</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in tableData" :key="index">
+							<template v-if="module.table_json != null">
+								<uni-td align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">
+								<template v-if="table.type==4" i="字典列表">
+									{{ showDicts(table.key, item[table.name]) }}
+								</template>
+								<template v-else-if="table.type==5" i="字典">
+									{{ showDict(table.key, item[table.name]) }}
+								</template>
+								<template v-else-if="table.type==6" i="图片">
+									<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 120px;height: 40px;"></image>
+								</template>
+								<template v-else-if="table.type==12" i="多图片">
+									<view class="d-flex-center">
+										<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
+											<image @click="showImage(item[table.name], picIndex)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
+										</view>
 									</view>
 								</template>
-							</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
-				<view class="uni-pagination-box">
-					<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+								<template v-else-if="table.type==7" i="多文本">
+									{{ item[table.name] | ellipsis}}
+								</template>
+								<template v-else-if="table.type==9" i="对象">
+									<view v-if="table.name=='uid'">{{ item[table.name] }}</view>
+									<view v-else>{{formatObject(table.key, item[table.name])}}</view>
+								</template>
+								<template v-else-if="table.type==10" i="分类列表">
+									{{formatCategory(item[table.name])}}
+								</template>
+								<template v-else-if="table.type==15" i="时间戳">
+									<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
+								</template>
+								<template v-else i="其他">
+									{{ item[table.name] || "--"}}
+								</template>
+								</uni-td>
+							</template>
+							<uni-td align="center">
+								<view class="d-flex-center">
+									<view class="tag-view">
+										<uni-tag text="+字典值" type="primary" @click="toPage('/pages/system/dictValue/dictValue?mid=DictValue&type_name='+item.name)"></uni-tag>
+									</view>
+									<template v-if="module.api_json != null">
+										<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[1].show">
+											<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
+										</view>
+										<view class="tag-view" v-if="checkRole(module.api_json[2].roles) && module.api_json[2].show">
+											<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+										</view>
+									</template>
+								</view>
+							</uni-td>
+						</uni-tr>
+					</uni-table>
+					<view class="uni-pagination-box">
+						<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+							:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+					</view>
 				</view>
 			</uni-card>
 		</scroll-view>

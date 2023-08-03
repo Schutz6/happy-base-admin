@@ -2,40 +2,42 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
-				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 180px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="客户IP"></uni-easyinput>
+				<view class="container">
+					<view class="filter-container d-flex">
+						<view class="filter-item d-flex" style="width: 180px;">
+							<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="客户IP"></uni-easyinput>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
+						</view>
 					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
-					</view>
-				</view>
-				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
-					<uni-tr>
-						<uni-th align="center">客户IP</uni-th>
-						<uni-th align="center">加入时间</uni-th>
-						<uni-th align="center">操作</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<uni-td align="center">{{ item.ip }}</uni-td>
-						<uni-td align="center">
-							<uni-dateformat :date="item.add_time | formatDate"></uni-dateformat>
-						</uni-td>
-						<uni-td align="center">
-							<view class="d-flex-center">
-								<view class="tag-view">
-									<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+					<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
+						<uni-tr>
+							<uni-th align="center">客户IP</uni-th>
+							<uni-th align="center">加入时间</uni-th>
+							<uni-th align="center">操作</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in tableData" :key="index">
+							<uni-td align="center">{{ item.ip }}</uni-td>
+							<uni-td align="center">
+								<uni-dateformat :date="item.add_time | formatDate"></uni-dateformat>
+							</uni-td>
+							<uni-td align="center">
+								<view class="d-flex-center">
+									<view class="tag-view">
+										<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+									</view>
 								</view>
-							</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
-				<view class="uni-pagination-box">
-					<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+							</uni-td>
+						</uni-tr>
+					</uni-table>
+					<view class="uni-pagination-box">
+						<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+							:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+					</view>
 				</view>
 			</uni-card>
 		</scroll-view>

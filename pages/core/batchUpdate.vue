@@ -2,7 +2,7 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card :title="'批量修改 - '+module.name">
-				<view style="width: 550px;padding: 10px;">
+				<view style="width: 550px;padding: 10px;padding-bottom: 300px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
 						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="[4, 5, 9, 10].includes(table.type)" :label="table.remarks" :name="table.name" required>
 							<template v-if="table.type==4">

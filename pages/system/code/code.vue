@@ -2,56 +2,58 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
-				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 180px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="模块ID/模块名称"></uni-easyinput>
+				<view class="container">
+					<view class="filter-container d-flex">
+						<view class="filter-item d-flex" style="width: 180px;">
+							<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="模块ID/模块名称"></uni-easyinput>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/code/add')">新增</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/code/addM')">新增模块</button>
+						</view>
 					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/code/add')">新增</button>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/system/code/addM')">新增模块</button>
-					</view>
-				</view>
-				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
-					<uni-tr>
-						<uni-th align="center" width="150">模块ID</uni-th>
-						<uni-th align="center" width="150">模块名称</uni-th>
-						<uni-th align="center" width="100">使用缓存</uni-th>
-						<uni-th align="center">激活接口</uni-th>
-						<uni-th align="center" width="200">操作</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<uni-td align="center">{{ item.mid }}</uni-td>
-						<uni-td align="center">{{ item.name }}</uni-td>
-						<uni-td align="center">
-							<view v-if="item.cache == 1">是</view>
-							<view v-else-if="item.cache == 0">否</view>
-						</uni-td>
-						<uni-td align="center">
-							{{ formatApi(item.api_json.filter(data => {return data.status})) }}
-						</uni-td>
-						<uni-td align="center">
-							<view class="d-flex-center">
-								<view class="tag-view">
-									<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/code/edit', item)"></uni-tag>
+					<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
+						<uni-tr>
+							<uni-th align="center" width="150">模块ID</uni-th>
+							<uni-th align="center" width="150">模块名称</uni-th>
+							<uni-th align="center" width="100">使用缓存</uni-th>
+							<uni-th align="center">激活接口</uni-th>
+							<uni-th align="center" width="200">操作</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in tableData" :key="index">
+							<uni-td align="center">{{ item.mid }}</uni-td>
+							<uni-td align="center">{{ item.name }}</uni-td>
+							<uni-td align="center">
+								<view v-if="item.cache == 1">是</view>
+								<view v-else-if="item.cache == 0">否</view>
+							</uni-td>
+							<uni-td align="center">
+								{{ formatApi(item.api_json.filter(data => {return data.status})) }}
+							</uni-td>
+							<uni-td align="center">
+								<view class="d-flex-center">
+									<view class="tag-view">
+										<uni-tag text="编辑" type="primary" @click="toPage('/pages/system/code/edit', item)"></uni-tag>
+									</view>
+									<view class="tag-view">
+										<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+									</view>
+									<view class="tag-view">
+										<uni-tag text="复制模块" type="warning" @click="copy(item)"></uni-tag>
+									</view>
 								</view>
-								<view class="tag-view">
-									<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
-								</view>
-								<view class="tag-view">
-									<uni-tag text="复制模块" type="warning" @click="copy(item)"></uni-tag>
-								</view>
-							</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
-				<view class="uni-pagination-box">
-					<uni-pagination show-icon :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" />
+							</uni-td>
+						</uni-tr>
+					</uni-table>
+					<view class="uni-pagination-box">
+						<uni-pagination show-icon :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+							:total="total" @change="changeTable" />
+					</view>
 				</view>
 			</uni-card>
 		</scroll-view>

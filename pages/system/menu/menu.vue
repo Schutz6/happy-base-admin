@@ -2,72 +2,74 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
-				<view class="filter-container d-flex">
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add', {'pid': 0, 'level': 1})">新增一级菜单</button>
+				<view class="container">
+					<view class="filter-container d-flex">
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add', {'pid': 0, 'level': 1})">新增一级菜单</button>
+						</view>
 					</view>
-				</view>
-				<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
-					<uni-tr>
-						<template v-if="module.table_json != null">
-							<uni-th v-for="(table, tableIndex) in module.table_json" :key="tableIndex" :align="tableIndex==2?'left':'center'" v-if="table.show">{{table.remarks}}</uni-th>
-						</template>
-						<uni-th align="center" width="100px">操作</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<template v-if="module.table_json != null">
-							<uni-td v-for="(table, tableIndex) in module.table_json" :key="tableIndex" :align="tableIndex==2?'left':'center'" v-if="table.show">
-								<template v-if="tableIndex==2">
-									<view v-if="item.level == 1">{{ item[table.name] }}</view>
-									<view v-else-if="item.level == 2" style="margin-left: 10px;">|-{{ item[table.name] }}</view>
-									<view v-else-if="item.level == 3" style="margin-left: 20px;">|-{{ item[table.name] }}</view>
-								</template>
-								<template v-else>
-									<template v-if="table.type==4" i="列表">
-										{{ showDicts(table.key, item[table.name]) }}
+					<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
+						<uni-tr>
+							<template v-if="module.table_json != null">
+								<uni-th v-for="(table, tableIndex) in module.table_json" :key="tableIndex" :align="tableIndex==2?'left':'center'" v-if="table.show">{{table.remarks}}</uni-th>
+							</template>
+							<uni-th align="center" width="100px">操作</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in tableData" :key="index">
+							<template v-if="module.table_json != null">
+								<uni-td v-for="(table, tableIndex) in module.table_json" :key="tableIndex" :align="tableIndex==2?'left':'center'" v-if="table.show">
+									<template v-if="tableIndex==2">
+										<view v-if="item.level == 1">{{ item[table.name] }}</view>
+										<view v-else-if="item.level == 2" style="margin-left: 10px;">|-{{ item[table.name] }}</view>
+										<view v-else-if="item.level == 3" style="margin-left: 20px;">|-{{ item[table.name] }}</view>
 									</template>
-									<template v-else-if="table.type==5" i="字典">
-										{{ showDict(table.key, item[table.name]) }}
-									</template>
-									<template v-else-if="table.type==6" i="图片">
-										<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="height: 40px;height: 40px;"></image>
-									</template>
-									<template v-else-if="table.type==12" i="多图片">
-										<view class="d-flex-center">
-											<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
-												<image @click="showImage(item[table.name], picIndex)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
+									<template v-else>
+										<template v-if="table.type==4" i="列表">
+											{{ showDicts(table.key, item[table.name]) }}
+										</template>
+										<template v-else-if="table.type==5" i="字典">
+											{{ showDict(table.key, item[table.name]) }}
+										</template>
+										<template v-else-if="table.type==6" i="图片">
+											<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="height: 40px;height: 40px;"></image>
+										</template>
+										<template v-else-if="table.type==12" i="多图片">
+											<view class="d-flex-center">
+												<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
+													<image @click="showImage(item[table.name], picIndex)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
+												</view>
 											</view>
+										</template>
+										<template v-else-if="table.name=='icon'" i="图标">
+											<image :src="'../../../static'+item[table.name]" style="width: 20px;height: 20px;" />
+										</template>
+										<template v-else i="其他">
+											{{ item[table.name] }}
+										</template>
+									</template>
+								</uni-td>
+							</template>
+							<uni-td>
+								<view class="d-flex">
+									<template v-if="module.api_json != null">
+										<view class="tag-view" v-if="module.api_json[1].show">
+											<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
+										</view>
+										<view class="tag-view" v-if="module.api_json[3].show">
+											<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+										</view>
+										<template v-if="item.level < 3"></template>
+										<view class="tag-view" style="min-width: 60px">
+											<uni-tag v-if="item.level==1 && item.url=='#'" text="+子菜单" type="primary" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+											<!-- <uni-tag v-else-if="item.level==2" text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+											<uni-tag v-else-if="item.level==3" text="+子分类" type="default" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag> -->
 										</view>
 									</template>
-									<template v-else-if="table.name=='icon'" i="图标">
-										<image :src="'../../../static'+item[table.name]" style="width: 20px;height: 20px;" />
-									</template>
-									<template v-else i="其他">
-										{{ item[table.name] }}
-									</template>
-								</template>
+								</view>
 							</uni-td>
-						</template>
-						<uni-td>
-							<view class="d-flex">
-								<template v-if="module.api_json != null">
-									<view class="tag-view" v-if="module.api_json[1].show">
-										<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
-									</view>
-									<view class="tag-view" v-if="module.api_json[3].show">
-										<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
-									</view>
-									<template v-if="item.level < 3"></template>
-									<view class="tag-view" style="min-width: 60px">
-										<uni-tag v-if="item.level==1 && item.url=='#'" text="+子菜单" type="primary" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
-										<!-- <uni-tag v-else-if="item.level==2" text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
-										<uni-tag v-else-if="item.level==3" text="+子分类" type="default" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag> -->
-									</view>
-								</template>
-							</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
+						</uni-tr>
+					</uni-table>
+				</view>
 			</uni-card>
 		</scroll-view>
 

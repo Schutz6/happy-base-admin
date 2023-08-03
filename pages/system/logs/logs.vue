@@ -2,45 +2,47 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card>
-				<view class="filter-container d-flex">
-					<view class="filter-item d-flex" style="width: 180px;">
-						<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/接口地址/IP地址"></uni-easyinput>
+				<view class="container">
+					<view class="filter-container d-flex">
+						<view class="filter-item d-flex" style="width: 180px;">
+							<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="账号/接口地址/IP地址"></uni-easyinput>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
+						</view>
+						<view class="filter-item d-flex">
+							<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="clear()">清空</button>
+						</view>
 					</view>
-					<view class="filter-item d-flex">
-						<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="search">查询</button>
+					<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
+						<uni-tr>
+							<uni-th align="center">账号</uni-th>
+							<uni-th align="center">接口类型</uni-th>
+							<uni-th align="center">接口地址</uni-th>
+							<uni-th align="center" width="300">请求参数</uni-th>
+							<uni-th align="center">IP地址</uni-th>
+							<uni-th align="center">耗时</uni-th>
+							<uni-th align="center">时间</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in tableData" :key="index">
+							<uni-td align="center">{{ item.username || "--" }}</uni-td>
+							<uni-td align="center">{{ item.method }}</uni-td>
+							<uni-td align="center">{{item.uri}}</uni-td>
+							<uni-td align="center">
+								<text class="wrap">{{item.params || "--"}}</text>
+							</uni-td>
+							<uni-td align="center">{{item.ip}}</uni-td>
+							<uni-td align="center">{{item.times}}ms</uni-td>
+							<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
+						</uni-tr>
+					</uni-table>
+					<view class="uni-pagination-box">
+						<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+							:total="total" @change="changeTable" @pageSizeChange="changeSize" />
 					</view>
-					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="batchDelete()">批量删除</button>
-					</view>
-					<view class="filter-item d-flex">
-						<button type="warn" size="mini" style="height: 35px;line-height: 35px;" @click="clear()">清空</button>
-					</view>
-				</view>
-				<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
-					<uni-tr>
-						<uni-th align="center">账号</uni-th>
-						<uni-th align="center">接口类型</uni-th>
-						<uni-th align="center">接口地址</uni-th>
-						<uni-th align="center" width="300">请求参数</uni-th>
-						<uni-th align="center">IP地址</uni-th>
-						<uni-th align="center">耗时</uni-th>
-						<uni-th align="center">时间</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item, index) in tableData" :key="index">
-						<uni-td align="center">{{ item.username || "--" }}</uni-td>
-						<uni-td align="center">{{ item.method }}</uni-td>
-						<uni-td align="center">{{item.uri}}</uni-td>
-						<uni-td align="center">
-							<text class="wrap">{{item.params || "--"}}</text>
-						</uni-td>
-						<uni-td align="center">{{item.ip}}</uni-td>
-						<uni-td align="center">{{item.times}}ms</uni-td>
-						<uni-td align="center"><uni-dateformat :date="item.add_time | formatDate"></uni-dateformat></uni-td>
-					</uni-tr>
-				</uni-table>
-				<view class="uni-pagination-box">
-					<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-						:total="total" @change="changeTable" @pageSizeChange="changeSize" />
 				</view>
 			</uni-card>
 		</scroll-view>
