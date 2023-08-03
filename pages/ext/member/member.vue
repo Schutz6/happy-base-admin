@@ -162,7 +162,7 @@
 				this.tableData = []
 				//加载数据
 				this.listLoading = true
-				this.$api.post("/user/list/", this.listQuery).then(res => {
+				this.$api.post("/core/list/", this.listQuery, {"Mid": "User"}).then(res => {
 					this.listLoading = false
 					this.tableData = res.data.results
 					this.total = res.data.total
@@ -198,7 +198,7 @@
 							uni.showLoading({
 								title: '正在删除'
 							})
-							this.$api.post("/user/delete/", {"id": id}).then(res => {
+							this.$api.post("/core/delete/", {"id": id}, {"Mid": "User"}).then(res => {
 								uni.hideLoading()
 								if(res.code == 20000){
 									uni.showToast({
@@ -233,7 +233,7 @@
 								uni.showLoading({
 									title: '正在删除'
 								})
-								this.$api.post("/user/batchDelete/", {"ids": ids}).then(res => {
+								this.$api.post("/core/batchDelete/", {"ids": ids}, {"Mid": "User"}).then(res => {
 									uni.hideLoading()
 									if(res.code == 20000){
 										uni.showToast({
