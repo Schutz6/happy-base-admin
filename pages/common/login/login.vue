@@ -1,5 +1,5 @@
 <template>
-	<view class="container overflow-hidden width-max height-max">
+	<view class="overflow-hidden width-max height-max">
 		<view class="height-max">
 			<view class="login-box">
 				<view class="d-flex-center login-title" v-if="params">{{params.siteName}} - 登录</view>

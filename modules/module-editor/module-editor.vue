@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="editor-container">
 		<view class="page-body">
 			<view class='wrapper'>
 				<view class='toolbar' @tap="format">

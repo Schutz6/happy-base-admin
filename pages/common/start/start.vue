@@ -1,5 +1,5 @@
 <template>
-	<view class="container overflow-hidden width-max height-max">
+	<view class="overflow-hidden width-max height-max">
 		<view class="d-flex-center height-max">
 			<uni-load-more status="loading" :showText="false" />
 		</view>
