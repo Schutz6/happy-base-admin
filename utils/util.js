@@ -52,11 +52,13 @@ export const listToTree = function(list) {
 				parent.children = parent.children || []
 				item["text"] = item.name
 				item["value"] = item.id
+				item["show"] = item.show
 				parent.children.push(item)
 			} else {
 				// * 当前项没有父节点 -> 顶层
 				item["text"] = item.name
 				item["value"] = item.id
+				item["show"] = item.show
 				parentList.push(item)
 			}
 		}

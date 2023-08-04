@@ -20,7 +20,7 @@
 									<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
 								</view>
 								<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
-									<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" placeholder="请选择分类" popup-title="请选择分类" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+									<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" :placeholder="table.remarks" :popup-title="table.remarks" @change="onCategoryChange($event, table.name)"></uni-data-picker>
 								</view>
 							</view>
 						</template>

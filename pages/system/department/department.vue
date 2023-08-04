@@ -5,7 +5,7 @@
 				<view class="container">
 					<view class="filter-container d-flex">
 						<view class="filter-item d-flex">
-							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add', {'pid': 0, 'level': 1})">新增主分类</button>
+							<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add', {'pid': 0, 'level': 1})">新增主部门</button>
 						</view>
 					</view>
 					<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
@@ -58,9 +58,9 @@
 										</view>
 										<template v-if="item.level < 3"></template>
 										<view class="tag-view" style="min-width: 60px">
-											<uni-tag v-if="item.level==1" text="+子分类" type="primary" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
-											<uni-tag v-else-if="item.level==2" text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
-											<uni-tag v-else-if="item.level==3" text="+子分类" type="default" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+											<uni-tag v-if="item.level==1" text="+子部门" type="primary" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+											<uni-tag v-else-if="item.level==2" text="+子部门" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+											<uni-tag v-else-if="item.level==3" text="+子部门" type="default" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
 										</view>
 									</template>
 								</view>

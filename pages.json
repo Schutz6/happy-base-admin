@@ -33,7 +33,6 @@
 				"navigationStyle": "custom"
 			}
 		}
-       
         ,{
             "path" : "pages/system/user/user",//用户管理
             "style" :                                                                                    
@@ -41,17 +40,16 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
+        },{
+            "path" : "pages/system/user/user_org",//部门用户管理
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
         }
 		,{
-		    "path" : "pages/system/user/add",//用户新增
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/user/edit",//用户编辑
+		    "path" : "pages/system/department/department",//部门管理
 		    "style" :                                                                                    
 		    {
 		        "enablePullDownRefresh": false,
@@ -210,7 +208,6 @@
 				"navigationStyle": "custom"
 		    }
 		}
-        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
