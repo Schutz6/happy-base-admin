@@ -30,41 +30,21 @@
 								</uni-forms-item>
 							</uni-col>
 						</uni-row>
-						<uni-forms-item label="激活接口" name="api_json" required>
-							<uni-table ref="multipleTable" border stripe type="selection" @selection-change="selectionChange">
-								<uni-tr>
-									<uni-th align="center" width="200px">接口名称</uni-th>
-									<uni-th align="center" width="100px">按钮显示</uni-th>
-									<uni-th align="left">限制角色</uni-th>
-								</uni-tr>
-								<uni-tr v-for="(item, index) in dataForm.api_json" :key="index">
-									<uni-td align="center">
-										{{item.name}}
-									</uni-td>
-									<uni-td align="center">
-										<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
-										<uni-data-checkbox multiple v-model="item.roles" :localdata="roles"></uni-data-checkbox>
-									</uni-td>
-								</uni-tr>
-							</uni-table>
-						</uni-forms-item>
 						<uni-forms-item label="字段管理" name="table_json" required>
-							<uni-table stripe emptyText="请新增字段" style="padding-bottom: 220px;border: 1px #ebeef5 solid;">
+							<uni-table border stripe emptyText="请新增字段">
 								<uni-tr>
 									<uni-th align="center" width="140px">字段</uni-th>
 									<uni-th align="center" width="100px">类型</uni-th>
 									<uni-th align="center" width="140px">备注</uni-th>
 									<uni-th align="center" width="100px">默认值</uni-th>
-									<uni-th align="center" width="140px">绑定对象/字典</uni-th>
-									<uni-th align="center" width="60px">表格显示</uni-th>
-									<uni-th align="center" width="60px">综合查询</uni-th>
-									<uni-th align="center" width="60px">单独查询</uni-th>
-									<uni-th align="center" width="60px">排序字段</uni-th>
-									<uni-th align="center" width="60px">唯一校验</uni-th>
-									<uni-th align="center" width="60px">是否编辑</uni-th>
-									<uni-th align="center" width="60px">是否必填</uni-th>
+									<uni-th align="center" width="140px">绑定对象</uni-th>
+									<uni-th align="center" width="60px">表格</uni-th>
+									<uni-th align="center" width="60px">综合</uni-th>
+									<uni-th align="center" width="60px">单独</uni-th>
+									<uni-th align="center" width="60px">排序</uni-th>
+									<uni-th align="center" width="60px">唯一</uni-th>
+									<uni-th align="center" width="60px">编辑</uni-th>
+									<uni-th align="center" width="60px">必填</uni-th>
 									<uni-th align="center" width="80px">操作</uni-th>
 								</uni-tr>
 								<uni-tr v-for="(item, index) in dataForm.table_json" :key="index">
@@ -72,7 +52,10 @@
 										<uni-easyinput type="text" trim="both" v-model="item.name" :clearable="false" />
 									</uni-td>
 									<uni-td align="center">
-										<uni-data-select v-model="item.type" :localdata="datas.field_type_json" :clear="false"></uni-data-select>
+										<view @click="showDialog('selectFieldTypeDialog', index)" class="pointer d-flex between" style="background: #fff;border: 1px solid #ddd;border-radius: 5px;height: 35px;padding: 0 10px;">
+											<view>{{showFieldType(item.type)}}</view>
+											<uni-icons type="bottom" size="14" color="#999"></uni-icons>
+										</view>
 									</uni-td>
 									<uni-td align="center">
 										<uni-easyinput type="text" trim="both" v-model="item.remarks" :clearable="false" />
@@ -115,6 +98,74 @@
 								<uni-tag text="新增字段" @click="addField()"></uni-tag>
 							</view>
 						</uni-forms-item>
+						<uni-forms-item label="导入规则" name="import_rule" required>
+							<uni-table border stripe>
+								<uni-tr>
+									<uni-th align="center" width="160px">规则名称</uni-th>
+									<uni-th align="center">规则内容</uni-th>
+								</uni-tr>
+								<uni-tr>
+									<uni-td align="center">需导入的字段</uni-td>
+									<uni-td align="center">
+										<uni-data-checkbox multiple v-model="dataForm.import_rule.fields" :localdata="showFieldList()"></uni-data-checkbox>
+									</uni-td>
+								</uni-tr>
+								<uni-tr v-for="(item, index) in dataForm.import_rule.rules" :key="index">
+									<uni-td align="center">导入规则</uni-td>
+									<uni-td align="center">
+										<view class="d-flex">
+											<view class="d-flex" style="background: #fff;border: 1px solid #ddd;border-radius: 5px;padding: 5px 10px;">
+												<view>开始行:</view>
+												<input v-model="item.start_row" style="text-align: left;padding: 0 5px;width: 80px;" />
+											</view>
+											<view class="d-flex" style="margin-left: 10px;background: #fff;border: 1px solid #ddd;border-radius: 5px;padding: 5px 10px;">
+												<view>结束行:</view>
+												<input v-model="item.end_row" style="text-align: left;padding: 0 5px;width: 80px;" />
+											</view>
+											<uni-tag v-if="index!=0" text="删除规则" type	="error" @click="delRule(index)" style="margin-left: 10px;"></uni-tag>
+											<view style="margin-left: 10px;color: red;">注意：结束行为0，表示无限制</view>
+										</view>
+									</uni-td>
+								</uni-tr>
+							</uni-table>
+							<view style="padding-top: 5px;text-align: right;">
+								<uni-tag text="新增规则" @click="addRule()"></uni-tag>
+							</view>
+						</uni-forms-item>
+						<uni-forms-item label="导出规则" name="export_rule" required>
+							<uni-table border stripe>
+								<uni-tr>
+									<uni-th align="center" width="160px">规则名称</uni-th>
+									<uni-th align="center">规则内容</uni-th>
+								</uni-tr>
+								<uni-tr>
+									<uni-td align="center">导出的字段</uni-td>
+									<uni-td align="center">
+										<uni-data-checkbox multiple v-model="dataForm.export_rule.fields" :localdata="showFieldList()"></uni-data-checkbox>
+									</uni-td>
+								</uni-tr>
+							</uni-table>
+						</uni-forms-item>
+						<uni-forms-item label="激活接口" name="api_json" required>
+							<uni-table ref="multipleTable" border stripe type="selection" @selection-change="selectionChange">
+								<uni-tr>
+									<uni-th align="center" width="200px">接口名称</uni-th>
+									<uni-th align="center" width="100px">按钮显示</uni-th>
+									<uni-th align="left">限制角色（不选则无限制）</uni-th>
+								</uni-tr>
+								<uni-tr v-for="(item, index) in dataForm.api_json" :key="index">
+									<uni-td align="center">
+										{{item.name}}
+									</uni-td>
+									<uni-td align="center">
+										<switch @change="switchApiShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
+									</uni-td>
+									<uni-td align="center">
+										<uni-data-checkbox multiple v-model="item.roles" :localdata="roles"></uni-data-checkbox>
+									</uni-td>
+								</uni-tr>
+							</uni-table>
+						</uni-forms-item>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;">
 						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">提交</button>
@@ -123,6 +174,19 @@
 				</view>
 			</uni-card>
 		</scroll-view>
+		
+		<!-- 弹出字段类型选择 -->
+		<uni-popup ref="selectFieldTypeDialog" type="dialog">
+			<uni-card title="选择字段类型">
+				<view style="width: 500px;">
+					<uni-data-checkbox v-model="field_type" :localdata="datas.field_type_json"></uni-data-checkbox>
+				</view>
+				<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 10px;">
+					<button type="primary" :loading="loading" @click="updateFieldType()" style="font-size: 14px;width: 100px;">确定</button>
+					<button type="default" :loading="loading" @click="hideDialog('selectFieldTypeDialog')" style="font-size: 14px;width: 100px;">取消</button>
+				</view>
+			</uni-card>
+		</uni-popup>
 	</view>
 </template>
 
@@ -153,7 +217,16 @@
 						{"id": "exportData", "name": "导出数据", "status": false, "show": false, "roles": []}
 					],
 					// {"name": "字段", "type": "类型", "remarks": "备注", "default": "默认值", "key": "绑定对象/字典", "show": "表格显示", "query": "综合查询", "single_query": "单独查询", "sort": "排序字段", "unique": "唯一校验", "edit": "是否编辑", "must": "是否必填"},
-					table_json: []
+					table_json: [],
+					import_rule: {
+						fields: [],
+						rules: [
+							{"start_row": 2, "end_row": 0}
+						]
+					},
+					export_rule: {
+						fields: []
+					}
 				},
 				rules: {
 					mid: {
@@ -170,6 +243,8 @@
 					}
 				},
 				roles:[], //角色列表
+				selectedIndex: null,//当前选择位置
+				field_type: 1,//字段类型
 			}
 		},
 		computed: {
@@ -186,6 +261,37 @@
 			//返回
 			back(){
 				uni.navigateBack()
+			},
+			//显示弹出框
+			showDialog(id, index){
+				this.selectedIndex = index
+				this.$refs[id].open()
+			},
+			//关闭弹出框
+			hideDialog(id){
+				this.$refs[id].close()
+			},
+			//修改字段类型
+			updateFieldType(){
+				if(this.field_type){
+					this.$set(this.dataForm.table_json[this.selectedIndex], 'type', this.field_type)
+					this.hideDialog("selectFieldTypeDialog")
+				}
+			},
+			//显示字段
+			showFieldType(type){
+				let name = "--"
+				for(let i=0;i<this.datas.field_type_json.length;i++){
+					if(type == this.datas.field_type_json[i].value){
+						name = this.datas.field_type_json[i].text
+						break
+					}
+				}
+				return name;
+			},
+			//显示字段列表
+			showFieldList(){
+				return this.dataForm.table_json.map(item=>{return {"text": item.remarks, "value": item.name}})
 			},
 			//角色列表
 			getRoleList(){
@@ -220,6 +326,14 @@
 						this.$set(this.dataForm.api_json[i], 'status', false)
 					}
 				}
+			},
+			//新增规则
+			addRule(){
+				this.dataForm.import_rule.rules.push({"start_row": 2, "end_row": 0})
+			},
+			//删除规则
+			delRule(index){
+				this.dataForm.import_rule.rules.splice(index, 1)
 			},
 			//新增字段
 			addField(){

@@ -4,7 +4,7 @@
 			<uni-card :title="'新增 - '+module.name">
 				<view style="width: 550px;padding: 10px;padding-bottom: 350px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="120px">
-						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit" :label="table.remarks" :name="table.name" :required="table.must">
+						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit && table.name != 'orgs'" :label="table.remarks" :name="table.name" :required="table.must">
 							<template v-if="table.type==1">
 								<!-- 字符串 -->
 								<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" />

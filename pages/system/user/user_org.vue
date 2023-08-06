@@ -4,21 +4,21 @@
 			<view class="d-flex" style="align-items:flex-start;">
 				<view style="width: 240px;">
 					<uni-card title="部门树" style="margin-right: 0;">
-						<view class="user-container">
-							<view class="org-tree" v-for="(orgOne, indexOne) in orgTree" :key="'one-'+indexOne">
-								<view class="item pointer" v-if="orgOne.show" :class="currentOrg.id==orgOne.value?'active':''" @click="clickOrg(orgOne.value, [{'text': orgOne.text, 'value': orgOne.value}])">
+						<view class="user-container org-tree">
+							<view v-for="(orgOne, indexOne) in orgTree" :key="'one-'+indexOne">
+								<view class="pointer" v-if="orgOne.show" :class="currentOrg.id==orgOne.value?'active':''" @click="clickOrg(orgOne.value, orgOne.text, [{'text': orgOne.text, 'value': orgOne.value}])">
 								|-{{orgOne.text}}
 								</view>
 								<view v-if="orgOne.children" v-for="(orgTwo, indexTwo) in orgOne.children" :key="'two-'+indexTwo">
-									<view class="item pointer" v-if="orgTwo.show" :class="currentOrg.id==orgTwo.value?'active':''" @click="clickOrg(orgTwo.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}])" style="margin-left: 10px;">
+									<view class="pointer" v-if="orgTwo.show" :class="currentOrg.id==orgTwo.value?'active':''" @click="clickOrg(orgTwo.value, orgTwo.text, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}])" :style="{'margin-left':orgOne.show?'10px':'0'}">
 									|-{{orgTwo.text}}
 									</view>
 									<view v-if="orgTwo.children" v-for="(orgThree, indexThree) in orgTwo.children" :key="'three-'+indexThree">
-										<view class="item pointer" v-if="orgThree.show" :class="currentOrg.id==orgThree.value?'active':''" @click="clickOrg(orgThree.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}])" style="margin-left: 20px;">
+										<view class="pointer" v-if="orgThree.show" :class="currentOrg.id==orgThree.value?'active':''" @click="clickOrg(orgThree.value, orgThree.text, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}])" :style="{'margin-left':orgOne.show?'20px':orgTwo.show?'10px':'0'}">
 										|-{{orgThree.text}}
 										</view>
 										<view v-if="orgThree.children" v-for="(orgFour, indexFour) in orgThree.children" :key="'four-'+indexFour">
-											<view class="item pointer" v-if="orgFour.show" :class="currentOrg.id==orgFour.value?'active':''" @click="clickOrg(orgFour.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}, {'text': orgFour.text, 'value': orgFour.value}])" style="margin-left: 30px;">
+											<view class="pointer" v-if="orgFour.show" :class="currentOrg.id==orgFour.value?'active':''" @click="clickOrg(orgFour.value, orgFour.text, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}, {'text': orgFour.text, 'value': orgFour.value}])" :style="{'margin-left':orgOne.show?'30px':orgTwo.show?'20px':orgThree.show?'10px':'0'}">
 											|-{{orgFour.text}}
 											</view>
 										</view>
@@ -29,7 +29,7 @@
 					</uni-card>
 				</view>
 				<view class="flex1">
-					<uni-card title="部门用户">
+					<uni-card :title="currentOrg.name">
 						<view class="user-container">
 							<view class="filter-container d-flex">
 								<view class="filter-item d-flex" style="width: 180px;">
@@ -48,7 +48,7 @@
 											<uni-data-select v-if="table.name == 'roles'" v-model="listQuery.role" :localdata="getDict(table.key)" placeholder="请选择角色"></uni-data-select>
 											<uni-data-select v-else v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
 										</view>
-										<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
+										<view v-if="table.type==10 && table.name != 'orgs'" class="filter-item d-flex" style="width: 180px;">
 											<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" :placeholder="table.remarks" :popup-title="table.remarks" @change="onCategoryChange($event, table.name)"></uni-data-picker>
 										</view>
 									</view>
@@ -58,7 +58,7 @@
 								</view>
 								<template v-if="module.api_json != null">
 									<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
-										<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
+										<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add', {'orgs': currentOrg.orgs})">新增</button>
 									</view>
 									<view class="filter-item d-flex" v-if="checkRole(module.api_json[5].roles) && module.api_json[5].show">
 										<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate()">批量修改</button>
@@ -159,15 +159,15 @@
 						|-{{orgOne.text}}
 						</view>
 						<view v-if="orgOne.children" v-for="(orgTwo, indexTwo) in orgOne.children" :key="'two-'+indexTwo">
-							<view class="item pointer" v-if="orgTwo.show" :class="selectedOrg.id==orgTwo.value?'active':''" @click="selectOrg(orgTwo.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}])" style="margin-left: 10px;">
+							<view class="item pointer" v-if="orgTwo.show" :class="selectedOrg.id==orgTwo.value?'active':''" @click="selectOrg(orgTwo.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}])" :style="{'margin-left':orgOne.show?'10px':'0'}">
 							|-{{orgTwo.text}}
 							</view>
 							<view v-if="orgTwo.children" v-for="(orgThree, indexThree) in orgTwo.children" :key="'three-'+indexThree">
-								<view class="item pointer" v-if="orgThree.show" :class="selectedOrg.id==orgThree.value?'active':''" @click="selectOrg(orgThree.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}])" style="margin-left: 20px;">
+								<view class="item pointer" v-if="orgThree.show" :class="selectedOrg.id==orgThree.value?'active':''" @click="selectOrg(orgThree.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}])" :style="{'margin-left':orgOne.show?'20px':orgTwo.show?'10px':'0'}">
 								|-{{orgThree.text}}
 								</view>
 								<view v-if="orgThree.children" v-for="(orgFour, indexFour) in orgThree.children" :key="'four-'+indexFour">
-									<view class="item pointer" v-if="orgFour.show" :class="selectedOrg.id==orgFour.value?'active':''" @click="selectOrg(orgFour.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}, {'text': orgFour.text, 'value': orgFour.value}])" style="margin-left: 30px;">
+									<view class="item pointer" v-if="orgFour.show" :class="selectedOrg.id==orgFour.value?'active':''" @click="selectOrg(orgFour.value, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}, {'text': orgFour.text, 'value': orgFour.value}])" :style="{'margin-left':orgOne.show?'30px':orgTwo.show?'20px':orgThree.show?'10px':'0'}">
 									|-{{orgFour.text}}
 									</view>
 								</view>
@@ -212,7 +212,7 @@
 				selectedId: null,
 				selectedIndexs: [],
 				orgTree: [],//部门树
-				currentOrg: {"id": null, "orgs": []},//当前部门
+				currentOrg: {"id": null, "name": null, "orgs": []},//当前部门
 				selectedOrg: {"id": null, "orgs": []},//选中的部门
 				
 			}
@@ -241,6 +241,12 @@
 			//根据角色，初始化查询条件
 			if(!this.user.roles.includes("super")){
 				this.listQuery.uid = this.user.id
+			}
+			if(this.user.orgs){
+				//设置当前部门ID
+				let orgs = this.user.orgs[this.user.orgs.length-1]
+				this.currentOrg = {"id": orgs.value, "name": orgs.text, "orgs": this.user.orgs}
+				this.listQuery.orgs = orgs
 			}
 			//初始化
 			this.init()
@@ -342,18 +348,22 @@
 			},
 			//显示对象
 			formatObject(name, value){
-				let list = this.object[name]
-				let names = "--"
-				if(!list){
-					return names
-				}
-				for(let i=0;i<list.length;i++){
-					if(value == list[i].value){
-						names = list[i].text
-						break
+				if(value){
+					let list = this.object[name]
+					let names = "--"
+					if(!list){
+						return names
 					}
+					for(let i=0;i<list.length;i++){
+						if(value == list[i].value){
+							names = list[i].text
+							break
+						}
+					}
+					return names
+				}else{
+					return "--"
 				}
-				return names
 			},
 			//初始化分类
 			async initCategory(name){
@@ -363,8 +373,6 @@
 						//转Tree
 						this.category[name] = listToTree(res.data)
 						if(name=="Department"){
-							//设置当前部门ID
-							this.currentOrgId = res.data[0].id
 							//部门数据单独处理
 							this.orgTree = this.category[name]
 						}
@@ -383,12 +391,12 @@
 						names.push(categorys[i].text)
 					}
 					if(names.length>0){
-						return names.join("/");
+						return names.join("/")
 					}else {
-						return "--";
+						return "--"
 					}
 				}else{
-					return "--";
+					return "--"
 				}
 			},
 			//分类选择
@@ -410,35 +418,43 @@
 			},
 			//显示字典
 			showDict(name, value){
-				let list = this.dict[name]
-				let names = "--"
-				if(!list){
-					return names
-				}
-				for(let i=0;i<list.length;i++){
-					if(value == list[i].value){
-						names = list[i].text
-						break
+				if(value){
+					let list = this.dict[name]
+					let names = "--"
+					if(!list){
+						return names
 					}
+					for(let i=0;i<list.length;i++){
+						if(value == list[i].value){
+							names = list[i].text
+							break
+						}
+					}
+					return names
+				}else{
+					return "--"
 				}
-				return names
 			},
 			//显示字典
 			showDicts(name, values){
-				let list = this.dict[name]
-				let names = []
-				if(!list){
-					return names
-				}
-				for(let i=0;i<list.length;i++){
-					if(values.includes(list[i].value)){
-						names.push(list[i].text)
+				if(values){
+					let list = this.dict[name]
+					let names = []
+					if(!list){
+						return names
 					}
-				}
-				if(names.length > 0){
-					return names.join(",")
+					for(let i=0;i<list.length;i++){
+						if(values.includes(list[i].value)){
+							names.push(list[i].text)
+						}
+					}
+					if(names.length > 0){
+						return names.join(",")
+					}else{
+						return "--"
+					}
 				}else{
-					return "--";
+					return "--"
 				}
 			},
 			//排序
@@ -621,8 +637,9 @@
 				this.$refs[id].close()
 			},
 			//点击部门
-			clickOrg(id, orgs){
+			clickOrg(id, name, orgs){
 				this.currentOrg.id = id
+				this.currentOrg.name = name
 				this.currentOrg.orgs = orgs
 				//刷新用户数据
 				this.listQuery.orgs = orgs[orgs.length-1]
@@ -680,9 +697,6 @@
 		min-height: calc(100vh - 140px);
 	}
 	.org-tree{
-		.item{
-			
-		}
 		.active{
 			color: #007aff;
 		}

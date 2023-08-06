@@ -161,26 +161,34 @@
 			},
 			//显示字典
 			showDict(name, value){
-				let list = this.dict[name]
-				let names = "--"
-				for(let i=0;i<list.length;i++){
-					if(value == list[i].value){
-						names = list[i].text
-						break
+				if(value){
+					let list = this.dict[name]
+					let names = "--"
+					for(let i=0;i<list.length;i++){
+						if(value == list[i].value){
+							names = list[i].text
+							break
+						}
 					}
+					return names
+				}else{
+					return "--"
 				}
-				return names
 			},
 			//显示字典
 			showDicts(name, values){
-				let list = this.dict[name]
-				let names = []
-				for(let i=0;i<list.length;i++){
-					if(values.includes(list[i].value)){
-						names.push(list[i].text)
+				if(values){
+					let list = this.dict[name]
+					let names = []
+					for(let i=0;i<list.length;i++){
+						if(values.includes(list[i].value)){
+							names.push(list[i].text)
+						}
 					}
+					return names.join(",")
+				}else{
+					return "--"
 				}
-				return names.join(",")
 			},
 			//获取列表
 			getList() {

@@ -19,8 +19,14 @@
 								<view v-if="table.type==4 || table.type==5" class="filter-item d-flex" style="width: 120px;">
 									<uni-data-select v-model="listQuery[table.name]" :localdata="getDict(table.key)" :placeholder="table.remarks"></uni-data-select>
 								</view>
-								<view v-if="table.type==10" class="filter-item d-flex" style="width: 180px;">
-									<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" :placeholder="table.remarks" :popup-title="table.remarks" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+								<view v-if="table.type==10" class="filter-item d-flex">
+									<view v-if="table.name == 'orgs'">
+										<view @click="showDialog('selectOrgDialog')" class="pointer d-flex between" style="background: #fff;border: 1px solid #ddd;border-radius: 5px;height: 33px;padding: 0 5px 0 10px;">
+											<view style="padding-right: 5px;font-size: 12px;">{{selectedOrgName}}</view>
+											<uni-icons type="bottom" size="14" color="#999"></uni-icons>
+										</view>
+									</view>
+									<uni-data-picker v-else v-model="listQuery[table.name]" :localdata="getCategory(table.key)" :placeholder="table.remarks" :popup-title="table.remarks" @change="onCategoryChange($event, table.name)"></uni-data-picker>
 								</view>
 							</view>
 						</template>
@@ -29,7 +35,7 @@
 						</view>
 						<template v-if="module.api_json != null">
 							<view class="filter-item d-flex" v-if="checkRole(module.api_json[0].roles) && module.api_json[0].show">
-								<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add')">新增</button>
+								<button type="primary" size="mini" style="height: 35px;line-height: 35px;" @click="toPage('/pages/core/add', user.orgs?{'orgs': user.orgs}:null)">新增</button>
 							</view>
 							<view class="filter-item d-flex" v-if="checkRole(module.api_json[5].roles) && module.api_json[5].show">
 								<button type="primary" size="mini" style="height: 35px;line-height: 35px;" :disabled="!selectedIndexs.length" @click="showBatchUpdate()">批量修改</button>
@@ -115,6 +121,34 @@
 				</view>
 			</uni-card>
 		</scroll-view>
+		
+		<!-- 选择部门 -->
+		<uni-popup ref="selectOrgDialog" type="dialog">
+			<uni-card title="选择部门">
+				<scroll-view :scroll-y="true" :scroll-x="false" style="height: 400px;width: 220px;">
+					<view class="org-tree" v-for="(orgOne, indexOne) in orgTree" :key="'one-'+indexOne">
+						<view class="item pointer" v-if="orgOne.show" @click="selectOrg(orgOne.text, [{'text': orgOne.text, 'value': orgOne.value}])">
+						|-{{orgOne.text}}
+						</view>
+						<view v-if="orgOne.children" v-for="(orgTwo, indexTwo) in orgOne.children" :key="'two-'+indexTwo">
+							<view class="item pointer" v-if="orgTwo.show" @click="selectOrg(orgTwo.text, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}])" :style="{'margin-left':orgOne.show?'10px':'0'}">
+							|-{{orgTwo.text}}
+							</view>
+							<view v-if="orgTwo.children" v-for="(orgThree, indexThree) in orgTwo.children" :key="'three-'+indexThree">
+								<view class="item pointer" v-if="orgThree.show" @click="selectOrg(orgThree.text, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}])" :style="{'margin-left':orgOne.show?'20px':orgTwo.show?'10px':'0'}">
+								|-{{orgThree.text}}
+								</view>
+								<view v-if="orgThree.children" v-for="(orgFour, indexFour) in orgThree.children" :key="'four-'+indexFour">
+									<view class="item pointer" v-if="orgFour.show" @click="selectOrg(orgFour.text, [{'text': orgOne.text, 'value': orgOne.value}, {'text': orgTwo.text, 'value': orgTwo.value}, {'text': orgThree.text, 'value': orgThree.value}, {'text': orgFour.text, 'value': orgFour.value}])" :style="{'margin-left':orgOne.show?'30px':orgTwo.show?'20px':orgThree.show?'10px':'0'}">
+									|-{{orgFour.text}}
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+			</uni-card>
+		</uni-popup>
 	</view>
 </template>
 
@@ -141,6 +175,8 @@
 					uid: null
 				},
 				selectedIndexs: [],
+				orgTree: [],//部门树
+				selectedOrgName: null,//选中的部门名称
 			}
 		},
 		computed: {
@@ -167,6 +203,12 @@
 			//根据角色，初始化查询条件
 			if(!this.user.roles.includes("super")){
 				this.listQuery.uid = this.user.id
+			}
+			if(this.user.orgs){
+				//设置当前部门ID
+				let orgs = this.user.orgs[this.user.orgs.length-1]
+				this.selectedOrgName = orgs.text
+				this.listQuery.orgs = orgs
 			}
 			//初始化
 			this.init()
@@ -209,6 +251,14 @@
 			//预览图片
 			showImage(imgs, index){
 				uni.previewImage({"current": index, "urls": imgs})
+			},
+			//显示弹出框
+			showDialog(id){
+				this.$refs[id].open()
+			},
+			//关闭弹出框
+			hideDialog(id){
+				this.$refs[id].close()
 			},
 			//初始化
 			init() {
@@ -268,18 +318,22 @@
 			},
 			//显示对象
 			formatObject(name, value){
-				let list = this.object[name]
-				let names = "--"
-				if(!list){
-					return names
-				}
-				for(let i=0;i<list.length;i++){
-					if(value == list[i].value){
-						names = list[i].text
-						break
+				if(value){
+					let list = this.object[name]
+					let names = "--"
+					if(!list){
+						return names
 					}
+					for(let i=0;i<list.length;i++){
+						if(value == list[i].value){
+							names = list[i].text
+							break
+						}
+					}
+					return names
+				}else{
+					return "--"
 				}
-				return names
 			},
 			//初始化分类
 			async initCategory(name){
@@ -288,6 +342,10 @@
 					if(res.code == 20000){
 						//转Tree
 						this.category[name] = listToTree(res.data)
+						if(name=="Department"){
+							//部门数据单独处理
+							this.orgTree = this.category[name]
+						}
 					}
 				}
 			},
@@ -303,12 +361,12 @@
 						names.push(categorys[i].text)
 					}
 					if(names.length>0){
-						return names.join("/");
+						return names.join("/")
 					}else {
-						return "--";
+						return "--"
 					}
 				}else{
-					return "--";
+					return "--"
 				}
 			},
 			//分类选择
@@ -330,35 +388,43 @@
 			},
 			//显示字典
 			showDict(name, value){
-				let list = this.dict[name]
-				let names = "--"
-				if(!list){
-					return names
-				}
-				for(let i=0;i<list.length;i++){
-					if(value == list[i].value){
-						names = list[i].text
-						break
+				if(value){
+					let list = this.dict[name]
+					let names = "--"
+					if(!list){
+						return names
 					}
+					for(let i=0;i<list.length;i++){
+						if(value == list[i].value){
+							names = list[i].text
+							break
+						}
+					}
+					return names
+				}else{
+					return "--"
 				}
-				return names
 			},
 			//显示字典
 			showDicts(name, values){
-				let list = this.dict[name]
-				let names = []
-				if(!list){
-					return names
-				}
-				for(let i=0;i<list.length;i++){
-					if(values.includes(list[i].value)){
-						names.push(list[i].text)
+				if(values){
+					let list = this.dict[name]
+					let names = []
+					if(!list){
+						return names
 					}
-				}
-				if(names.length > 0){
-					return names.join(",")
+					for(let i=0;i<list.length;i++){
+						if(values.includes(list[i].value)){
+							names.push(list[i].text)
+						}
+					}
+					if(names.length > 0){
+						return names.join(",")
+					}else{
+						return "--"
+					}
 				}else{
-					return "--";
+					return "--"
 				}
 			},
 			//排序
@@ -529,6 +595,12 @@
 						})
 					}
 				})
+			},
+			//选中部门
+			selectOrg(name, orgs){
+				this.selectedOrgName = name
+				this.listQuery.orgs = orgs[orgs.length-1]
+				this.hideDialog('selectOrgDialog')
 			}
 		}
 	}

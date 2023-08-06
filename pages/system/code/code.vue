@@ -92,6 +92,20 @@
 					},
 					success: (res)=>{
 						if(item){
+							//判断是否存在必须的字段
+							if(!item.import_rule){
+								item.import_rule = {
+									fields: [],
+									rules: [
+										{"start_row": 2, "end_row": 0}
+									]
+								}
+							}
+							if(!item.export_rule){
+								item.export_rule = {
+									fields: []
+								}
+							}
 							//初始化数据
 							res.eventChannel.emit('initData', { data: JSON.parse(JSON.stringify(item)) })
 						}
