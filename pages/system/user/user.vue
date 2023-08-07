@@ -207,12 +207,6 @@
 			if(!this.user.roles.includes("super")){
 				this.listQuery.uid = this.user.id
 			}
-			if(this.user.orgs){
-				//设置当前部门ID
-				let orgs = this.user.orgs[this.user.orgs.length-1]
-				this.selectedOrgName = orgs.text
-				this.listQuery.orgs = orgs
-			}
 			//初始化
 			this.init()
 		},
@@ -290,6 +284,13 @@
 									await this.initObject(item.key)
 								}
 							}else if(item.type==10){
+								//判断该模块是否需要通过部门查询
+								if(item.name=='orgs' && this.user.orgs){
+									//设置当前部门ID
+									let orgs = this.user.orgs[this.user.orgs.length-1]
+									this.selectedOrgName = orgs.text
+									this.listQuery.orgs = orgs
+								}
 								//获取分类列表
 								if(item.key){
 									await this.initCategory(item.key)
