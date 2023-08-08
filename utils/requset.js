@@ -99,6 +99,7 @@ export default class Request {
 					url: requestUrl,
 					filePath: filePath,
 					name: 'file',
+					formData: data,
 					header: uplaodHeader,
 					success: (uploadFileRes) => {
 						let res = JSON.parse(uploadFileRes.data)
