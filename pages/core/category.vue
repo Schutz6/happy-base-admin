@@ -42,7 +42,7 @@
 											</view>
 										</template>
 										<template v-else i="其他">
-											{{ item[table.name] }}
+											{{ item[table.name] || "--"}}
 										</template>
 									</template>
 								</uni-td>

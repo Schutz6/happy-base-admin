@@ -27,7 +27,9 @@
 											<uni-icons type="bottom" size="14" color="#999"></uni-icons>
 										</view>
 									</view>
-									<uni-data-picker v-else v-model="listQuery[table.name]" :localdata="getCategory(table.key)" :placeholder="table.remarks" :popup-title="table.remarks" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+									<view v-else style="min-width: 180px;">
+										<uni-data-picker v-model="listQuery[table.name]" :localdata="getCategory(table.key)" :placeholder="table.remarks" :popup-title="table.remarks" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+									</view>
 								</view>
 							</view>
 						</template>
