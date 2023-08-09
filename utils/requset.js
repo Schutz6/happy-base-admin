@@ -1,6 +1,12 @@
 import config from '@/config.js'
 import { getToken } from '@/utils/auth'
 
+//需要缓存的接口
+//字典接口
+var cache_dict_url = '/dict/getList/'
+//模块接口
+var cache_mid_url = '/code/getModule/'
+
 export default class Request {
 	async asyncHttp(param) {
 		// 请求参数
@@ -34,6 +40,22 @@ export default class Request {
 		//拼接完整请求地址
 		var requestUrl = config.baseUrl + url
 		
+		// #ifdef H5
+		if(cache_dict_url == url){
+			//获取字典缓存
+			let res_dict = sessionStorage.getItem("DICT-"+data["type_name"])
+			if(res_dict){
+				return JSON.parse(res_dict)
+			}
+		}else if(cache_mid_url == url){
+			//获取模块缓存
+			let res_mid = sessionStorage.getItem("MID-"+data["mid"])
+			if(res_mid){
+				return JSON.parse(res_mid)
+			}
+		}
+		// #endif
+		
 		if (method) {
 			method = method.toUpperCase(); //小写改为大写
 		}
@@ -50,6 +72,15 @@ export default class Request {
 				url: '/pages/common/login/login'
 			})
 		}else{
+			// #ifdef H5
+			if(cache_dict_url == url){
+				//缓存字典
+				sessionStorage.setItem("DICT-"+data["type_name"], JSON.stringify(res.data))
+			}else if(cache_mid_url == url){
+				//缓存模块
+				sessionStorage.setItem("MID-"+data["mid"], JSON.stringify(res.data))
+			}
+			// #endif
 			return res.data
 		}
 	}
@@ -93,6 +124,26 @@ export default class Request {
 		
 		// 返回promise
 		return new Promise((resolve, reject) => {
+			// #ifdef H5
+			if(cache_dict_url == url){
+				//缓存字典
+				let res_dict = sessionStorage.getItem("DICT-"+data["type_name"])
+				if(res_dict){
+					// 将结果抛出
+					resolve(JSON.parse(res_dict))
+					return
+				}
+			}else if(cache_mid_url == url){
+				//获取模块缓存
+				let res_mid = sessionStorage.getItem("MID-"+data["mid"])
+				if(res_mid){
+					// 将结果抛出
+					resolve(JSON.parse(res_mid))
+					return
+				}
+			}
+			// #endif
+			
 			if(filePath){
 				//上传文件
 				uni.uploadFile({
@@ -158,6 +209,15 @@ export default class Request {
 							}, 600)
 							// #endif
 						}else{
+							// #ifdef H5
+							if(cache_dict_url == url){
+								//缓存字典
+								sessionStorage.setItem("DICT-"+data["type_name"], JSON.stringify(res.data))
+							}else if(cache_mid_url == url){
+								//缓存模块
+								sessionStorage.setItem("MID-"+data["mid"], JSON.stringify(res.data))
+							}
+							// #endif
 							// 将结果抛出
 							resolve(res.data)
 						}
