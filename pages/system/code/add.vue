@@ -408,6 +408,8 @@
 									title: "提交成功",
 									icon: 'success'
 								})
+								//删除缓存
+								sessionStorage.removeItem("MID-"+this.dataForm.mid)
 								setTimeout(()=>{
 									this.back()
 									this.eventChannel.emit("updateData", {})
