@@ -188,6 +188,8 @@
 						//更新数据
 						updateData: (res)=>{
 							this.getList()
+							//删除缓存
+							sessionStorage.removeItem("DICT-"+res.type_name)
 						}
 					},
 					success: (res)=>{

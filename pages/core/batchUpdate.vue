@@ -106,7 +106,7 @@
 								})
 								setTimeout(()=>{
 									this.back()
-									this.eventChannel.emit("updateData", {})
+									this.eventChannel.emit("updateData", this.dataForm)
 								}, 600)
 							}else{
 								uni.showToast({

@@ -93,7 +93,7 @@
 							</template>
 							<uni-td align="center">
 								<view class="d-flex-center">
-									<view class="tag-view">
+									<view class="tag-view" style="width: 65px;">
 										<uni-tag text="+字典值" type="primary" @click="toPage('/pages/system/dictValue/dictValue?mid=DictValue&type_name='+item.name)"></uni-tag>
 									</view>
 									<template v-if="module.api_json != null">
