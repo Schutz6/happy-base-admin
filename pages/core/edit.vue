@@ -2,76 +2,80 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card :title="'编辑 - '+module.name">
-				<view style="width: 550px;padding: 10px;padding-bottom: 300px;">
-					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="120px">
-						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit && table.name != 'orgs'" :label="table.remarks" :name="table.name" :required="table.must">
-							<template v-if="table.type==1">
-								<!-- 字符串 -->
-								<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" />
-							</template>
-							<template v-else-if="table.type==2 || table.type==3">
-								<!-- 数字 -->
-								<uni-easyinput type="number" trim="both" v-model="dataForm[table.name]" :disabled="table.name==='pid' || table.name==='level'" />
-							</template>
-							<template v-else-if="table.type==4">
-								<!-- 列表 -->
-								<view class="d-flex" style="height: 100%;">
-									<uni-data-checkbox multiple v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
-								</view>
-							</template>
-							<template v-else-if="table.type==5">
-								<!-- 字典 -->
-								<view class="d-flex" style="height: 100%;">
-									<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
-								</view>
-							</template>
-							<template v-else-if="table.type==6">
-								<!-- 单图片 -->
-								<uni-file-picker :ref="'file-'+table.name" :value="formatFile(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
-								<view style="margin-top: 5px;">
-									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="图片地址" />
-								</view>
-							</template>
-							<template v-else-if="table.type==12">
-								<!-- 多图片 -->
-								<uni-file-picker :ref="'file-'+table.name" :value="formatFiles(dataForm[table.name])" title="最多选择9张图片" limit="9" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
-							</template>
-							<template v-else-if="table.type==13">
-								<!-- 单文件 -->
-								<uni-file-picker :ref="'file-'+table.name" :value="formatFile(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="all" :auto-upload="false"></uni-file-picker>
-								<view style="margin-top: 5px;">
-									<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="文件地址" />
-								</view>
-							</template>
-							<template v-else-if="table.type==14">
-								<!-- 多文件 -->
-								<uni-file-picker :ref="'file-'+table.name" :value="formatFiles(dataForm[table.name])" title="最多选择9个文件" limit="9" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="all" :auto-upload="false"></uni-file-picker>
-							</template>
-							<template v-else-if="table.type==7">
-								<!-- 多文本 -->
-								<uni-easyinput type="textarea" trim="both" autoHeight :maxlength="-1" v-model="dataForm[table.name]" />
-							</template>
-							<template v-else-if="table.type==8">
-								<!-- 富文本 -->
-								<module-editor :id="'editor-'+table.name" :ref="'editor-'+table.name" :html="dataForm[table.name]"></module-editor>
-							</template>
-							<template v-else-if="table.type==9">
-								<!-- 对象选择 -->
-								<uni-data-select v-model="dataForm[table.name]" :localdata="getObject(table.key)"></uni-data-select>
-							</template>
-							<template v-else-if="table.type==10">
-								<!-- 分类选择 -->
-								<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
-							</template>
-							<template v-else-if="table.type==16">
-								<!-- 选择日期 -->
-								<uni-datetime-picker type="date" v-model="dataForm[table.name]" return-type="string" />
-							</template>
-							<template v-else-if="table.type==17">
-								<!-- 选择时间 -->
-								<uni-datetime-picker type="datetime" v-model="dataForm[table.name]" return-type="string" />
-							</template>
-						</uni-forms-item>
+				<view style="padding: 10px;padding-bottom: 300px;">
+					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top" label-width="120px">
+						<uni-row :gutter="60">
+							<uni-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit && table.name != 'orgs'">
+								<uni-forms-item :label="table.remarks" :name="table.name" :required="table.must">
+									<template v-if="table.type==1">
+										<!-- 字符串 -->
+										<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" />
+									</template>
+									<template v-else-if="table.type==2 || table.type==3">
+										<!-- 数字 -->
+										<uni-easyinput type="number" trim="both" v-model="dataForm[table.name]" :disabled="table.name==='pid' || table.name==='level'" />
+									</template>
+									<template v-else-if="table.type==4">
+										<!-- 列表 -->
+										<view class="box">
+											<uni-data-checkbox multiple v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
+										</view>
+									</template>
+									<template v-else-if="table.type==5">
+										<!-- 字典 -->
+										<view class="box">
+											<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
+										</view>
+									</template>
+									<template v-else-if="table.type==6">
+										<!-- 单图片 -->
+										<uni-file-picker :ref="'file-'+table.name" :value="formatFile(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
+										<!-- <view style="margin-top: 5px;">
+											<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="图片地址" />
+										</view> -->
+									</template>
+									<template v-else-if="table.type==12">
+										<!-- 多图片 -->
+										<uni-file-picker :ref="'file-'+table.name" :value="formatFiles(dataForm[table.name])" title="最多选择9张图片" limit="9" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="image" :auto-upload="false"></uni-file-picker>
+									</template>
+									<template v-else-if="table.type==13">
+										<!-- 单文件 -->
+										<uni-file-picker :ref="'file-'+table.name" :value="formatFile(dataForm[table.name])" limit="1" @delete="deleteFile($event, table.name)" @select="selectFile($event, table.name)" file-mediatype="all" :auto-upload="false"></uni-file-picker>
+										<!-- <view style="margin-top: 5px;">
+											<uni-easyinput type="text" trim="both" v-model="dataForm[table.name]" placeholder="文件地址" />
+										</view> -->
+									</template>
+									<template v-else-if="table.type==14">
+										<!-- 多文件 -->
+										<uni-file-picker :ref="'file-'+table.name" :value="formatFiles(dataForm[table.name])" title="最多选择9个文件" limit="9" @delete="deleteFiles($event, table.name)" @select="selectFiles($event, table.name)" file-mediatype="all" :auto-upload="false"></uni-file-picker>
+									</template>
+									<template v-else-if="table.type==7">
+										<!-- 多文本 -->
+										<uni-easyinput type="textarea" trim="both" autoHeight :maxlength="-1" v-model="dataForm[table.name]" />
+									</template>
+									<template v-else-if="table.type==8">
+										<!-- 富文本 -->
+										<module-editor :id="'editor-'+table.name" :ref="'editor-'+table.name" :html="dataForm[table.name]"></module-editor>
+									</template>
+									<template v-else-if="table.type==9">
+										<!-- 对象选择 -->
+										<uni-data-select v-model="dataForm[table.name]" :localdata="getObject(table.key)"></uni-data-select>
+									</template>
+									<template v-else-if="table.type==10">
+										<!-- 分类选择 -->
+										<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+									</template>
+									<template v-else-if="table.type==16">
+										<!-- 选择日期 -->
+										<uni-datetime-picker type="date" v-model="dataForm[table.name]" return-type="string" />
+									</template>
+									<template v-else-if="table.type==17">
+										<!-- 选择时间 -->
+										<uni-datetime-picker type="datetime" v-model="dataForm[table.name]" return-type="string" />
+									</template>
+								</uni-forms-item>
+							</uni-col>
+						</uni-row>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;padding-bottom: 20px;">
 						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">提交</button>
@@ -289,6 +293,13 @@
 	}
 </script>
 
-<style>
-
+<style scoped lang="scss">
+	.box{
+		border: 1px solid rgb(221, 221, 221);
+		border-radius: 5px;
+		min-height: 35px;
+		display: flex;
+		align-items: center;
+		padding: 0 5px;
+	}
 </style>

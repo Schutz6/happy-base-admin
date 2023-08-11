@@ -2,30 +2,34 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card :title="'批量修改 - '+module.name">
-				<view style="width: 550px;padding: 10px;padding-bottom: 300px;">
-					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-width="100px">
-						<uni-forms-item v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="[4, 5, 9, 10].includes(table.type) && table.name != 'orgs'" :label="table.remarks" :name="table.name" required>
-							<template v-if="table.type==4">
-								<!-- 列表 -->
-								<view class="d-flex" style="height: 100%;">
-									<uni-data-checkbox multiple v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
-								</view>
-							</template>
-							<template v-else-if="table.type==5">
-								<!-- 字典 -->
-								<view class="d-flex" style="height: 100%;">
-									<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
-								</view>
-							</template>
-							<template v-else-if="table.type==9 && table.name!='uid'">
-								<!-- 对象选择 -->
-								<uni-data-select v-model="dataForm[table.name]" :localdata="getObject(table.key)"></uni-data-select>
-							</template>
-							<template v-else-if="table.type==10">
-								<!-- 分类选择 -->
-								<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
-							</template>
-						</uni-forms-item>
+				<view style="padding: 10px;padding-bottom: 300px;">
+					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top" label-width="100px">
+						<uni-row :gutter="60">
+							<uni-col :xs="24" :sm="12" :md="12" :lg="8" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="[4, 5, 9, 10].includes(table.type) && table.name != 'orgs'">
+								<uni-forms-item :label="table.remarks" :name="table.name" required>
+									<template v-if="table.type==4">
+										<!-- 列表 -->
+										<view class="box">
+											<uni-data-checkbox multiple v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
+										</view>
+									</template>
+									<template v-else-if="table.type==5">
+										<!-- 字典 -->
+										<view class="box">
+											<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
+										</view>
+									</template>
+									<template v-else-if="table.type==9 && table.name!='uid'">
+										<!-- 对象选择 -->
+										<uni-data-select v-model="dataForm[table.name]" :localdata="getObject(table.key)"></uni-data-select>
+									</template>
+									<template v-else-if="table.type==10">
+										<!-- 分类选择 -->
+										<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
+									</template>
+								</uni-forms-item>
+							</uni-col>
+						</uni-row>
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;padding-bottom: 20px;">
 						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">修改</button>
@@ -122,6 +126,13 @@
 	}
 </script>
 
-<style>
-
+<style scoped lang="scss">
+	.box{
+		border: 1px solid rgb(221, 221, 221);
+		border-radius: 5px;
+		min-height: 35px;
+		display: flex;
+		align-items: center;
+		padding: 0 5px;
+	}
 </style>
