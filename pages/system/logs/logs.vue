@@ -32,7 +32,9 @@
 							<uni-td align="center">{{ item.method }}</uni-td>
 							<uni-td align="center">{{item.uri}}</uni-td>
 							<uni-td align="center">
-								<text class="wrap">{{item.params || "--"}}</text>
+								<uni-tooltip :content="item.params">
+									<text class="wrap">{{item.params | ellipsis}}</text>
+								</uni-tooltip>
 							</uni-td>
 							<uni-td align="center">{{item.ip}}</uni-td>
 							<uni-td align="center">{{item.times}}ms</uni-td>
@@ -70,7 +72,15 @@
 		    //格式化日期
 		    formatDate(time){
 		    	return formatDateUtc(time)
-		    }
+		    },
+			//限制长度
+			ellipsis(value) {
+			  if (!value) return '--'
+			  if (value.length > 20) {
+			    return value.slice(0, 20) + '...'
+			  }
+			  return value
+			}
 		},
 		onReady() {
 			//初始化

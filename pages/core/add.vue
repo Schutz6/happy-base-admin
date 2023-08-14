@@ -79,7 +79,7 @@
 					</uni-forms>
 					<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 20px;padding-bottom: 20px;">
 						<button type="primary" :loading="loading" @click="submit" style="font-size: 14px;width: 100px;">提交</button>
-						<button type="default" :loading="loading" @click="back" style="font-size: 14px;width: 100px;">返回</button>
+						<button type="default" @click="back" style="font-size: 14px;width: 100px;">返回</button>
 					</view>
 				</view>
 			</uni-card>
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-	import { formatToCategory } from '@/utils/util'
+	import { navigateBack, formatToCategory } from '@/utils/util'
 	export default {
 		data() {
 			return {
@@ -120,7 +120,7 @@
 		methods: {
 			//返回
 			back(){
-				uni.navigateBack()
+				navigateBack()
 			},
 			//初始化验证规则
 			initRules(){

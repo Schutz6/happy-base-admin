@@ -191,6 +191,13 @@
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
+        },{
+            "path" : "pages/core/info",//查看详情
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
         }
         ,{
             "path" : "pages/system/backup/backup", //备份管理
@@ -208,6 +215,7 @@
 				"navigationStyle": "custom"
 		    }
 		}
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

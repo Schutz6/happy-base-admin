@@ -105,6 +105,9 @@
 							<uni-td align="center">
 								<view class="d-flex-center">
 									<template v-if="module.api_json != null">
+										<view class="tag-view" v-if="checkRole(module.api_json[9].roles) && module.api_json[9].show">
+											<uni-tag text="查看" type="primary" @click="toPage('/pages/core/info', item)"></uni-tag>
+										</view>
 										<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[1].show">
 											<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
 										</view>
