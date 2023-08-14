@@ -17,6 +17,28 @@
 		    }
 		},
 		{
+		    "path" : "pages/design/design-web",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "电脑页面设计",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"topWindow": false,
+				"leftWindow": false
+		    }
+		},
+		{
+		    "path" : "pages/design/design-app",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "手机页面设计",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"topWindow": false,
+				"leftWindow": false
+		    }
+		},
+		{
 		    "path" : "pages/common/login/login",//登录
 		    "style" :                                                                                    
 		    {
@@ -199,6 +221,15 @@
 				"navigationStyle": "custom"
             }
         }
+		,{
+		    "path" : "pages/system/page/page",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "页面管理",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		}
         ,{
             "path" : "pages/system/backup/backup", //备份管理
             "style" :                                                                                    
@@ -215,7 +246,6 @@
 				"navigationStyle": "custom"
 		    }
 		}
-        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

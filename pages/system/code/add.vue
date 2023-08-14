@@ -31,69 +31,66 @@
 							</uni-col>
 						</uni-row>
 						<uni-forms-item label="字段管理" name="table_json" required>
-							<uni-table border stripe emptyText="请新增字段">
-								<uni-tr>
-									<uni-th align="center" width="140px">字段</uni-th>
-									<uni-th align="center" width="100px">类型</uni-th>
-									<uni-th align="center" width="140px">备注</uni-th>
-									<uni-th align="center" width="100px">默认值</uni-th>
-									<uni-th align="center" width="140px">绑定对象</uni-th>
-									<uni-th align="center" width="60px">表格</uni-th>
-									<uni-th align="center" width="60px">综合</uni-th>
-									<uni-th align="center" width="60px">单独</uni-th>
-									<uni-th align="center" width="60px">排序</uni-th>
-									<uni-th align="center" width="60px">唯一</uni-th>
-									<uni-th align="center" width="60px">编辑</uni-th>
-									<uni-th align="center" width="60px">必填</uni-th>
-									<uni-th align="center" width="80px">操作</uni-th>
-								</uni-tr>
-								<uni-tr v-for="(item, index) in dataForm.table_json" :key="index">
-									<uni-td align="center">
+							<view class="table">
+								<view class="th">
+									<view class="td d-flex-center flex1">字段</view>
+									<view class="td d-flex-center" style="width: 110px;">类型</view>
+									<view class="td d-flex-center flex1">备注</view>
+									<view class="td d-flex-center" style="width: 60px;">默认值</view>
+									<view class="td d-flex-center flex1">绑定对象</view>
+									<view class="td d-flex-center" style="width: 40px;">表格</view>
+									<view class="td d-flex-center" style="width: 40px;">综合</view>
+									<view class="td d-flex-center" style="width: 40px;">单独</view>
+									<view class="td d-flex-center" style="width: 40px;">排序</view>
+									<view class="td d-flex-center" style="width: 40px;">唯一</view>
+									<view class="td d-flex-center" style="width: 40px;">编辑</view>
+									<view class="td d-flex-center" style="width: 40px;">必填</view>
+									<view class="td d-flex-center" style="width: 70px;">操作</view>
+								</view>
+								<view class="tr" v-for="(item, index) in dataForm.table_json" :key="index">
+									<view class="td flex1">
 										<uni-easyinput type="text" trim="both" v-model="item.name" :clearable="false" />
-									</uni-td>
-									<uni-td align="center">
-										<view @click="showDialog('selectFieldTypeDialog', index)" class="pointer d-flex between" style="background: #fff;border: 1px solid #ddd;border-radius: 5px;height: 35px;padding: 0 10px;">
-											<view>{{showFieldType(item.type)}}</view>
-											<uni-icons type="bottom" size="14" color="#999"></uni-icons>
-										</view>
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 110px;">
+										<uni-data-select v-model="item.type" :localdata="datas.field_type_json" :clear="false"></uni-data-select>
+									</view>
+									<view class="td flex1">
 										<uni-easyinput type="text" trim="both" v-model="item.remarks" :clearable="false" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 60px;">
 										<uni-easyinput type="text" trim="both" v-model="item.default" :clearable="false" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td flex1">
 										<uni-easyinput type="text" trim="both" v-model="item.key" :clearable="false" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 40px;">
 										<switch @change="switchShow($event, index)" :checked="item.show" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 40px;">
 										<switch @change="switchQuery($event, index)" :checked="item.query" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 40px;">
 										<switch @change="switchSingleQuery($event, index)" :checked="item.single_query" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 40px;">
 										<switch @change="switchSort($event, index)" :checked="item.sort" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 40px;">
 										<switch @change="switchUnique($event, index)" :checked="item.unique" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 40px;">
 										<switch @change="switchEdit($event, index)" :checked="item.edit" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 40px;">
 										<switch @change="switchMust($event, index)" :checked="item.must" style="transform:scale(0.6)" />
-									</uni-td>
-									<uni-td align="center">
+									</view>
+									<view class="td" style="width: 70px;">
 										<uni-icons class="operate-item pointer" type="trash" size="20" color="red" @click="delField(index)"></uni-icons>
 										<uni-icons class="operate-item pointer" type="arrow-up" size="20" color="#007aff" @click="clickUp(index)"></uni-icons>
 										<uni-icons class="operate-item pointer" type="arrow-down" size="20" color="#007aff" @click="clickDown(index)"></uni-icons>
-									</uni-td>
-								</uni-tr>
-							</uni-table>
+									</view>
+								</view>
+							</view>
 							<view style="padding-top: 5px;text-align: right;">
 								<uni-tag text="新增字段" @click="addField()"></uni-tag>
 							</view>
@@ -174,19 +171,6 @@
 				</view>
 			</uni-card>
 		</scroll-view>
-		
-		<!-- 弹出字段类型选择 -->
-		<uni-popup ref="selectFieldTypeDialog" type="dialog">
-			<uni-card title="选择字段类型">
-				<view style="width: 500px;">
-					<uni-data-checkbox v-model="field_type" :localdata="datas.field_type_json"></uni-data-checkbox>
-				</view>
-				<view class="d-flex-center" style="width: 240px;margin: 0 auto;padding-top: 10px;">
-					<button type="primary" :loading="loading" @click="updateFieldType()" style="font-size: 14px;width: 100px;">确定</button>
-					<button type="default" :loading="loading" @click="hideDialog('selectFieldTypeDialog')" style="font-size: 14px;width: 100px;">取消</button>
-				</view>
-			</uni-card>
-		</uni-popup>
 	</view>
 </template>
 
@@ -244,7 +228,6 @@
 				},
 				roles:[], //角色列表
 				selectedIndex: null,//当前选择位置
-				field_type: 1,//字段类型
 			}
 		},
 		computed: {
@@ -261,33 +244,6 @@
 			//返回
 			back(){
 				uni.navigateBack()
-			},
-			//显示弹出框
-			showDialog(id, index){
-				this.selectedIndex = index
-				this.$refs[id].open()
-			},
-			//关闭弹出框
-			hideDialog(id){
-				this.$refs[id].close()
-			},
-			//修改字段类型
-			updateFieldType(){
-				if(this.field_type){
-					this.$set(this.dataForm.table_json[this.selectedIndex], 'type', this.field_type)
-					this.hideDialog("selectFieldTypeDialog")
-				}
-			},
-			//显示字段
-			showFieldType(type){
-				let name = "--"
-				for(let i=0;i<this.datas.field_type_json.length;i++){
-					if(type == this.datas.field_type_json[i].value){
-						name = this.datas.field_type_json[i].text
-						break
-					}
-				}
-				return name;
 			},
 			//显示字段列表
 			showFieldList(){
@@ -437,6 +393,42 @@
 		.item{
 			padding: 5px 0;
 			border-top: 1px solid #ddd;
+		}
+	}
+	.table{
+		border: 1px #EBEEF5 solid;
+		
+		.th{
+			display: flex;
+			border-bottom: 1px #EBEEF5 solid;
+			
+			.td{
+				padding: 12px 10px;
+				font-size: 14px;
+				font-weight: bold;
+				color: #909399;
+				border-right: 1px #EBEEF5 solid;
+			}
+			.td:last-child{
+				border-right: none;
+			}
+		}
+		.tr{
+			display: flex;
+			border-bottom: 1px #EBEEF5 solid;
+			
+			.td{
+				padding: 8px 10px;
+				font-weight: 400;
+				color: #606266;
+				border-right: 1px #EBEEF5 solid;
+			}
+			.td:last-child{
+				border-right: none;
+			}
+		}
+		.tr:last-child{
+			border-bottom: none;
 		}
 	}
 </style>

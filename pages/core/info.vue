@@ -2,7 +2,7 @@
 	<view class="page">
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card :title="'查看 - '+module.name">
-				<view style="padding: 10px;padding-bottom: 300px;">
+				<view style="padding: 10px;">
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top" label-width="120px">
 						<uni-row :gutter="60">
 							<uni-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit && table.name != 'orgs'">
