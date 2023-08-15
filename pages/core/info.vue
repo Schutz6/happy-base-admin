@@ -61,8 +61,13 @@
 										</view>
 									</template>
 									<template v-else-if="table.type==15">
-										<!-- 时间戳 -->
-										<uni-dateformat :date="dataForm[table.name] | formatDate"></uni-dateformat>
+										<view v-if="dataForm[table.name] && !table.edit">
+											<uni-dateformat :date="dataForm[table.name] | formatDate"></uni-dateformat>
+										</view>
+										<view v-else-if="dataForm[table.name] && table.edit">
+											<uni-dateformat :date="dataForm[table.name]"></uni-dateformat>
+										</view>
+										<view v-else>--</view>
 									</template>
 									<template v-else>
 										<!-- 字符串/数字/日期/时间/多文本 -->

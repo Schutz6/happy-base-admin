@@ -65,6 +65,10 @@
 										<!-- 分类选择 -->
 										<uni-data-picker v-model="dataForm[table.name]" :localdata="getCategory(table.key)" @change="onCategoryChange($event, table.name)"></uni-data-picker>
 									</template>
+									<template v-else-if="table.type==15">
+										<!-- 选择时间戳 -->
+										<uni-datetime-picker type="datetime" v-model="dataForm[table.name]" return-type="timestamp" />
+									</template>
 									<template v-else-if="table.type==16">
 										<!-- 选择日期 -->
 										<uni-datetime-picker type="date" v-model="dataForm[table.name]" return-type="string" />

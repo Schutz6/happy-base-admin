@@ -113,8 +113,11 @@
 											{{formatCategory(item[table.name])}}
 										</template>
 										<template v-else-if="table.type==15" i="时间戳">
-											<view v-if="item[table.name]">
+											<view v-if="item[table.name] && !table.edit">
 												<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
+											</view>
+											<view v-else-if="item[table.name] && table.edit">
+												<uni-dateformat :date="item[table.name]"></uni-dateformat>
 											</view>
 											<view v-else>--</view>
 										</template>
