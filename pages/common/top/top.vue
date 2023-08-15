@@ -79,13 +79,6 @@
 		    ...mapGetters(['user', 'params'])
 		},
 		mounted() {
-			setTimeout(()=>{
-				if(this.params){
-					uni.setNavigationBarTitle({
-						title: this.params.siteName
-					})
-				}
-			}, 300)
 			//获取页面大小
 			uni.getSystemInfo({
 				success: (res)=> {

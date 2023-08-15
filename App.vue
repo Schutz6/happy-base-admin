@@ -17,6 +17,9 @@
 			let resParam = await this.$api.getAsync("/param/getList/")
 			if(resParam && resParam.code == 20000){
 				this.$store.commit('setParams', resParam.data)
+				uni.setNavigationBarTitle({
+					title: resParam.siteName
+				})
 			}
 			//获取系统菜单
 			let resMenu = await this.$api.getAsync("/menu/getList/")

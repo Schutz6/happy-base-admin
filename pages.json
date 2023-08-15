@@ -7,9 +7,10 @@
 	},
 	"pages": [
 		{
-		    "path" : "pages/common/start/start",//启动中
+		    "path" : "pages/common/start/start",
 		    "style" :                                                                                    
 		    {
+				"navigationBarTitleText": "启动中",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom",
 				"topWindow": false,
@@ -39,9 +40,10 @@
 		    }
 		},
 		{
-		    "path" : "pages/common/login/login",//登录
+		    "path" : "pages/common/login/login",
 		    "style" :                                                                                    
 		    {
+				"navigationBarTitleText": "登录",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom",
 				"topWindow": false,
@@ -49,174 +51,197 @@
 		    }
 		},
 		{
-			"path": "pages/index/index",//首页
+			"path": "pages/index/index",
 			"style": {
+				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
 		}
         ,{
-            "path" : "pages/system/user/user",//用户管理
+            "path" : "pages/system/user/user",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "用户管理",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/system/user/user_org",//部门用户管理
+            "path" : "pages/system/user/user_org",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "部门用户管理",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         }
 		,{
-		    "path" : "pages/system/department/department",//部门管理
+		    "path" : "pages/system/department/department",
 		    "style" :                                                                                    
 		    {
+				"navigationBarTitleText": "部门管理",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
 		}
 		,{
-		    "path" : "pages/system/menu/menu",//菜单
+		    "path" : "pages/system/menu/menu",
 		    "style" :                                                                                    
 		    {
+				"navigationBarTitleText": "菜单",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
 		},{
-            "path" : "pages/system/dictType/dictType",//字典类型
+            "path" : "pages/system/dictType/dictType",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "字典类型",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         }
         ,{
-            "path" : "pages/system/dictValue/dictValue",//字典值
+            "path" : "pages/system/dictValue/dictValue",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "字典值",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         }
         ,{
-            "path" : "pages/system/task/task",//任务管理
+            "path" : "pages/system/task/task",
             "style" :                                                                                    
             {
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-        }
-		,{
-		    "path" : "pages/system/task/add",//任务新增
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-		,{
-		    "path" : "pages/system/task/edit",//任务编辑
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-		    }
-		}
-        ,{
-            "path" : "pages/system/files/files",//文件管理
-            "style" :                                                                                    
-            {
+				"navigationBarTitleText": "任务管理",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         }
 		,{
-		    "path" : "pages/system/blacklist/blacklist",//IP黑名单
+		    "path" : "pages/system/task/add",
 		    "style" :                                                                                    
 		    {
+				"navigationBarTitleText": "任务新增",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
 		}
 		,{
-		    "path" : "pages/system/logs/logs",//系统日志
+		    "path" : "pages/system/task/edit",
 		    "style" :                                                                                    
 		    {
+				"navigationBarTitleText": "任务编辑",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
 		}
         ,{
-            "path" : "pages/system/code/code",//代码管理
+            "path" : "pages/system/files/files",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "文件管理",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        }
+		,{
+		    "path" : "pages/system/blacklist/blacklist",
+		    "style" :                                                                                    
+		    {
+				"navigationBarTitleText": "IP黑名单",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		}
+		,{
+		    "path" : "pages/system/logs/logs",
+		    "style" :                                                                                    
+		    {
+				"navigationBarTitleText": "系统日志",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		}
+        ,{
+            "path" : "pages/system/code/code",
+            "style" :                                                                                    
+            {
+				"navigationBarTitleText": "代码管理",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/system/code/add",//代码新增
+            "path" : "pages/system/code/add",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "代码新增",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/system/code/addM",//代码新增
+            "path" : "pages/system/code/addM",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "代码新增",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/system/code/edit",//代码编辑
+            "path" : "pages/system/code/edit",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "代码编辑",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/core/category",//分类页面
+            "path" : "pages/core/category",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "分类页面",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         }
         ,{
-            "path" : "pages/core/list",//列表页面
+            "path" : "pages/core/list",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "列表页面",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/core/add",//新增页面
+            "path" : "pages/core/add",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "新增页面",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/core/edit",//编辑页面
+            "path" : "pages/core/edit",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "编辑页面",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/core/batchUpdate",//批量修改
+            "path" : "pages/core/batchUpdate",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "批量修改",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         },{
-            "path" : "pages/core/info",//查看详情
+            "path" : "pages/core/info",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "查看详情",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
@@ -231,23 +256,26 @@
 		    }
 		}
         ,{
-            "path" : "pages/system/backup/backup", //备份管理
+            "path" : "pages/system/backup/backup",
             "style" :                                                                                    
             {
+				"navigationBarTitleText": "备份管理",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }
         }
 		,{
-		    "path" : "pages/ext/member/member", //会员管理
+		    "path" : "pages/ext/member/member",
 		    "style" :                                                                                    
 		    {
+				"navigationBarTitleText": "会员管理",
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
 		}
     ],
 	"globalStyle": {
+		"navigationBarTitleText": "低代码基础平台",
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"

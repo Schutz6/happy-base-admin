@@ -2,3 +2,5 @@ unpackage/*
 .DS_Store
 static/avatars/*
 static/files/*
+node_modules/*
+/package-lock.json
