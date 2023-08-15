@@ -58,7 +58,7 @@
 					<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
 						<uni-tr>
 							<template v-if="module.table_json != null">
-								<uni-th align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
+								<uni-th align="center" style="min-width: 100px;" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
 							</template>
 							<uni-th align="center">操作</uni-th>
 						</uni-tr>
@@ -72,7 +72,7 @@
 									{{ showDict(table.key, item[table.name]) }}
 								</template>
 								<template v-else-if="table.type==6" i="图片">
-									<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 120px;height: 40px;"></image>
+									<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 80px;height: 40px;"></image>
 								</template>
 								<template v-else-if="table.type==12" i="多图片">
 									<view class="d-flex-center">
