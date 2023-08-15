@@ -287,7 +287,7 @@
 	.box{
 		border: 1px solid rgb(221, 221, 221);
 		border-radius: 5px;
-		min-height: 35px;
+		min-height: 34px;
 		display: flex;
 		align-items: center;
 		padding: 0 5px;

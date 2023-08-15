@@ -85,6 +85,9 @@
 	    border-color: #dcdfe6;
 	    color: #606266;
 	}
+	.uni-easyinput__content-input{
+		height: 34px !important;
+	}
 
 	/*解决页面不能复制问题 */
 	view {
