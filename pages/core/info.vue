@@ -60,12 +60,15 @@
 											{{formatCategory(dataForm[table.name])}}
 										</view>
 									</template>
-									<template v-else-if="table.type==15">
-										<view v-if="dataForm[table.name] && !table.edit">
+									<template v-else-if="table.type==15 || table.type==17">
+										<view v-if="dataForm[table.name]">
 											<uni-dateformat :date="dataForm[table.name] | formatDate"></uni-dateformat>
 										</view>
-										<view v-else-if="dataForm[table.name] && table.edit">
-											<uni-dateformat :date="dataForm[table.name]"></uni-dateformat>
+										<view v-else>--</view>
+									</template>
+									<template v-else-if="table.type==16">
+										<view v-if="dataForm[table.name]">
+											<uni-dateformat :date="dataForm[table.name] | formatDate" format="yyyy/MM/dd"></uni-dateformat>
 										</view>
 										<view v-else>--</view>
 									</template>

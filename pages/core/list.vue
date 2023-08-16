@@ -91,12 +91,15 @@
 								<template v-else-if="table.type==10" i="分类列表">
 									{{formatCategory(item[table.name])}}
 								</template>
-								<template v-else-if="table.type==15" i="时间戳">
-									<view v-if="item[table.name] && !table.edit">
-										<uni-dateformat :date="item[table.name] | formatDate"></uni-dateformat>
-									</view>
-									<view v-else-if="item[table.name] && table.edit">
+								<template v-else-if="table.type==15 || table.type==17" i="时间戳">
+									<view v-if="item[table.name]">
 										<uni-dateformat :date="item[table.name]"></uni-dateformat>
+									</view>
+									<view v-else>--</view>
+								</template>
+								<template v-else-if="table.type==16" i="日期">
+									<view v-if="item[table.name]">
+										<uni-dateformat :date="item[table.name]" format="yyyy/MM/dd"></uni-dateformat>
 									</view>
 									<view v-else>--</view>
 								</template>
@@ -460,7 +463,21 @@
 				this.listLoading = true
 				this.$api.post("/core/list/", this.listQuery, {"Mid": this.mid}).then(res => {
 					this.listLoading = false
-					this.tableData = res.data.results
+					let results = []
+					for(let i=0;i<res.data.results.length;i++){
+						let item  = res.data.results[i]
+						//判断是否进行时间格式转换
+						for(let j=0;j<this.module.table_json.length;j++){
+							let table = this.module.table_json[j]
+							if(table.type==15 || table.type==16 || table.type==17){
+								if(item[table.name]){
+									item[table.name] = formatDateUtc(item[table.name])
+								}
+							}
+						}
+						results.push(item)
+					}
+					this.tableData = results
 					this.total = res.data.total
 				})
 			},

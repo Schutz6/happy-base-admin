@@ -71,11 +71,11 @@
 									</template>
 									<template v-else-if="table.type==16">
 										<!-- 选择日期 -->
-										<uni-datetime-picker type="date" v-model="dataForm[table.name]" return-type="string" />
+										<uni-datetime-picker type="date" v-model="dataForm[table.name]" return-type="timestamp" />
 									</template>
 									<template v-else-if="table.type==17">
 										<!-- 选择时间 -->
-										<uni-datetime-picker type="datetime" v-model="dataForm[table.name]" return-type="string" />
+										<uni-datetime-picker type="datetime" v-model="dataForm[table.name]" return-type="timestamp" />
 									</template>
 								</uni-forms-item>
 							</uni-col>
