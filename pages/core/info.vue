@@ -16,7 +16,7 @@
 									<template v-else-if="table.type==5">
 										<!-- 单字典 -->
 										<view class="">
-											{{ showDict(table.key, dataForm[table.name]) }}
+											<rich-text :nodes="showDict(table.key, item[table.name])"></rich-text>
 										</view>
 									</template>
 									<template v-else-if="table.type==6">
@@ -177,7 +177,11 @@
 					}
 					for(let i=0;i<list.length;i++){
 						if(value == list[i].value){
-							names = list[i].text
+							if(list[i].color){
+								names = "<span style='color:"+list[i].color+"'>"+list[i].text+"</span>"
+							}else{
+								names = list[i].text
+							}
 							break
 						}
 					}

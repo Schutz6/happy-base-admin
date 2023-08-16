@@ -69,7 +69,7 @@
 									{{ showDicts(table.key, item[table.name]) }}
 								</template>
 								<template v-else-if="table.type==5" i="字典">
-									{{ showDict(table.key, item[table.name]) }}
+									<rich-text :nodes="showDict(table.key, item[table.name])"></rich-text>
 								</template>
 								<template v-else-if="table.type==6" i="图片">
 									<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 80px;height: 40px;"></image>
@@ -410,7 +410,11 @@
 					}
 					for(let i=0;i<list.length;i++){
 						if(value == list[i].value){
-							names = list[i].text
+							if(list[i].color){
+								names = "<span style='color:"+list[i].color+"'>"+list[i].text+"</span>"
+							}else{
+								names = list[i].text
+							}
 							break
 						}
 					}
