@@ -16,7 +16,7 @@
 									<template v-else-if="table.type==5">
 										<!-- 单字典 -->
 										<view class="">
-											<rich-text :nodes="showDict(table.key, item[table.name])"></rich-text>
+											<rich-text :nodes="showDict(table.key, dataForm[table.name])"></rich-text>
 										</view>
 									</template>
 									<template v-else-if="table.type==6">
