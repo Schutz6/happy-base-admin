@@ -86,7 +86,8 @@
         },
         "router" : {
             "base" : "/admin/"
-        }
+        },
+        "template" : "template.html"
     },
     "fallbackLocale" : "zh-Hans"
 }

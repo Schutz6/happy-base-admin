@@ -29,28 +29,20 @@
 
 					<view class="iconfont icon-text_color" :style="{'color': '#000000'}" @tap.stop="showColor">
 						<view v-show="showSetColor" class="sub-view">
-							<view class="d-flex-center" style="width: 143px;height: 110px;padding-left: 7px;padding-top: 5px;">
+							<view class="d-flex flex-wrap" style="width: 150px;height: 110px;padding-left: 7px;padding-top: 5px;">
 								<!-- <input v-model="color" focus placeholder="color" style="padding: 0 5px;width: 90px;" />
 								<view style="width: 50px;font-size: 14px;text-align: center;" @tap.stop="setColor">确定</view> -->
-								<uni-row :gutter="10">
-									<uni-col :span="3.4" v-for="(item, index) in colorList" :key="index">
-										<view class="color-box" :style="{'background-color': item}" @tap.stop="setColor(item)"></view>
-									</uni-col>
-								</uni-row>
+								<view v-for="(item, index) in colorList" :key="index" class="color-box" :style="{'background-color': item}" @tap.stop="setColor(item)"></view>
 							</view>
 						</view>
 					</view>
 
 					<view class="iconfont icon-fontbgcolor" :style="{'color': '#000000'}" @tap.stop="showBackgroundColor">
 						<view v-show="showSetBackgroundColor" class="sub-view">
-							<view class="d-flex-center" style="width: 143px;height: 110px;padding-left: 7px;padding-top: 5px;">
+							<view class="d-flex flex-wrap" style="width: 150px;height: 110px;padding-left: 7px;padding-top: 5px;">
 								<!-- <input v-model="backgroundColor" focus placeholder="color" style="padding: 0 5px;width: 90px;" />
 								<view style="width: 50px;font-size: 14px;text-align: center;" @tap.stop="setBackgroundColor">确定</view> -->
-								<uni-row :gutter="10">
-									<uni-col :span="3.4" v-for="(item, index) in colorList" :key="index">
-										<view class="color-box" :style="{'background-color': item}" @tap.stop="setBackgroundColor(item)"></view>
-									</uni-col>
-								</uni-row>
+								<view v-for="(item, index) in colorList" :key="index" class="color-box" :style="{'background-color': item}" @tap.stop="setBackgroundColor(item)"></view>
 							</view>
 						</view>
 					</view>
@@ -95,7 +87,7 @@
 			html: {
 				type: String,
 				default: ''
-			},
+			}
 		},
 		data() {
 			return {
@@ -131,6 +123,7 @@
 				this.editorCtx.getContents({
 					success: (res)=>{
 						this.htmlContent = res.html
+						this.$emit('updateEditor', {"html": res.html})
 					}
 				})
 			},
@@ -292,5 +285,6 @@
 		height: 16px;
 		width: 16px;
 		margin-bottom: 5px;
+		margin-right: 5px;
 	}
 </style>
