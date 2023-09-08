@@ -3,10 +3,13 @@
 		<scroll-view class="scroll-view-box" :scroll-y="true" :scroll-x="false">
 			<uni-card :title="'批量修改 - '+module.name">
 				<view style="padding: 10px;padding-bottom: 300px;">
+					<view style="color: red;padding-bottom: 10px;">
+						注意：请选择需要修改的即可，不修改的不需要选择
+					</view>
 					<uni-forms ref="form" :modelValue="dataForm" :rules="rules" label-position="top" label-width="100px">
 						<uni-row :gutter="60">
-							<uni-col :xs="24" :sm="12" :md="12" :lg="8" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="[4, 5, 9, 10].includes(table.type) && table.name != 'orgs'">
-								<uni-forms-item :label="table.remarks" :name="table.name" required>
+							<uni-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.edit && [4, 5, 9, 10].includes(table.type) && table.name != 'orgs'">
+								<uni-forms-item :label="table.remarks" :name="table.name">
 									<template v-if="table.type==4">
 										<!-- 列表 -->
 										<view class="box">
@@ -14,10 +17,7 @@
 										</view>
 									</template>
 									<template v-else-if="table.type==5">
-										<!-- 字典 -->
-										<view class="box">
-											<uni-data-checkbox v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-checkbox>
-										</view>
+										<uni-data-select v-model="dataForm[table.name]" :localdata="getDict(table.key)"></uni-data-select>
 									</template>
 									<template v-else-if="table.type==9 && table.name!='uid'">
 										<!-- 对象选择 -->
@@ -131,7 +131,7 @@
 	.box{
 		border: 1px solid rgb(221, 221, 221);
 		border-radius: 5px;
-		min-height: 34px;
+		min-height: 33px;
 		display: flex;
 		align-items: center;
 		padding: 0 5px;

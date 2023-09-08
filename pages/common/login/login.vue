@@ -18,7 +18,8 @@
 </template>
 
 <script>
-	import { setToken, removeToken } from '@/utils/auth'
+	import { setToken, removeToken, getProject } from '@/utils/auth'
+	import { filterMenus } from '@/utils/util'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -42,12 +43,11 @@
 						}]
 					}
 				},
-				menus: [],//初始化菜单
 				path: null,//默认跳转页面
 			}
 		},
 		computed: {
-			...mapGetters(['params'])
+			...mapGetters(['params', 'menus'])
 		},
 		async onLoad() {
 			let username = uni.getStorageSync("UserName")
@@ -81,34 +81,45 @@
 								setToken(res.data.token)
 								//获取用户信息
 								this.$store.dispatch('getUserInfo').then(res => {
-									//获取菜单数据
-									this.$store.dispatch('getMenus').then(res => {
-										//跳转第一页
-										this.menus = res.data
-										for(let i=0;i<this.menus.length;i++){
-											let menu1 = this.menus[i]
-											if(menu1.value == "#"){
-												let flag = false
-												for(let j=0;j<menu1.children.length;j++){
-													let menu2 = menu1.children[j]
-													if(menu2.value != "#"){
-														flag = true
-														this.path = menu2.value
+									//获取项目信息
+									this.$api.post("/dict/getList/", {"type_name": "Project"}).then(resProject => {
+										if(resProject.code == 20000){
+											this.$store.commit('setProjects', resProject.data)
+											let project = ""
+											//默认进第一个项目
+											if(resProject.data.length > 0){
+												project = resProject.data[0].value
+												this.$store.commit('setProject', resProject.data[0])
+											}
+											//获取菜单数据
+											this.$store.dispatch('getMenus').then(res => {
+												//跳转第一页
+												for(let i=0;i<this.menus.length;i++){
+													let menu1 = this.menus[i]
+													if(menu1.value == "#"){
+														let flag = false
+														for(let j=0;j<menu1.children.length;j++){
+															let menu2 = menu1.children[j]
+															if(menu2.value != "#"){
+																flag = true
+																this.path = menu2.value
+																break
+															}
+														}
+														if(flag){
+															break
+														}
+													}else{
+														this.path = menu1.value
 														break
 													}
 												}
-												if(flag){
-													break
+												if(this.path){
+													uni.reLaunch({
+														url: this.path
+													});
 												}
-											}else{
-												this.path = menu1.value
-												break
-											}
-										}
-										if(this.path){
-											uni.reLaunch({
-												url: this.path
-											});
+											})
 										}
 									})
 								})

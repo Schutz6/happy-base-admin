@@ -105,9 +105,12 @@
 							<uni-td align="center">
 								<view class="d-flex-center">
 									<view class="tag-view">
-										<uni-link :href="'/admin/#/pages/design/design-'+item.page_type+'?id='+item.id" :showUnderLine="false">
+										<uni-link :href="pageUrl+'#/pages/design/design-'+item.page_type+'?id='+item.id" :showUnderLine="false">
 											<uni-tag text="设计" type="primary"></uni-tag>
 										</uni-link>
+									</view>
+									<view class="tag-view">
+										<uni-tag text="预览" type="primary"></uni-tag>
 									</view>
 									<template v-if="module.api_json != null">
 										<view class="tag-view" v-if="checkRole(module.api_json[9].roles) && module.api_json[9].show">
@@ -187,6 +190,7 @@
 				selectedIndexs: [],
 				orgTree: [],//部门树
 				selectedOrgName: null,//选中的部门名称
+				pageUrl: null,//页面地址
 			}
 		},
 		computed: {
@@ -208,6 +212,8 @@
 		},
 		onLoad(options) {
 			this.mid = options.mid
+			//当前页面主地址
+			this.pageUrl = location.origin+location.pathname
 		},
 		onReady() {
 			//根据角色，初始化查询条件

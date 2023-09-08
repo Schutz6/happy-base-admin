@@ -14,16 +14,16 @@
 				path: null,//默认跳转页面
 			}
 		},
-		onLoad() {
+		computed: {
+			...mapGetters(['params', 'menus'])
+		},
+		onReady() {
 			this.init()
 			if(this.params){
 				uni.setNavigationBarTitle({
 					title: this.params.siteName + " - 启动中"
 				})
 			}
-		},
-		computed: {
-			...mapGetters(['params', 'menus'])
 		},
 		methods: {
 			 init(){

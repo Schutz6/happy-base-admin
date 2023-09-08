@@ -5,6 +5,11 @@
 	word-wrap:break-word;
 	word-break:break-all;
 }
+.nowrap{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
 .width-max{
 	width: calc(100vw);
 }
@@ -29,6 +34,9 @@
 }
 .between{
 	justify-content: space-between;
+}
+.flex-wrap{
+	flex-wrap: wrap;
 }
 .flex-row{
 	flex-direction: row;
@@ -69,9 +77,6 @@
 }
 .tag-view:first-child{
 	margin-left: 0px;
-}
-.border-red{
-	border: 1px solid #FF00CC;
 }
 .border-white{
 	border: 1px solid #FFFFFF;

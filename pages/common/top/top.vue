@@ -1,9 +1,22 @@
 <template>
 	<view>
 		<view class="header d-flex between">
-			<view class="d-flex">
+			<view class="d-flex" v-if="user && user.roles.includes('user')">
+				<view class="title">
+					{{projects[0].text}}
+				</view>
+			</view>
+			<view class="d-flex" v-else>
 				<uni-icons v-show="showBars" class="pointer" @click="showLeftMenus" type="bars" size="24" color="#fff"></uni-icons>
-				<view class="title" v-if="params">{{params.siteName}}</view>
+				<view v-if="project">
+					<view v-if="projects.length>0" class="d-flex-center pointer" @click="showDialog('showProjectLeft', false)">
+						<view class="d-flex-center title">{{project.text}}</view>
+						<uni-icons type="bottom" size="19" color="#ffffff" style="margin-left: 5px;"></uni-icons>
+					</view>
+					<view v-else class="title">
+						{{project.text}}
+					</view>
+				</view>
 			</view>
 			<view class="d-flex" v-if="user">
 				<view class="d-flex-center pointer" @click="showDialog('showMenuRight', false)">
@@ -33,9 +46,16 @@
 		
 		<!-- 右侧弹出菜单 -->
 		<uni-popup ref="showMenuRight" type="right" mask-background-color="rgba(0,0,0,0)">
-			<view class="d-flex flex-column popup-box">
+			<view class="d-flex flex-column popup-box" style="margin-right: 20px;">
 				<view class="item pointer" @click="showDialog('updatePasswordDialog', true)">修改密码</view>
 				<view class="item pointer" @click="showDialog('logoutDialog', true)">退出登录</view>
+			</view>
+		</uni-popup>
+		
+		<!-- 左侧弹出项目 -->
+		<uni-popup ref="showProjectLeft" type="left" mask-background-color="rgba(0,0,0,0)">
+			<view class="d-flex flex-column popup-box" style="margin-left: 20px;">
+				<view class="item pointer" v-for="(item, index) in projects" :key="index" @click="switchProject(index)">{{item.text}}</view>
 			</view>
 		</uni-popup>
 		
@@ -72,11 +92,11 @@
 							errorMessage: "请输入"
 						}]
 					}
-				},
+				}
 			}
 		},
 		computed: {
-		    ...mapGetters(['user', 'params'])
+		    ...mapGetters(['user', 'params', 'project', 'projects'])
 		},
 		mounted() {
 			//获取页面大小
@@ -97,6 +117,17 @@
 			})
 		},
 		methods: {
+			//切换项目
+			switchProject(index){
+				this.hideDialog('showProjectLeft')
+				//设置当前项目
+				this.$store.commit('setProject', this.projects[index])
+				this.$store.commit('filterMenus')
+				//刷新页面
+				uni.reLaunch({
+					url: "/"
+				});
+			},
 			//显示左侧菜单
 			showLeftMenus(){
 				uni.$emit("showLeftMenus", {})
@@ -194,12 +225,14 @@
 	.popup-box{
 		background-color: #ffffff;
 		box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.1);
-		margin-right: 20px;
 		
 		.item{
 			font-size: 14px;
 			padding: 10px 20px;
 			border-bottom: 1px solid #f7f7f7;
+		}
+		.item:hover{
+			color: #409eff;
 		}
 		.item:last-child{
 			border-bottom: none;

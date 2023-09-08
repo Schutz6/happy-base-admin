@@ -23,7 +23,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['params', 'menus'])
+			...mapGetters(['params', 'project', 'initMenus', 'menus'])
 		},
 		watch: {
 			$route(to, form){

@@ -10,10 +10,11 @@
 					</view>
 					<uni-table ref="table" :loading="listLoading" border stripe emptyText="暂无更多数据">
 						<uni-tr>
+							<uni-th align="left" style="min-width: 200px;">菜单名称</uni-th>
 							<template v-if="module.table_json != null">
-								<uni-th v-for="(table, tableIndex) in module.table_json" :key="tableIndex" :align="tableIndex==2?'left':'center'" v-if="table.show">{{table.remarks}}</uni-th>
+								<uni-th align="center" style="min-width: 100px;" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show && tableIndex>2">{{table.remarks}}</uni-th>
 							</template>
-							<uni-th align="center" width="100px">操作</uni-th>
+							<uni-th align="center" style="min-width: 100px;">操作</uni-th>
 						</uni-tr>
 						<uni-tr v-for="(item, index) in tableData" :key="index">
 							<template v-if="module.table_json != null">
@@ -61,8 +62,8 @@
 										<template v-if="item.level < 3"></template>
 										<view class="tag-view" style="min-width: 60px">
 											<uni-tag v-if="item.level==1 && item.url=='#'" text="+子菜单" type="primary" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
-											<!-- <uni-tag v-else-if="item.level==2" text="+子分类" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
-											<uni-tag v-else-if="item.level==3" text="+子分类" type="default" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag> -->
+											<uni-tag v-else-if="item.level==2" text="+子菜单" type="warning" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag>
+											<!-- <uni-tag v-else-if="item.level==3" text="+子分类" type="default" @click="toPage('/pages/core/add', {'pid': item.id, 'level': item.level+1})"></uni-tag> -->
 										</view>
 									</template>
 								</view>
@@ -163,30 +164,48 @@
 			},
 			//显示字典
 			showDict(name, value){
-				let list = this.dict[name]
-				let names = "--"
-				for(let i=0;i<list.length;i++){
-					if(value == list[i].value){
-						if(list[i].color){
-							names = "<span style='color:"+list[i].color+"'>"+list[i].text+"</span>"
-						}else{
-							names = list[i].text
-						}
-						break
+				if(value){
+					let list = this.dict[name]
+					let names = "--"
+					if(!list){
+						return names
 					}
+					for(let i=0;i<list.length;i++){
+						if(value == list[i].value){
+							if(list[i].color){
+								names = "<span style='color:"+list[i].color+"'>"+list[i].text+"</span>"
+							}else{
+								names = list[i].text
+							}
+							break
+						}
+					}
+					return names
+				}else{
+					return "--"
 				}
-				return names
 			},
 			//显示字典
 			showDicts(name, values){
-				let list = this.dict[name]
-				let names = []
-				for(let i=0;i<list.length;i++){
-					if(values.includes(list[i].value)){
-						names.push(list[i].text)
+				if(values){
+					let list = this.dict[name]
+					let names = []
+					if(!list){
+						return names
 					}
+					for(let i=0;i<list.length;i++){
+						if(values.includes(list[i].value)){
+							names.push(list[i].text)
+						}
+					}
+					if(names.length > 0){
+						return names.join(",")
+					}else{
+						return "--"
+					}
+				}else{
+					return "--"
 				}
-				return names.join(",")
 			},
 			//获取列表
 			getList() {

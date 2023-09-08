@@ -3,18 +3,18 @@
 		<block v-for="(item,index) in data" :key="index">
 			<template v-if="!item.children || !item.children.length">
 				<uni-menu-item :index="item">
-					<template v-if="item.icon">
+					<template v-if="item.icon && item.icon!='#'">
 						<image :src="require('@/static'+item.icon)" style="width: 16px;height: 16px;" />
 					</template>
-					<text :class="{title: item.icon}">{{item.text}}</text>
+					<text class="nowrap" :class="{title: item.icon && item.icon!='#'}">{{item.text}}</text>
 				</uni-menu-item>
 			</template>
 			<uni-sub-menu v-else :index="item">
 				<template v-slot:title>
-					<template v-if="item.icon">
+					<template v-if="item.icon && item.icon!='#'">
 						<image :src="require('@/static'+item.icon)" style="width: 16px;height: 16px;" />
 					</template>
-					<text :class="{title: item.icon}">{{item.text}}</text>
+					<text class="nowrap" :class="{title: item.icon && item.icon!='#'}">{{item.text}}</text>
 				</template>
 				<uni-menu-sidebar class="item-bg"  :data="item.children" :key="item._id" />
 			</uni-sub-menu>

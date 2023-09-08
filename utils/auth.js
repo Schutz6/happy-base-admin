@@ -2,6 +2,8 @@ const TokenKey = 'token'
 const UserKey = 'user'
 const MenusKey = 'menus'
 const ParamsKey = 'params'
+const ProjectKey = 'project'
+const ProjectsKey = 'projects'
 
 
 //登录令牌
@@ -54,4 +56,28 @@ export function setParams(params) {
 
 export function removeParams() {
 	return uni.removeStorageSync(ParamsKey)
+}
+
+//项目信息
+export function getProjects() {
+	return uni.getStorageSync(ProjectsKey)
+}
+
+export function setProjects(projects) {
+	return uni.setStorageSync(ProjectsKey, projects)
+}
+
+export function removeProjects() {
+	return uni.removeStorageSync(ProjectsKey)
+}
+export function getProject() {
+	return uni.getStorageSync(ProjectKey)
+}
+
+export function setProject(project) {
+	return uni.setStorageSync(ProjectKey, project)
+}
+
+export function removeProject() {
+	return uni.removeStorageSync(ProjectKey)
 }

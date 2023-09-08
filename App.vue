@@ -1,11 +1,15 @@
 <script>
-	import { getUser, getParams, getMenus } from '@/utils/auth'
+	import { getUser, getParams, getMenus, getProject, getProjects } from '@/utils/auth'
 	import datas from '@/utils/datas'
 	export default {
 		onLaunch: async function() {
 			console.log('App Launch')
+			//初始化项目
+			this.$store.commit('setProject', getProject())
+			this.$store.commit('setProjects', getProjects())
 			//初始菜单数据
 			this.$store.commit('setMenus', getMenus())
+			this.$store.commit('filterMenus')
 			//初始化静态数据
 			this.$store.commit('setDatas', datas)
 			//初始化用户信息
@@ -20,6 +24,15 @@
 				uni.setNavigationBarTitle({
 					title: resParam.siteName
 				})
+			}
+			//获取项目列表
+			let resProject = await this.$api.postAsync("/dict/getList/", {"type_name": "Project"})
+			if(resProject && resProject.code == 20000){
+				this.$store.commit('setProjects', resProject.data)
+				//判断是否选择了项目，没选就默认第一个
+				if(resProject.data.length > 0){
+					this.$store.commit('setProject', resProject.data[0])
+				}
 			}
 			//获取系统菜单
 			let resMenu = await this.$api.getAsync("/menu/getList/")
@@ -86,7 +99,10 @@
 	    color: #606266;
 	}
 	.uni-easyinput__content-input{
-		height: 34px !important;
+		height: 33px !important;
+	}
+	.uni-section .uni-section-header{
+		padding-left: 0 !important;
 	}
 
 	/*解决页面不能复制问题 */

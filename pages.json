@@ -254,7 +254,15 @@
 		        "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 		    }
-		}
+		},{ 
+            "path" : "pages/system/page/view",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "视图",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        }
         ,{
             "path" : "pages/system/backup/backup",
             "style" :                                                                                    
@@ -273,6 +281,7 @@
 				"navigationStyle": "custom"
 		    }
 		}
+        
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "低代码基础平台",

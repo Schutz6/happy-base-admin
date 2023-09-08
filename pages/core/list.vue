@@ -55,60 +55,82 @@
 							</view>
 						</template>
 					</view>
-					<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
-						<uni-tr>
-							<template v-if="module.table_json != null">
-								<uni-th align="center" style="min-width: 100px;" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="table.sort?'pointer':''" :sortable="table.sort" @sort-change="sortChange($event, table.name)">{{table.remarks}}</uni-th>
-							</template>
-							<uni-th align="center">操作</uni-th>
-						</uni-tr>
-						<uni-tr v-for="(item, index) in tableData" :key="index">
-							<template v-if="module.table_json != null">
-								<uni-td align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show">
-								<template v-if="table.type==4" i="字典列表">
-									{{ showDicts(table.key, item[table.name]) }}
+					<view style="position: relative;">
+						<uni-table ref="table" :loading="listLoading" type="selection" @selection-change="selectionChange" border stripe emptyText="暂无更多数据">
+							<uni-tr>
+								<template v-if="module.table_json != null">
+									<uni-th align="center" style="min-width: 100px;" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="{'pointer': table.sort}" :sortable="table.sort" @sort-change="sortChange($event, table.name)">
+										<view class="nowrap">{{table.remarks | ellipsis(4)}}</view>
+									</uni-th>
+									<uni-th align="center" style="min-width: 100px;">操作</uni-th>
 								</template>
-								<template v-else-if="table.type==5" i="字典">
-									<rich-text :nodes="showDict(table.key, item[table.name])"></rich-text>
-								</template>
-								<template v-else-if="table.type==6" i="图片">
-									<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 80px;height: 40px;"></image>
-								</template>
-								<template v-else-if="table.type==12" i="多图片">
-									<view class="d-flex-center">
-										<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
-											<image @click="showImage(item[table.name], picIndex)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 40px;"></image>
+							</uni-tr>
+							<uni-tr v-for="(item, index) in tableData" :key="index">
+								<template v-if="module.table_json != null">
+									<uni-td align="center" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="{'nowrap': showOperateBox}">
+									<template v-if="table.type==4" i="字典列表">
+										{{ showDicts(table.key, item[table.name]) }}
+									</template>
+									<template v-else-if="table.type==5" i="字典">
+										<rich-text :nodes="showDict(table.key, item[table.name])"></rich-text>
+									</template>
+									<template v-else-if="table.type==6" i="图片">
+										<image @click="showImage([item[table.name]], 0)" :src="item[table.name]" mode="aspectFit" class="pointer" style="width: 40px;height: 16px;"></image>
+									</template>
+									<template v-else-if="table.type==12" i="多图片">
+										<view class="d-flex-center">
+											<view v-for="(pic, picIndex) in item[table.name]" :key="picIndex" style="padding: 0 5px;">
+												<image @click="showImage(item[table.name], picIndex)" :src="pic" mode="aspectFit" class="pointer" style="width: 40px;height: 16px;"></image>
+											</view>
 										</view>
+									</template>
+									<template v-else-if="table.type==7" i="多文本">
+										<text class="wrap">{{ item[table.name] | ellipsis}}</text>
+									</template>
+									<template v-else-if="table.type==9" i="对象">
+										<text class="wrap" v-if="table.name=='uid'">{{ item[table.name] }}</text>
+										<text class="wrap" v-else>{{formatObject(table.key, item[table.name])}}</text>
+									</template>
+									<template v-else-if="table.type==10" i="分类列表">
+										<text class="wrap">{{formatCategory(item[table.name])}}</text>
+									</template>
+									<template v-else-if="table.type==15 || table.type==17" i="时间戳">
+										<view v-if="item[table.name]">
+											<uni-dateformat :date="item[table.name]"></uni-dateformat>
+										</view>
+										<view v-else>--</view>
+									</template>
+									<template v-else-if="table.type==16" i="日期">
+										<view v-if="item[table.name]">
+											<uni-dateformat :date="item[table.name]" format="yyyy/MM/dd"></uni-dateformat>
+										</view>
+										<view v-else>--</view>
+									</template>
+									<template v-else i="其他">
+										<text class="wrap">{{ item[table.name] | ellipsis}}</text>
+									</template>
+									</uni-td>
+								</template>
+								<uni-td align="center">
+									<view class="d-flex-center">
+										<template v-if="module.api_json != null">
+											<view class="tag-view" v-if="checkRole(module.api_json[9].roles) && module.api_json[9].show">
+												<uni-tag text="查看" type="primary" @click="toPage('/pages/core/info', item)"></uni-tag>
+											</view>
+											<view class="tag-view" v-if="checkRole(module.api_json[1].roles) && module.api_json[1].show">
+												<uni-tag text="编辑" type="primary" @click="toPage('/pages/core/edit', item)"></uni-tag>
+											</view>
+											<view class="tag-view" v-if="checkRole(module.api_json[2].roles) && module.api_json[2].show">
+												<uni-tag text="删除" type="error" @click="deleteItem(item.id)"></uni-tag>
+											</view>
+										</template>
 									</view>
-								</template>
-								<template v-else-if="table.type==7" i="多文本">
-									{{ item[table.name] | ellipsis}}
-								</template>
-								<template v-else-if="table.type==9" i="对象">
-									<view v-if="table.name=='uid'">{{ item[table.name] }}</view>
-									<view v-else>{{formatObject(table.key, item[table.name])}}</view>
-								</template>
-								<template v-else-if="table.type==10" i="分类列表">
-									{{formatCategory(item[table.name])}}
-								</template>
-								<template v-else-if="table.type==15 || table.type==17" i="时间戳">
-									<view v-if="item[table.name]">
-										<uni-dateformat :date="item[table.name]"></uni-dateformat>
-									</view>
-									<view v-else>--</view>
-								</template>
-								<template v-else-if="table.type==16" i="日期">
-									<view v-if="item[table.name]">
-										<uni-dateformat :date="item[table.name]" format="yyyy/MM/dd"></uni-dateformat>
-									</view>
-									<view v-else>--</view>
-								</template>
-								<template v-else i="其他">
-									{{ item[table.name] || "--"}}
-								</template>
 								</uni-td>
-							</template>
-							<uni-td align="center">
+							</uni-tr>
+						</uni-table>
+						<view class="operate-box" v-if="showOperateBox">
+							<view class="th">操作</view>
+							<view class="td" v-for="(item, index) in tableData" :key="index">
 								<view class="d-flex-center">
 									<template v-if="module.api_json != null">
 										<view class="tag-view" v-if="checkRole(module.api_json[9].roles) && module.api_json[9].show">
@@ -122,12 +144,12 @@
 										</view>
 									</template>
 								</view>
-							</uni-td>
-						</uni-tr>
-					</uni-table>
-					<view class="uni-pagination-box">
-						<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
-							:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+							</view>
+						</view>
+						<view class="uni-pagination-box">
+							<uni-pagination show-icon show-page-size :page-size="listQuery.pageSize" :current="listQuery.currentPage"
+								:total="total" @change="changeTable" @pageSizeChange="changeSize" />
+						</view>
 					</view>
 				</view>
 			</uni-card>
@@ -188,6 +210,7 @@
 				selectedIndexs: [],
 				orgTree: [],//部门树
 				selectedOrgName: null,//选中的部门名称
+				showOperateBox: false,//是否显示浮动操作
 			}
 		},
 		computed: {
@@ -199,10 +222,10 @@
 		    	return formatDateUtc(time)
 		    },
 			//限制长度
-			ellipsis(value) {
-			  if (!value) return ''
-			  if (value.length > 20) {
-			    return value.slice(0, 20) + '...'
+			ellipsis(value, num=10) {
+			  if (!value) return '--'
+			  if (value.length > num) {
+			    return value.slice(0, num) + '...'
 			  }
 			  return value
 			}
@@ -219,6 +242,15 @@
 			this.init()
 		},
 		methods: {
+			//判断是否有滚动条
+			checkScroll(){
+				let table = this.$refs.table
+				if(table.$el){
+					if(table.$el.scrollWidth>table.$el.clientWidth){
+						this.showOperateBox = true
+					}
+				}
+			},
 			//跳转页面
 			toPage(path, item){
 				uni.navigateTo({
@@ -271,6 +303,9 @@
 				this.getModule(()=>{
 					//获取用户列表
 					this.getList()
+					this.$nextTick(()=>{
+						this.checkScroll()
+					})
 				})
 			},
 			//获取模块信息
@@ -639,5 +674,23 @@
 </script>
 
 <style scoped lang="scss">
-
+	.operate-box{
+		position: absolute;
+		top: 0;
+		right: -1px;
+		border:1px solid #ebeef5;
+		box-shadow: -5px 0px 5px #ebeef5;
+		background-color: #fff;
+		min-width: 100px;
+		text-align: center;
+		
+		.th{
+			padding: 12px 10px;
+		}
+		.td{
+			padding: 8px 10px;
+			border-top:1px solid #ebeef5;
+			border-bottom: 1px solid #fff;
+		}
+	}
 </style>
