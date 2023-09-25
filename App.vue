@@ -1,6 +1,7 @@
 <script>
 	import { getUser, getParams, getMenus, getProject, getProjects } from '@/utils/auth'
 	import datas from '@/utils/datas'
+	import config from '@/config.js'
 	export default {
 		onLaunch: async function() {
 			console.log('App Launch')
@@ -17,27 +18,31 @@
 			//初始化网站设置信息
 			this.$store.commit('setParams', getParams())
 			
-			//获取系统参数
-			let resParam = await this.$api.getAsync("/param/getList/")
-			if(resParam && resParam.code == 20000){
-				this.$store.commit('setParams', resParam.data)
-				uni.setNavigationBarTitle({
-					title: resParam.siteName
-				})
-			}
-			//获取项目列表
-			let resProject = await this.$api.postAsync("/dict/getList/", {"type_name": "Project"})
-			if(resProject && resProject.code == 20000){
-				this.$store.commit('setProjects', resProject.data)
-				//判断是否选择了项目，没选就默认第一个
-				if(resProject.data.length > 0){
-					this.$store.commit('setProject', resProject.data[0])
+			//非登录页面不需要获取
+			let route = location.hash.replace("#", "")
+			if(!config.noLoginPage.includes(route)){
+				//获取系统参数
+				let resParam = await this.$api.getAsync("/param/getList/")
+				if(resParam && resParam.code == 20000){
+					this.$store.commit('setParams', resParam.data)
+					uni.setNavigationBarTitle({
+						title: resParam.siteName
+					})
 				}
-			}
-			//获取系统菜单
-			let resMenu = await this.$api.getAsync("/menu/getList/")
-			if(resMenu && resMenu.code == 20000){
-				this.$store.commit('setMenus', resMenu.data)
+				//获取项目列表
+				let resProject = await this.$api.postAsync("/dict/getList/", {"type_name": "Project"})
+				if(resProject && resProject.code == 20000){
+					this.$store.commit('setProjects', resProject.data)
+					//判断是否选择了项目，没选就默认第一个
+					if(resProject.data.length > 0){
+						this.$store.commit('setProject', resProject.data[0])
+					}
+				}
+				//获取系统菜单
+				let resMenu = await this.$api.getAsync("/menu/getList/")
+				if(resMenu && resMenu.code == 20000){
+					this.$store.commit('setMenus', resMenu.data)
+				}
 			}
 		},
 		onShow: function() {
@@ -103,6 +108,9 @@
 	}
 	.uni-section .uni-section-header{
 		padding-left: 0 !important;
+	}
+	uni-toast .uni-toast{
+		padding: 0 10px;
 	}
 
 	/*解决页面不能复制问题 */

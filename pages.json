@@ -18,6 +18,17 @@
 		    }
 		},
 		{
+		    "path" : "pages/index/noLogin",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "非登录页面",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"topWindow": false,
+				"leftWindow": false
+		    }
+		},
+		{
 		    "path" : "pages/design/design-web",
 		    "style" :                                                                                    
 		    {
@@ -201,6 +212,14 @@
             "style" :                                                                                    
             {
 				"navigationBarTitleText": "分类页面",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+        },{
+            "path" : "pages/core/tree",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "树形页面",
                 "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
             }

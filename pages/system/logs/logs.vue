@@ -32,9 +32,7 @@
 							<uni-td align="center">{{ item.method }}</uni-td>
 							<uni-td align="center">{{item.uri}}</uni-td>
 							<uni-td align="center">
-								<uni-tooltip :content="item.params">
-									<text class="wrap">{{item.params | ellipsis}}</text>
-								</uni-tooltip>
+								<text class="wrap" :title="item.params">{{item.params | ellipsis}}</text>
 							</uni-td>
 							<uni-td align="center">{{item.ip}}</uni-td>
 							<uni-td align="center">{{item.times}}ms</uni-td>

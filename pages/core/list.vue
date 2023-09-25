@@ -4,7 +4,7 @@
 			<uni-card>
 				<view class="container">
 					<view class="filter-container d-flex">
-						<view class="filter-item d-flex" style="width: 180px;">
+						<view class="filter-item d-flex" style="width: 180px;" v-if="showSyntheticQuery">
 							<uni-easyinput v-model="listQuery.searchKey" trim="both" placeholder="综合查询"></uni-easyinput>
 						</view>
 						<template v-if="module.table_json != null">
@@ -60,7 +60,7 @@
 							<uni-tr>
 								<template v-if="module.table_json != null">
 									<uni-th align="center" style="min-width: 100px;" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" v-if="table.show" :class="{'pointer': table.sort}" :sortable="table.sort" @sort-change="sortChange($event, table.name)">
-										<view class="nowrap">{{table.remarks | ellipsis(4)}}</view>
+										<view class="nowrap" :title="table.remarks">{{table.remarks | ellipsis(4)}}</view>
 									</uni-th>
 									<uni-th align="center" style="min-width: 100px;">操作</uni-th>
 								</template>
@@ -85,7 +85,7 @@
 										</view>
 									</template>
 									<template v-else-if="table.type==7" i="多文本">
-										<text class="wrap">{{ item[table.name] | ellipsis}}</text>
+										<text class="wrap" :title="item[table.name]">{{ item[table.name] | ellipsis(30)}}</text>
 									</template>
 									<template v-else-if="table.type==9" i="对象">
 										<text class="wrap" v-if="table.name=='uid'">{{ item[table.name] }}</text>
@@ -107,7 +107,7 @@
 										<view v-else>--</view>
 									</template>
 									<template v-else i="其他">
-										<text class="wrap">{{ item[table.name] | ellipsis}}</text>
+										<text class="wrap" :title="item[table.name]">{{ item[table.name] | ellipsis(30)}}</text>
 									</template>
 									</uni-td>
 								</template>
@@ -211,6 +211,7 @@
 				orgTree: [],//部门树
 				selectedOrgName: null,//选中的部门名称
 				showOperateBox: false,//是否显示浮动操作
+				showSyntheticQuery: false,//是否显示综合查询
 			}
 		},
 		computed: {
@@ -338,6 +339,10 @@
 								if(item.key){
 									await this.initCategory(item.key)
 								}
+							}
+							//判断是否显示综合查询
+							if(item.query){
+								this.showSyntheticQuery = true
 							}
 						}
 						callback()

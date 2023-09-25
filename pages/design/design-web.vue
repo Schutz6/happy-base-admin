@@ -407,10 +407,7 @@
 	}
 
 	.page-box {
-		border: 1px dashed red;
-
 		.layout {
-			border: 1px dashed blue;
 			min-height: 100px;
 			position: relative;
 
@@ -450,6 +447,7 @@
 			color: #ccc;
 			display: block;
 			text-align: center;
+			border: 1px dashed #ddd;
 		}
 	}
 
@@ -459,5 +457,6 @@
 		color: #ccc;
 		display: block;
 		text-align: center;
+		border: 1px dashed #ddd;
 	}
 </style>
