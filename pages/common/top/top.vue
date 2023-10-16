@@ -9,7 +9,7 @@
 			<view class="d-flex" v-else>
 				<uni-icons v-show="showBars" class="pointer" @click="showLeftMenus" type="bars" size="24" color="#fff"></uni-icons>
 				<view v-if="project">
-					<view v-if="projects.length>0" class="d-flex-center pointer" @click="showDialog('showProjectLeft', false)">
+					<view v-if="projects.length>1" class="d-flex-center pointer" @click="showDialog('showProjectLeft', false)">
 						<view class="d-flex-center title">{{project.text}}</view>
 						<uni-icons type="bottom" size="19" color="#ffffff" style="margin-left: 5px;"></uni-icons>
 					</view>

@@ -18,7 +18,7 @@
 						</uni-tr>
 						<uni-tr v-for="(item, index) in tableData" :key="index">
 							<template v-if="module.table_json != null">
-								<uni-td v-for="(table, tableIndex) in module.table_json" :key="tableIndex" :align="tableIndex==2?'left':'center'" v-if="table.show">
+								<uni-td class="nowrap" v-for="(table, tableIndex) in module.table_json" :key="tableIndex" :align="tableIndex==2?'left':'center'" v-if="table.show">
 									<template v-if="tableIndex==2">
 										<view v-if="item.level == 1">{{ item[table.name] }}</view>
 										<view v-else-if="item.level == 2" style="margin-left: 10px;">|-{{ item[table.name] }}</view>
@@ -26,7 +26,9 @@
 									</template>
 									<template v-else>
 										<template v-if="table.type==4" i="列表">
-											{{ showDicts(table.key, item[table.name]) }}
+											<view class="nowrap" style="width: 100px;">
+												{{ showDicts(table.key, item[table.name])}}
+											</view>
 										</template>
 										<template v-else-if="table.type==5" i="字典">
 											<rich-text :nodes="showDict(table.key, item[table.name])"></rich-text>
@@ -45,7 +47,7 @@
 											<image :src="'../../../static'+item[table.name]" style="width: 20px;height: 20px;" />
 										</template>
 										<template v-else i="其他">
-											{{ item[table.name] }}
+											<text class="wrap" :title="item[table.name]">{{ item[table.name] | ellipsis(20)}}</text>
 										</template>
 									</template>
 								</uni-td>
@@ -88,6 +90,16 @@
 				tableData: [],
 				total: 0,
 				listLoading: true,
+			}
+		},
+		filters: {
+			//限制长度
+			ellipsis(value, num=10) {
+			  if (!value) return '--'
+			  if (value.length > num) {
+			    return value.slice(0, num) + '...'
+			  }
+			  return value
 			}
 		},
 		onLoad(options) {

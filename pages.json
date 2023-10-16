@@ -18,6 +18,15 @@
 		    }
 		},
 		{
+		    "path" : "pages/blank/blank",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "空白页",
+		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+		    }
+		},
+		{
 		    "path" : "pages/index/noLogin",
 		    "style" :                                                                                    
 		    {

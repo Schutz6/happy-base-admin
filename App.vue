@@ -42,6 +42,7 @@
 				let resMenu = await this.$api.getAsync("/menu/getList/")
 				if(resMenu && resMenu.code == 20000){
 					this.$store.commit('setMenus', resMenu.data)
+					this.$store.commit('filterMenus')
 				}
 			}
 		},
